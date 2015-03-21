@@ -5,6 +5,7 @@ public class HelloWorld {
 		/* Il faut toujours un petit "Hello World" pour bien commencer */
 		System.out.println(":)");
 		/* Bon courage ! */
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
 }

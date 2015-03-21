@@ -9,6 +9,8 @@ Petite explication du git :
 
   => .git : dossier permettant le bon fonctionnement du git. Ne pas toucher !
   
+  Dans Projet-Info (dossier du Projet Java) :
+  
   => src : dossier avec les fichiers sources du code Java.
   
   => bin : dossier avec le code compilé

@@ -24,10 +24,11 @@ public abstract class Objet {
 	String nom_objet; // Nom de l'objet
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
-	int masse; // Masse de l'objet (pour l'action de la gravité)
+	int masse; // Masse de l'objet (pour l'action de la gravité
+	CentreGravite centreG; //centre de gravitŽ de l'objet
 
 	public Objet(int ax, int ay, float adx, float ady, float avitesse, String[] NomImage,
-			Rectangle aframe, String nom, int nbIm) {
+			Rectangle aframe, String nom, int nbIm, int masse) {
 		NbImages = nbIm;
 		try {
 			images = new Image[NbImages];
@@ -53,6 +54,7 @@ public abstract class Objet {
 		nom_objet = nom;
 		limitesframe = aframe;
 		actif = true;
+		this.masse = masse;
 	}
 
 	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans l'interface graphique g

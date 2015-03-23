@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 /**
  * @author Tanguy
- *
+ * @author Marc
  */
 public abstract class Objet {
 

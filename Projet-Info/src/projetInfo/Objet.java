@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 /**
  * @author Tanguy
  * @author Marc
+ * @author Sami
  */
 public abstract class Objet {
 

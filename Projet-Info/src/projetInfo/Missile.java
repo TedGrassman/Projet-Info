@@ -1,6 +1,6 @@
 package projetInfo;
 
-import java.awt.Rectangle;
+import javafx.scene.shape.Rectangle;
 
 import javafx.scene.shape.Polygon;
 
@@ -8,7 +8,7 @@ public class Missile extends Astre {
 	Polygon limites;
 
 	public Missile(Rectangle aframe, String[] tab) {
-		super(500, 500, (float)0, (float)0, tab, aframe, "Missile", 1, 100);
+		super(500, 500, (float)0, (float)0, tab, aframe, "Missile.png", 1, 100);
 		
 		limites = new Polygon(5.0 ,50, 10.0, 0.0, 0.0,0.0);
 	}

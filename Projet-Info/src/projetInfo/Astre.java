@@ -1,11 +1,8 @@
 package projetInfo;
 
 import javafx.scene.shape.Rectangle;
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
-import java.util.LinkedList;
->>>>>>> branch 'master' of https://github.com/TedGrassman/Projet-Info.git
+
 
 public abstract class Astre extends Objet{
 	

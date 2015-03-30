@@ -11,7 +11,7 @@ public class Station extends Objet {
 	Circle limites;
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom) {
-		super(ax, ay, 0, 0, 10, NomImage,aframe, nom, 1, 0);
+		super(ax, ay, (float)0, (float)0, NomImage,aframe, nom, 1, 0);
 		limites = new Circle();
 		limites.setCenterX((float)(ax+images[0].getWidth(null)/2));
 		limites.setCenterY((float)(ay+images[0].getHeight(null)/2));

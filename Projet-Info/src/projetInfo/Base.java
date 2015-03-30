@@ -8,7 +8,7 @@ public class Base extends Objet {
 	static String[] NomImage = {"base.png"};
 	
 	public Base(Rectangle aframe, String nom) {
-		super((aframe.width / 2) - 13, aframe.height - 80, 0, 0, 10, NomImage,
+		super((aframe.width / 2) - 13, aframe.height - 200, 0, 0, 10, NomImage,
 				aframe, nom, 1, 0);
 	}
 	

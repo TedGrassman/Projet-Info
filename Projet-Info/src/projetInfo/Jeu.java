@@ -30,7 +30,7 @@ public class Jeu extends JFrame {
 	boolean ToucheDroit; // Si le joueur a pressé la touche "droite"
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
 	Rectangle Ecran; // Les limites de la fenêtre
-	// Navire Vaisseau; // L'objet que l'utilisateur va déplacer
+	Base Vaisseau; // L'objet que l'utilisateur va déplacer
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
@@ -59,6 +59,8 @@ public class Jeu extends JFrame {
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
+		Vaisseau = new Base(Ecran, "DeathStar 1");
+		Objets.add(Vaisseau);
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
 		} catch (Exception err) {
@@ -78,18 +80,18 @@ public class Jeu extends JFrame {
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
 		buffer.drawString("WelcomE", 275, Ecran.height / 2 + 20);
-		// if (finjeu) {
-		// // Message de fin de jeu
-		// buffer.setColor(Color.white);
-		// buffer.setFont(font.deriveFont(100.0f));
-		// buffer.drawString("GAME OVER", 100, Ecran.height/2+20);
-		// } else {
-		// // dessine TOUS les objets dans le buffer
-		// for (int k = 0; k < Objets.size(); k++) {
-		// Objet O = (Objet) Objets.get(k);
-		// O.draw(temps, buffer);
-		// }
-		// }
+		if (finjeu) {
+			// Message de fin de jeu
+			buffer.setColor(Color.white);
+			buffer.setFont(font.deriveFont(100.0f));
+			buffer.drawString("GAME OVER", 100, Ecran.height / 2 + 20);
+		} else {
+			// dessine TOUS les objets dans le buffer
+			for (int k = 0; k < Objets.size(); k++) {
+				Objet O = (Objet) Objets.get(k);
+				O.draw(temps, buffer);
+			}
+		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);
 		// buffer.setFont(font.deriveFont(40.0f));
@@ -103,9 +105,7 @@ public class Jeu extends JFrame {
 	}
 
 	public void boucle_principale_jeu() {
-		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
-		// déplacement du Vaisseau (prise en compte des actions utilisateurs sur
-		// touches)
+		// déplacement du Vaisseau (prise en compte des actions utilisateurs sur touches)
 		if (ToucheGauche) {
 			Vaisseau.dx = -1;
 			Vaisseau.dy = 0;
@@ -122,6 +122,12 @@ public class Jeu extends JFrame {
 			Vaisseau.dx = 0;
 			Vaisseau.dy = 0;
 		}
+		// déplace tous les objets par Polymorphisme
+		for (int k = 0; k < Objets.size(); k++) {
+			Objet O = (Objet) Objets.get(k);
+			O.move(temps);
+		}
+		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
 	}
 
 	@SuppressWarnings("unused")
@@ -180,19 +186,19 @@ public class Jeu extends JFrame {
 			int code = e.getKeyCode();
 			switch (code) {
 				case KeyEvent.VK_SPACE: // barre d'espacement
-					ToucheEspace = true;
+					ToucheEspace = false;
 					break;
 				case KeyEvent.VK_LEFT: // flèche gauche
-					ToucheGauche = true;
+					ToucheGauche = false;
 					break;
 				case KeyEvent.VK_RIGHT: // flèche droit
-					ToucheDroit = true;
+					ToucheDroit = false;
 					break;
 				case KeyEvent.VK_UP: // flèche haut
-					ToucheHaut = true;
+					ToucheHaut = false;
 					break;
 				case KeyEvent.VK_DOWN: // flèche bas
-					ToucheBas = true;
+					ToucheBas = false;
 					break;
 			// pour tester les écouteurs
 			// this.setTitle("touche relachée");

@@ -33,7 +33,7 @@ public abstract class Objet {
 		try {
 			images = new Image[NbImages];
 			for (int k = 0; k < NbImages; k++)
-				images[k] = ImageIO.read(new File(NomImage[k]));
+				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
 		} catch (Exception err) {
 			System.out.println(NomImage + " introuvable !");
 			System.out.println("Mettre les images dans le repertoire :"

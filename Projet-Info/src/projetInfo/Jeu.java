@@ -30,7 +30,7 @@ public class Jeu extends JFrame {
 	boolean ToucheDroit; // Si le joueur a pressé la touche "droite"
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
 	Rectangle Ecran; // Les limites de la fenêtre
-	Base Vaisseau; // L'objet que l'utilisateur va déplacer
+	Station Vaisseau; // L'objet que l'utilisateur va déplacer
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
@@ -59,7 +59,7 @@ public class Jeu extends JFrame {
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
-		Vaisseau = new Base(Ecran, "DeathStar 1");
+		Vaisseau = new Station((int)(Ecran.getWidth()/2), (int)(Ecran.getHeight()/2), Ecran, "DeathStar 1");
 		Objets.add(Vaisseau);
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
@@ -76,15 +76,15 @@ public class Jeu extends JFrame {
 	public void paint(Graphics g) {
 		// remplire le buffer de noir
 		buffer.setColor(Color.black);
-		buffer.fillRect(Ecran.x, Ecran.y, Ecran.x + Ecran.width, Ecran.y + Ecran.height);
+		buffer.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
-		buffer.drawString("WelcomE", 275, Ecran.height / 2 + 20);
+		buffer.drawString("WelcomE", 275, (int) Ecran.getHeight() / 2 + 20);
 		if (finjeu) {
 			// Message de fin de jeu
 			buffer.setColor(Color.white);
 			buffer.setFont(font.deriveFont(100.0f));
-			buffer.drawString("GAME OVER", 100, Ecran.height / 2 + 20);
+			buffer.drawString("GAME OVER", 100, (int) Ecran.getHeight() / 2 + 20);
 		} else {
 			// dessine TOUS les objets dans le buffer
 			for (int k = 0; k < Objets.size(); k++) {

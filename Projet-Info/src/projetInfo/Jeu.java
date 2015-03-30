@@ -30,7 +30,7 @@ public class Jeu extends JFrame {
 	boolean ToucheDroit; // Si le joueur a pressé la touche "droite"
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
 	Rectangle Ecran; // Les limites de la fenêtre
-	Base Vaisseau; // L'objet que l'utilisateur va déplacer
+	Station Vaisseau; // L'objet que l'utilisateur va déplacer
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
@@ -59,7 +59,7 @@ public class Jeu extends JFrame {
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
-		Vaisseau = new Base(Ecran, "DeathStar 1");
+		Vaisseau = new Station(Ecran, "DeathStar 1");
 		Objets.add(Vaisseau);
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));

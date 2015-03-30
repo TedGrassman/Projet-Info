@@ -15,11 +15,11 @@ import javax.imageio.ImageIO;
 public abstract class Objet {
 
 	int x, y; // Position de l'objet à l'écran (coin en haut à gauche)
-	//int h, l; // Hauteur et largeur de l'objet à l'écran (image)
+	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
 	float dx, dy; // Vecteur unitaire de déplacement
 	float vitesse; // Vitesse de déplacement
 	Image[] images; // Images de l'objet
-	//Rectangle limites; // Rectangle englobant l'objet à l'écran
+	Rectangle limites; // Rectangle englobant l'objet à l'écran
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
 	Boolean actif; // Si l'objet est actif ou non
@@ -41,10 +41,10 @@ public abstract class Objet {
 			System.exit(0);
 		}
 		/* récupère une fois pour toute la hauteur et largeur de l'image */
-		//h = images[0].getHeight(null);
-		//l = images[0].getWidth(null);
+		h = images[0].getHeight(null);
+		l = images[0].getWidth(null);
 		/* définir les limites de l'objet pour les collisions et les sorties */
-		//limites = new Rectangle(ax, ay, l, h);
+		limites = new Rectangle(ax, ay, l, h);
 		/* initialise tous les autres attributs */
 		x = ax;
 		y = ay;
@@ -63,7 +63,7 @@ public abstract class Objet {
 
 	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la liberté de mouvement
 
-	/*public boolean Collision(Objet O) { // Teste la collision avec un autre objet O de même type
+	public boolean Collision(Objet O) { // Teste la collision avec un autre objet O de même type
 		return this.limites.intersects(O.limites);
-	} */
+	}
 }

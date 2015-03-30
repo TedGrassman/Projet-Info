@@ -3,11 +3,11 @@ package projetInfo;
 import java.awt.Rectangle;
 
 
-public class Base extends Objet {
+public class Station extends Objet {
 
-	static String[] NomImage = {"base.png"};
+	static String[] NomImage = {"base2.png"};
 	
-	public Base(Rectangle aframe, String nom) {
+	public Station(Rectangle aframe, String nom) {
 		super((aframe.width / 2) - 13, aframe.height - 200, 0, 0, 10, NomImage,
 				aframe, nom, 1, 0);
 	}

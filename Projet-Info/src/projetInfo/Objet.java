@@ -16,8 +16,8 @@ public abstract class Objet {
 
 	int x, y; // Position de l'objet à l'écran (coin en haut à gauche)
 	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
-	float dx, dy; // Vecteur unitaire de déplacement
-	float vitesse; // Vitesse de déplacement
+	float dx, dy; // Vecteur de déplacement (vitesse)
+	//float vitesse; // Vitesse de déplacement
 	Image[] images; // Images de l'objet
 	Rectangle limites; // Rectangle englobant l'objet à l'écran
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
@@ -25,9 +25,10 @@ public abstract class Objet {
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravité)
+	Point CGravite;
 
-	public Objet(int ax, int ay, float adx, float ady, float avitesse, String[] NomImage,
-			Rectangle aframe, String nom, int nbIm) {
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
+			Rectangle aframe, String nom, int nbIm, int amasse, Point CG) {
 		NbImages = nbIm;
 		try {
 			images = new Image[NbImages];
@@ -49,10 +50,12 @@ public abstract class Objet {
 		y = ay;
 		dx = adx;
 		dy = ady;
-		vitesse = avitesse;
+		//vitesse = avitesse;
 		nom_objet = nom;
 		limitesframe = aframe;
 		actif = true;
+		masse = amasse;
+		CGravite = CG;
 	}
 
 	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans l'interface graphique g

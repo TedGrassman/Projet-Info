@@ -3,7 +3,6 @@ package projetInfo;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
-
 public abstract class Astre extends Objet{
 	
 	static ArrayList<Astre> liste = new ArrayList<Astre> ();

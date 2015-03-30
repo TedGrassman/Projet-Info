@@ -24,8 +24,8 @@ public abstract class Objet {
 	String nom_objet; // Nom de l'objet
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
-	int masse; // Masse de l'objet (pour l'action de la gravité
-	CentreGravite centreG; //centre de gravitŽ de l'objet
+	int masse; // Masse de l'objet (pour l'action de la gravit
+	CentreGravite centreG; //centre de gravité de l'objet
 
 	public Objet(int ax, int ay, float adx, float ady, float avitesse, String[] NomImage,
 			Rectangle aframe, String nom, int nbIm, int masse) {
@@ -33,7 +33,7 @@ public abstract class Objet {
 		try {
 			images = new Image[NbImages];
 			for (int k = 0; k < NbImages; k++)
-				images[k] = ImageIO.read(new File(NomImage[k]));
+				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
 		} catch (Exception err) {
 			System.out.println(NomImage + " introuvable !");
 			System.out.println("Mettre les images dans le repertoire :"

@@ -17,7 +17,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-
 @SuppressWarnings("serial")
 public class Jeu extends JFrame {
 
@@ -31,7 +30,7 @@ public class Jeu extends JFrame {
 	boolean ToucheDroit; // Si le joueur a pressé la touche "droite"
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
 	Rectangle Ecran; // Les limites de la fenêtre
-	// Navire Vaisseau; // L'objet que l'utilisateur va déplacer
+	Base Vaisseau; // L'objet que l'utilisateur va déplacer
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
@@ -43,13 +42,11 @@ public class Jeu extends JFrame {
 		this.setLocationRelativeTo(null); // Localisation de la fenêtre
 		this.setTitle("Projet de la Mort"); // Titre de la fenêtre
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
-		
 		try { // Récupération de l'icône du programme
 			this.setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
 		} catch (Exception err) {
 			System.out.println("Icône introuvable !");
 		}
-		
 		ToucheHaut = ToucheBas = ToucheGauche = ToucheDroit = ToucheEspace = false;
 		temps = 0;
 		score = 0;
@@ -61,60 +58,75 @@ public class Jeu extends JFrame {
 				BufferedImage.TYPE_INT_RGB);
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
-		
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
-		
+		Vaisseau = new Base(Ecran, "DeathStar 1");
+		Objets.add(Vaisseau);
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
 		} catch (Exception err) {
 			System.out.println("Police d'écriture introuvable !");
 		}
-		if(font != null) buffer.setFont(font.deriveFont(40.0f));
-		
+		if (font != null)
+			buffer.setFont(font.deriveFont(40.0f));
 		this.addKeyListener(new Jeu_this_keyAdapter()); // Ajout du KeyListener pour entrées clavier
-		
 		this.setVisible(true); // Rend la fenêtre visible
 		timer.start(); // Lance le timer
-	
 	}
-	
-	public void paint(Graphics g) {
 
+	public void paint(Graphics g) {
 		// remplire le buffer de noir
 		buffer.setColor(Color.black);
-		buffer.fillRect(Ecran.x, Ecran.y, Ecran.x + Ecran.width, Ecran.y
-				+ Ecran.height);
-		
+		buffer.fillRect(Ecran.x, Ecran.y, Ecran.x + Ecran.width, Ecran.y + Ecran.height);
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
-		buffer.drawString("WelcomE", 275, Ecran.height/2+20);
-
-//		if (finjeu) {
-//			// Message de fin de jeu
-//			buffer.setColor(Color.white);
-//			buffer.setFont(font.deriveFont(100.0f));
-//			buffer.drawString("GAME OVER", 100, Ecran.height/2+20);
-//		} else {
-//			// dessine TOUS les objets dans le buffer
-//			for (int k = 0; k < Objets.size(); k++) {
-//				Objet O = (Objet) Objets.get(k);
-//				O.draw(temps, buffer);
-//			}
-//		}
+		buffer.drawString("WelcomE", 275, Ecran.height / 2 + 20);
+		if (finjeu) {
+			// Message de fin de jeu
+			buffer.setColor(Color.white);
+			buffer.setFont(font.deriveFont(100.0f));
+			buffer.drawString("GAME OVER", 100, Ecran.height / 2 + 20);
+		} else {
+			// dessine TOUS les objets dans le buffer
+			for (int k = 0; k < Objets.size(); k++) {
+				Objet O = (Objet) Objets.get(k);
+				O.draw(temps, buffer);
+			}
+		}
 		// Ecris le score et le nombre de vies restantes, et le temps
-//		buffer.setColor(Color.white);
-//		buffer.setFont(font.deriveFont(40.0f));
-//		buffer.drawString("SCORE : " + score, 15, Ecran.height - 15);
-//		buffer.drawString("VIES : " + nombreViesRestantes, Ecran.width - 155,
-//				Ecran.height - 15);
-//		buffer.setFont(font.deriveFont(30.0f));
-//		buffer.drawString("Temps : " + temps, Ecran.width - 175, 50);
-
+		// buffer.setColor(Color.white);
+		// buffer.setFont(font.deriveFont(40.0f));
+		// buffer.drawString("SCORE : " + score, 15, Ecran.height - 15);
+		// buffer.drawString("VIES : " + nombreViesRestantes, Ecran.width - 155,
+		// Ecran.height - 15);
+		// buffer.setFont(font.deriveFont(30.0f));
+		// buffer.drawString("Temps : " + temps, Ecran.width - 175, 50);
 		// dessine une seule fois le buffer dans le Panel
 		g.drawImage(ArrierePlan, 0, 0, this);
 	}
-	
+
 	public void boucle_principale_jeu() {
+		// déplacement du Vaisseau (prise en compte des actions utilisateurs sur touches)
+		if (ToucheGauche) {
+			Vaisseau.dx = -1;
+			Vaisseau.dy = 0;
+		} else if (ToucheDroit) {
+			Vaisseau.dx = +1;
+			Vaisseau.dy = 0;
+		} else if (ToucheHaut) {
+			Vaisseau.dx = 0;
+			Vaisseau.dy = -1;
+		} else if (ToucheBas) {
+			Vaisseau.dx = 0;
+			Vaisseau.dy = +1;
+		} else {
+			Vaisseau.dx = 0;
+			Vaisseau.dy = 0;
+		}
+		// déplace tous les objets par Polymorphisme
+		for (int k = 0; k < Objets.size(); k++) {
+			Objet O = (Objet) Objets.get(k);
+			O.move(temps);
+		}
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
 	}
 
@@ -122,55 +134,19 @@ public class Jeu extends JFrame {
 	public static void main(String[] args) {
 		Jeu monJeu = new Jeu();
 	}
-	
-	
+
 	private class TimerAction implements ActionListener {
+
 		// ActionListener appelee toutes les 100 millisecondes
 		public void actionPerformed(ActionEvent e) {
 			boucle_principale_jeu();
 			temps++;
 		}
 	}
-	
+
 	private class Jeu_this_keyAdapter extends KeyAdapter {
 
 		public void keyPressed(KeyEvent e) { // Action quand une touche est pressée
-			int code = e.getKeyCode();
-			switch (code) {
-			case KeyEvent.VK_SPACE: // barre d'espacement
-				ToucheEspace = true;
-				break;
-			case KeyEvent.VK_LEFT: // flèche gauche
-				ToucheGauche = true;
-				break;
-			case KeyEvent.VK_RIGHT: // flèche droit
-				ToucheDroit = true;
-				break;
-			case KeyEvent.VK_UP: // flèche haut
-				ToucheHaut = true;
-				break;
-			case KeyEvent.VK_DOWN: // flèche bas
-				ToucheBas = true;
-				break;
-			case KeyEvent.VK_ESCAPE: // Touche ESCAPE pour sortir du programme
-				System.out.println("ARRÊT");
-				System.exit(0);
-				break;
-			case KeyEvent.VK_PAUSE: // Touche PAUSE pour arrêter ou relancer le timer
-				if (timer.isRunning()) {
-					timer.stop();
-					System.out.println("PAUSE");
-				} else {
-					timer.start();
-					System.out.println("REPRISE");
-				}
-				break;
-			}
-			// pour tester les écouteurs
-			// this.setTitle("Code clavier :"+Integer.toString(code));
-		}
-
-		public void keyReleased(KeyEvent e) {
 			int code = e.getKeyCode();
 			switch (code) {
 				case KeyEvent.VK_SPACE: // barre d'espacement
@@ -188,13 +164,45 @@ public class Jeu extends JFrame {
 				case KeyEvent.VK_DOWN: // flèche bas
 					ToucheBas = true;
 					break;
+				case KeyEvent.VK_ESCAPE: // Touche ESCAPE pour sortir du programme
+					System.out.println("ARRÊT");
+					System.exit(0);
+					break;
+				case KeyEvent.VK_PAUSE: // Touche PAUSE pour arrêter ou relancer le timer
+					if (timer.isRunning()) {
+						timer.stop();
+						System.out.println("PAUSE");
+					} else {
+						timer.start();
+						System.out.println("REPRISE");
+					}
+					break;
+			}
+			// pour tester les écouteurs
+			// this.setTitle("Code clavier :"+Integer.toString(code));
+		}
+
+		public void keyReleased(KeyEvent e) {
+			int code = e.getKeyCode();
+			switch (code) {
+				case KeyEvent.VK_SPACE: // barre d'espacement
+					ToucheEspace = false;
+					break;
+				case KeyEvent.VK_LEFT: // flèche gauche
+					ToucheGauche = false;
+					break;
+				case KeyEvent.VK_RIGHT: // flèche droit
+					ToucheDroit = false;
+					break;
+				case KeyEvent.VK_UP: // flèche haut
+					ToucheHaut = false;
+					break;
+				case KeyEvent.VK_DOWN: // flèche bas
+					ToucheBas = false;
+					break;
 			// pour tester les écouteurs
 			// this.setTitle("touche relachée");
 			}
 		}
-		
 	}
-
-
-	
 } // Fin classe Jeu !!

@@ -17,7 +17,7 @@ public abstract class Objet {
 	int x, y; // Position de l'objet à l'écran (coin en haut à gauche)
 	//int h, l; // Hauteur et largeur de l'objet à l'écran (image)
 	float dx, dy; // Vecteur unitaire de déplacement
-	float vitesse; // Vitesse de déplacement
+	//float vitesse; // Vitesse de déplacement
 	Image[] images; // Images de l'objet
 	//Rectangle limites; // Rectangle englobant l'objet à l'écran
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
@@ -27,7 +27,7 @@ public abstract class Objet {
 	int masse; // Masse de l'objet (pour l'action de la gravit
 	CentreGravite centreG; //centre de gravité de l'objet
 
-	public Objet(int ax, int ay, float adx, float ady, float avitesse, String[] NomImage,
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
 			Rectangle aframe, String nom, int nbIm, int masse) {
 		NbImages = nbIm;
 		try {
@@ -50,7 +50,7 @@ public abstract class Objet {
 		y = ay;
 		dx = adx;
 		dy = ady;
-		vitesse = avitesse;
+		//vitesse = avitesse;
 		nom_objet = nom;
 		limitesframe = aframe;
 		actif = true;

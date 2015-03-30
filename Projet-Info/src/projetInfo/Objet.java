@@ -2,7 +2,7 @@ package projetInfo;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
+import javafx.scene.shape.Rectangle;
 import java.io.File;
 
 import javax.imageio.ImageIO;

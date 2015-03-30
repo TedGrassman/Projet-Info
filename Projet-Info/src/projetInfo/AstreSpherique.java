@@ -1,7 +1,6 @@
 package projetInfo;
 
-import java.awt.Rectangle;
-
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
 
 public class AstreSpherique extends Astre {

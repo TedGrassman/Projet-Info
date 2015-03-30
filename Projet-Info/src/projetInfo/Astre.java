@@ -1,8 +1,7 @@
 package projetInfo;
 
-import java.awt.Rectangle;
+import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public abstract class Astre extends Objet{
 	

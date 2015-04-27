@@ -1,8 +1,8 @@
 package projetInfo;
 
 import javafx.scene.shape.Rectangle;
-
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Translate;
 
 public class Missile extends Astre {
 	Polygon limites;
@@ -35,6 +35,7 @@ public class Missile extends Astre {
 		this.y=(int) (y+this.dy);
 		limites.setTranslateX(this.dx);
 		limites.setTranslateY(this.dy);
+		//limites.getTransforms().add(new Translate(this.dx, this.dy));
 		limites.setRotate(teta-limites.getRotate());
 	}
 

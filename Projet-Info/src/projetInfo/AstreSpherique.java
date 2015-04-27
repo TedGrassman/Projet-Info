@@ -4,6 +4,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
 
 public class AstreSpherique extends Astre {
+	
 	Circle limites;
 
 	public AstreSpherique(int ax, int ay, float adx, float ady, float avitesse,

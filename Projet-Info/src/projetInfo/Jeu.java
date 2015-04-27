@@ -4,7 +4,10 @@ package projetInfo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -29,12 +32,15 @@ public class Jeu extends JFrame {
 	boolean ToucheGauche; // Si le joueur a pressé la touche "gauche"
 	boolean ToucheDroit; // Si le joueur a pressé la touche "droite"
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
+	boolean ToucheZ, ToucheQ, ToucheS, ToucheD; // Contrôles du deuxième joueur
 	Rectangle Ecran; // Les limites de la fenêtre
-	Station Vaisseau; // L'objet que l'utilisateur va déplacer
+	Station Vaisseau1, Vaisseau2; // L'objet que l'utilisateur va déplacer
+	AstreSpherique Planet1, Planet2;
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
 	Font font; // Objet de police d'écriture
+	String[] NomImage = {"planete.png"};
 
 	public Jeu() {
 		this.setSize(1366, 720); // Définition de la fenêtre (HD)
@@ -48,6 +54,7 @@ public class Jeu extends JFrame {
 			System.out.println("Icône introuvable !");
 		}
 		ToucheHaut = ToucheBas = ToucheGauche = ToucheDroit = ToucheEspace = false;
+		ToucheZ = ToucheQ = ToucheS = ToucheD = false; 
 		temps = 0;
 		score = 0;
 		finjeu = false;
@@ -59,8 +66,18 @@ public class Jeu extends JFrame {
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
-		Vaisseau = new Station((int)(Ecran.getWidth()/2), (int)(Ecran.getHeight()/2), Ecran, "DeathStar 1");
-		Objets.add(Vaisseau);
+		Vaisseau1 = new Station((int) (50), (int) (Ecran.getHeight() / 2), Ecran,
+				"DeathStar 1");
+		Vaisseau2 = new Station((int) (Ecran.getWidth() - 50), (int) (Ecran.getHeight() / 2), Ecran,
+				"DeathStar 2");
+		Objets.add(Vaisseau1);
+		Objets.add(Vaisseau2);
+		
+		Planet1 = new AstreSpherique(100, 100, 0f, 0f, 0f, NomImage, Ecran, "Planete1", 1, 1000, 50);
+		Planet2 = new AstreSpherique(600, 400, 0f, 0f, 0f, NomImage, Ecran, "Planete1", 1, 1000, 50);
+		Objets.add(Planet1);
+		Objets.add(Planet2);
+		
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
 		} catch (Exception err) {
@@ -76,7 +93,8 @@ public class Jeu extends JFrame {
 	public void paint(Graphics g) {
 		// remplire le buffer de noir
 		buffer.setColor(Color.black);
-		buffer.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
+		buffer.fillRect((int) Ecran.getX(), (int) Ecran.getY(),
+				(int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
 		buffer.drawString("WelcomE", 275, (int) Ecran.getHeight() / 2 + 20);
@@ -105,29 +123,57 @@ public class Jeu extends JFrame {
 	}
 
 	public void boucle_principale_jeu() {
-		// déplacement du Vaisseau (prise en compte des actions utilisateurs sur touches)
+		// déplacement du Vaisseau 1 (prise en compte des actions utilisateurs sur touches)
 		if (ToucheGauche) {
-			Vaisseau.dx = -1;
-			Vaisseau.dy = 0;
+			Vaisseau1.dx = -1;
+			Vaisseau1.dy = 0;
 		} else if (ToucheDroit) {
-			Vaisseau.dx = +1;
-			Vaisseau.dy = 0;
+			Vaisseau1.dx = +1;
+			Vaisseau1.dy = 0;
 		} else if (ToucheHaut) {
-			Vaisseau.dx = 0;
-			Vaisseau.dy = -1;
+			Vaisseau1.dx = 0;
+			Vaisseau1.dy = -1;
 		} else if (ToucheBas) {
-			Vaisseau.dx = 0;
-			Vaisseau.dy = +1;
+			Vaisseau1.dx = 0;
+			Vaisseau1.dy = +1;
 		} else {
-			Vaisseau.dx = 0;
-			Vaisseau.dy = 0;
+			Vaisseau1.dx = 0;
+			Vaisseau1.dy = 0;
+		}
+		// déplacement du Vaisseau 2 (prise en compte des actions utilisateurs sur touches)
+		if (ToucheQ) {
+			Vaisseau2.dx = -1;
+			Vaisseau2.dy = 0;
+		} else if (ToucheD) {
+			Vaisseau2.dx = +1;
+			Vaisseau2.dy = 0;
+		} else if (ToucheZ) {
+			Vaisseau2.dx = 0;
+			Vaisseau2.dy = -1;
+		} else if (ToucheS) {
+			Vaisseau2.dx = 0;
+			Vaisseau2.dy = +1;
+		} else {
+			Vaisseau2.dx = 0;
+			Vaisseau2.dy = 0;
 		}
 		// déplace tous les objets par Polymorphisme
 		for (int k = 0; k < Objets.size(); k++) {
 			Objet O = (Objet) Objets.get(k);
 			O.move(temps);
 		}
+		
+		Shape Inter = Objet.Collision(Vaisseau1, Vaisseau2);
+		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
+			System.out.println("Pas de collision !");
+		else
+			System.out.println("Collision !");
+		System.out.println(Inter);
+		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+		
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
+		
 	}
 
 	@SuppressWarnings("unused")
@@ -177,6 +223,18 @@ public class Jeu extends JFrame {
 						System.out.println("REPRISE");
 					}
 					break;
+				case KeyEvent.VK_Q: // flèche gauche
+					ToucheQ = true;
+					break;
+				case KeyEvent.VK_D: // flèche droit
+					ToucheD = true;
+					break;
+				case KeyEvent.VK_Z: // flèche haut
+					ToucheZ = true;
+					break;
+				case KeyEvent.VK_S: // flèche bas
+					ToucheS = true;
+					break;
 			}
 			// pour tester les écouteurs
 			// this.setTitle("Code clavier :"+Integer.toString(code));
@@ -199,6 +257,18 @@ public class Jeu extends JFrame {
 					break;
 				case KeyEvent.VK_DOWN: // flèche bas
 					ToucheBas = false;
+					break;
+				case KeyEvent.VK_Q: // flèche gauche
+					ToucheQ = false;
+					break;
+				case KeyEvent.VK_D: // flèche droit
+					ToucheD = false;
+					break;
+				case KeyEvent.VK_Z: // flèche haut
+					ToucheZ = false;
+					break;
+				case KeyEvent.VK_S: // flèche bas
+					ToucheS = false;
 					break;
 			// pour tester les écouteurs
 			// this.setTitle("touche relachée");

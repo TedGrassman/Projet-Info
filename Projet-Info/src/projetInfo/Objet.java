@@ -2,7 +2,10 @@ package projetInfo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -26,6 +29,7 @@ public abstract class Objet {
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravit
 	CentreGravite centreG; //centre de gravité de l'objet
+	Shape limites;
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
 			Rectangle aframe, String nom, int nbIm, int masse) {
@@ -62,7 +66,7 @@ public abstract class Objet {
 
 	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la liberté de mouvement
 
-	/*public boolean Collision(Objet O) { // Teste la collision avec un autre objet O de même type
-		return this.limites.intersects(O.limites);
-	} */
+	public static Shape Collision(Objet O1, Objet O2) { // Teste la collision entre deux objets O1 et O2
+		return Shape.intersect(O1.limites, O2.limites);
+	}
 }

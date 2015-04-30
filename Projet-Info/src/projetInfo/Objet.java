@@ -17,19 +17,19 @@ import javax.imageio.ImageIO;
  */
 public abstract class Objet {
 
-	int x, y; // Position de l'objet à l'écran (coin en haut à gauche)
+	double x, y; // Position de l'objet à l'écran (centre de l'objet de préférence)
+	int drawX, drawY; //Position de l'image à l'écran (coin en haut à gauche)
 	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
-	float dx, dy; // Vecteur unitaire de déplacement
+	double dx, dy; // Vecteur unitaire de déplacement
 	//float vitesse; // Vitesse de déplacement
 	Image[] images; // Images de l'objet
-	//Rectangle limites; // Rectangle englobant l'objet à l'écran
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravit
 	CentreGravite centreG; //centre de gravité de l'objet
-	Shape limites;
+	Shape limites; //Forme englobant l'objet à l'écran
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
 			Rectangle aframe, String nom, int nbIm, int masse) {
@@ -51,8 +51,11 @@ public abstract class Objet {
 		/* initialise tous les autres attributs */
 		x = ax;
 		y = ay;
+		centreG = new CentreGravite(x, y);
 		dx = adx;
 		dy = ady;
+		drawX = (int)(x-l/2);	// Initialise les positions drawX et drawY,
+		drawY = (int)(y-h/2);	// correspondant au coin supérieur gauche (affichage de l'image)
 		//vitesse = avitesse;
 		nom_objet = nom;
 		limitesframe = aframe;
@@ -61,7 +64,7 @@ public abstract class Objet {
 	}
 
 	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans l'interface graphique g
-		g.drawImage(images[(int) t % NbImages], x, y, null);
+		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 	}
 
 	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la liberté de mouvement

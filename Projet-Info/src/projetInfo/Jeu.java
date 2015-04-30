@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+//import javafx.scene.shape.Shape;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +23,7 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Jeu extends JFrame {
 
+	final int MASSE_PLANETE = 150;
 	Timer timer; // Horloge de temps avec un intervalle de temps de 40ms
 	long temps; // Mesure du temps qui s'écoule
 	BufferedImage ArrierePlan; // Buffer pour accélérer la fluidité des animations
@@ -35,8 +36,8 @@ public class Jeu extends JFrame {
 	boolean ToucheZ, ToucheQ, ToucheS, ToucheD; // Contrôles du deuxième joueur
 	Rectangle Ecran; // Les limites de la fenêtre
 	Station Vaisseau1, Vaisseau2; // L'objet que l'utilisateur va déplacer
-	AstreSpherique Planet1, Planet2;
-	Missile Missile1, Missile2;
+	AstreSpherique Planet1, Planet2, Planet3, Planet4;
+	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
@@ -69,22 +70,32 @@ public class Jeu extends JFrame {
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
 
-		Vaisseau1 = new Station((int) (50), (int) (Ecran.getHeight() / 2), Ecran,
-				"DeathStar 1");
-		Vaisseau2 = new Station((int) (Ecran.getWidth() - 50), (int) (Ecran.getHeight() / 2), Ecran,
+		
+		Planet1 = new AstreSpherique(300, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet2 = new AstreSpherique(1000, 200, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+//		Planet3 = new AstreSpherique(750, 100, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Objets.add(Planet1);
+		Objets.add(Planet2);
+//		Objets.add(Planet3);
+//		Planet4 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+//		Objets.add(Planet4);
+		
+		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1");
+		Vaisseau2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,
 				"DeathStar 2");
 		Objets.add(Vaisseau1);
 		Objets.add(Vaisseau2);
 		
-		Planet1 = new AstreSpherique(200, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, 100, 50);
-		Planet2 = new AstreSpherique(1100, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, 100, 50);
-		Objets.add(Planet1);
-		Objets.add(Planet2);
-		
-		Missile1 = new Missile(50, 500, Ecran, NomImageM);
-		Missile2 = new Missile(1200, 500, Ecran, NomImageM);
+		Missile1 = new Missile(650, 400, 1.5f, -1.5f, Ecran);
+		Missile2 = new Missile(600, 500, 1.4f, -1.6f, Ecran);
+		Missile3 = new Missile(50, 50, 2f, 1f, Ecran);
+		Missile4 = new Missile(1300, 600, -1.5f, -1f, Ecran);
+		Missile5 = new Missile(650, 325, -1.5f, 2f, Ecran);
 		Objets.add(Missile1);
 		Objets.add(Missile2);
+		Objets.add(Missile3);
+		Objets.add(Missile4);
+		Objets.add(Missile5);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -107,7 +118,7 @@ public class Jeu extends JFrame {
 
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
-		buffer.drawString("WelcomE", 275, (int) Ecran.getHeight() / 2 + 20);
+		//buffer.drawString("WelcomE", 275, (int) Ecran.getHeight() / 2 + 20);
 		if (finjeu) {
 			// Message de fin de jeu
 			buffer.setColor(Color.white);

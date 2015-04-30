@@ -43,6 +43,7 @@ public class Jeu extends JFrame {
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] NomImageM = {"missile.png"};
+	Trajectoire Trajectoire1, Trajectoire2;
 
 	public Jeu() {
 		this.setSize(1366, 720); // Définition de la fenêtre (HD)
@@ -85,6 +86,12 @@ public class Jeu extends JFrame {
 		Missile2 = new Missile(1200, 500, Ecran, NomImageM);
 		Objets.add(Missile1);
 		Objets.add(Missile2);
+		/* TEST
+		 * A FAIRE PLUS PROPREMENT
+		 *    :----)
+		 */
+		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
+		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -100,7 +107,7 @@ public class Jeu extends JFrame {
 	}
 
 	public void paint(Graphics g) {
-		// remplire le buffer de noir
+		// remplir le buffer de noir
 		buffer.setColor(Color.black);
 
 		buffer.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
@@ -119,6 +126,14 @@ public class Jeu extends JFrame {
 				Objet O = (Objet) Objets.get(k);
 				O.draw(temps, buffer);
 			}
+			/*
+			 *  TRAJECTOIRES
+			 * 
+			 * 
+			 */
+			Trajectoire1.draw(temps, buffer);
+			Trajectoire2.draw(temps, buffer);
+			
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);
@@ -172,7 +187,14 @@ public class Jeu extends JFrame {
 			Objet O = (Objet) Objets.get(k);
 			O.move(temps);
 		}
+		/*
+		 * TRAJECTOIRES 
+		 * 
+		 * 
+		 */
 		
+		Trajectoire1.actualisation();
+		Trajectoire2.actualisation();
 //		Shape Inter = Objet.Collision(Vaisseau1, Vaisseau2);
 //		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
 //			System.out.println("Pas de collision !");

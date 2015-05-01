@@ -1,18 +1,22 @@
 
 package projetInfo;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Translate;
 
 public class Missile extends Astre {
 
-	Polygon limites;
+	Polygon limites; //hitbox triangulaire
+	double angle; //orientation du missile
 
 	public Missile(int ax, int ay, Rectangle aframe, String[] tab) {
 		super(ax, ay, (float) 0, (float) 0, tab, aframe, "Missile.png", 1, 10);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		limites = new Polygon(5.0, 50, 10.0, 0.0, 0.0, 0.0);
+		limites = new Polygon(10.0, 50, 20.0, 0.0, 0.0, 0.0);
+		angle = 0.0 ;
 	}
 
 	@Override
@@ -28,19 +32,35 @@ public class Missile extends Astre {
 			masse = liste.get(i).masse;
 			if(this.centreG.x!= xAstre && this.centreG.y!= yAstre){
 			// determiner angle a partir de deltax et deltay. Calculer force en norme. Projeter en dx dy.
-			teta=Math.atan2(yAstre-this.y, xAstre-this.x);
-			vitesse = (masse*this.masse)/((yAstre-this.y)*(yAstre-this.y)+(xAstre-this.x)*(xAstre-this.x));
+			teta=Math.atan2(yAstre-this.centreG.y, xAstre-this.centreG.x);
+			vitesse = (masse*this.masse)/((yAstre-this.centreG.y)*(yAstre-this.centreG.y)+(xAstre-this.centreG.x)*(xAstre-this.centreG.x));
 			this.dx=(float) (dx+vitesse*Math.cos(teta));
 			this.dy=(float) (dy+vitesse*Math.sin(teta));
 			}
 		}
-		this.x=(int) (x+this.dx);
-		this.y=(int) (y+this.dy);
+		this.centreG.x=(int) (centreG.x+this.dx);
+		this.centreG.y=(int) (centreG.y+this.dy);
+		x=(int) (x+dx);
+		y=(int) (y+dy);
 		limites.setTranslateX(this.dx);
 		limites.setTranslateY(this.dy);
 		//limites.getTransforms().add(new Translate(this.dx, this.dy));
-		limites.setRotate(teta-limites.getRotate());
-		centreG.x = x;
-		centreG.y = y;
+		angle = Math.atan2(dy, dx); // met a jour l'orientation du missile
+		limites.setRotate(angle-Math.PI*3/2); // me demandez pas pourquoi il faut faire *3PI/2 ... ^-^
+	}
+	
+	public void draw(long t, Graphics g) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation
+		AffineTransform at = new AffineTransform(); //crée une transformation a appliquer à l'image
+		at.translate(centreG.x, centreG.y); //translate l'image jusqu'à son centre de gravité
+		at.rotate(limites.getRotate()-0.1); //rotation de l'image, correction de 0.1
+		at.translate(-images[(int) t % NbImages].getWidth()/2, -images[(int) t % NbImages].getHeight()/2); // decale l'image pour que la rotation se fasse autour de son centre
+		Graphics2D g2d =(Graphics2D)g; // cast le graphics en graphics2d pour pouvoir appliquer la transformation
+		g2d.drawImage(images[(int) t % NbImages], at, null); // dessine l'image
+	}
+	
+	public void placer(int posx, int posy, double aangle){
+		centreG = new CentreGravite(posx, posy);
+		angle=aangle;
+		limites = new Polygon(posx, posy+25, posx+10, posy-25, posx-10, posy-25);
 	}
 }

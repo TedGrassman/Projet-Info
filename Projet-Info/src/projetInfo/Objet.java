@@ -2,6 +2,7 @@ package projetInfo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -21,7 +22,7 @@ public abstract class Objet {
 	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
 	float dx, dy; // Vecteur unitaire de déplacement
 	//float vitesse; // Vitesse de déplacement
-	Image[] images; // Images de l'objet
+	BufferedImage[] images; // Images de l'objet
 	//Rectangle limites; // Rectangle englobant l'objet à l'écran
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
@@ -35,7 +36,7 @@ public abstract class Objet {
 			Rectangle aframe, String nom, int nbIm, int masse) {
 		NbImages = nbIm;
 		try {
-			images = new Image[NbImages];
+			images = new BufferedImage[NbImages];
 			for (int k = 0; k < NbImages; k++)
 				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
 		} catch (Exception err) {

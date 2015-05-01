@@ -42,7 +42,7 @@ public class Jeu extends JFrame {
 	Boolean finjeu; // Jeu fini ou non
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
-	String[] NomImageM = {"missile.png"};
+	String[] NomImageM = {"missile2.png"};
 	Trajectoire Trajectoire1, Trajectoire2;
 
 	public Jeu() {
@@ -83,7 +83,7 @@ public class Jeu extends JFrame {
 		Objets.add(Planet2);
 		
 		Missile1 = new Missile(50, 500, Ecran, NomImageM);
-		Missile2 = new Missile(1200, 500, Ecran, NomImageM);
+		Missile2 = new Missile(1000, 500, Ecran, NomImageM);
 		Objets.add(Missile1);
 		Objets.add(Missile2);
 		/* TEST

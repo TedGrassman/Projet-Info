@@ -24,13 +24,13 @@ public class AstreSpherique extends Astre {
 		
 	}
 	
-	public void draw(long t, Graphics g){
-		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
-		g.setColor(Color.white);
-		g.drawOval(drawX, drawY, l, h);
-		g.setColor(Color.red);
-		g.drawOval((int)x, (int)y, 10, 10);
-	}
+//	public void draw(long t, Graphics g){
+//		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
+//		g.setColor(Color.white);
+//		g.drawOval(drawX, drawY, l, h);
+//		g.setColor(Color.red);
+//		g.drawOval((int)x, (int)y, 10, 10);
+//	}
 	
 	
 	

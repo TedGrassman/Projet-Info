@@ -104,11 +104,11 @@ public class Jeu extends JFrame {
 		 * A FAIRE PLUS PROPREMENT
 		 *    :----)
 		 */
-		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
-		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
-		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
-		Trajectoire4 = new Trajectoire (Missile4, 70, 10, Color.YELLOW);
-		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
+		Trajectoire1 = new Trajectoire (Missile1, 150, 0, Color.RED);
+		Trajectoire2 = new Trajectoire (Missile2, 150, 10, Color.GREEN);
+		Trajectoire3 = new Trajectoire (Missile3, 150, 0, Color.BLUE);
+		Trajectoire4 = new Trajectoire (Missile4, 150, 10, Color.YELLOW);
+		Trajectoire5 = new Trajectoire (Missile5, 150, 0, Color.WHITE);
 		
 		
 		try { // Récupération de la police d'écriture

@@ -20,7 +20,7 @@ public class Missile extends Astre {
 	Polygon limites; //hitbox triangulaire
 	double angle; //orientation du missile
 	static final int MASSE_MISSILE=10;
-	static String[] NomImage = {"missile.png"};
+	static String[] NomImage = {"missile2.png"};
 
 	public Missile(int ax, int ay, Rectangle aframe, String[] tab) {
 		super(ax, ay, 0, 0, tab, aframe, "Missile", 1, MASSE_MISSILE);

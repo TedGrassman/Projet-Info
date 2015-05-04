@@ -44,7 +44,7 @@ public class Jeu extends JFrame {
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] NomImageM = {"missile2.png"};
-	Trajectoire Trajectoire1, Trajectoire2;
+	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
 
 	public Jeu() {
 		this.setSize(1366, 720); // Définition de la fenêtre (HD)
@@ -73,13 +73,13 @@ public class Jeu extends JFrame {
 
 		
 		Planet1 = new AstreSpherique(300, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		Planet2 = new AstreSpherique(1000, 200, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-//		Planet3 = new AstreSpherique(750, 100, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet2 = new AstreSpherique(1000, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet3 = new AstreSpherique(750, 100, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		//Planet4 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
 		Objets.add(Planet1);
 		Objets.add(Planet2);
-//		Objets.add(Planet3);
-//		Planet4 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-//		Objets.add(Planet4);
+		Objets.add(Planet3);
+		//Objets.add(Planet4);
 		
 		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1");
 		Vaisseau2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,
@@ -87,15 +87,6 @@ public class Jeu extends JFrame {
 		Objets.add(Vaisseau1);
 		Objets.add(Vaisseau2);
 		
-		Planet1 = new AstreSpherique(200, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, 100, 50);
-		Planet2 = new AstreSpherique(1100, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, 100, 50);
-		Objets.add(Planet1);
-		Objets.add(Planet2);
-		
-//		Missile1 = new Missile(50, 500, Ecran, NomImageM);
-//		Missile2 = new Missile(1000, 500, Ecran, NomImageM);
-//		Objets.add(Missile1);
-//		Objets.add(Missile2);
 
 		Missile1 = new Missile(650, 400, 1.5f, -1.5f, Ecran);
 		Missile2 = new Missile(600, 500, 1.4f, -1.6f, Ecran);
@@ -115,6 +106,9 @@ public class Jeu extends JFrame {
 		 */
 		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
 		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
+		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
+		Trajectoire4 = new Trajectoire (Missile4, 70, 10, Color.YELLOW);
+		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -156,6 +150,9 @@ public class Jeu extends JFrame {
 			 */
 			Trajectoire1.draw(temps, buffer);
 			Trajectoire2.draw(temps, buffer);
+			Trajectoire3.draw(temps, buffer);
+			Trajectoire4.draw(temps, buffer);
+			Trajectoire5.draw(temps, buffer);
 			
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
@@ -218,6 +215,10 @@ public class Jeu extends JFrame {
 		
 		Trajectoire1.actualisation();
 		Trajectoire2.actualisation();
+		Trajectoire3.actualisation();
+		Trajectoire4.actualisation();
+		Trajectoire5.actualisation();
+		
 //		Shape Inter = Objet.Collision(Vaisseau1, Vaisseau2);
 //		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
 //			System.out.println("Pas de collision !");

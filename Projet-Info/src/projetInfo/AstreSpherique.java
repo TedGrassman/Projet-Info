@@ -1,18 +1,15 @@
 package projetInfo;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
 
 public class AstreSpherique extends Astre {
 	
-	Circle limites;
+	//Circle limites;
 	double rayon;
 
 	public AstreSpherique(int ax, int ay, float adx, float ady,	String[] NomImage, Rectangle aframe, String nom, int nbIm, int masse, double rayon) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, nbIm, masse);
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "AstreSpherique", nbIm, masse);
 		this.rayon = rayon;
 		limites = new Circle(ax, ay, rayon);
 		//centreG = new CentreGravite(ax, ay);

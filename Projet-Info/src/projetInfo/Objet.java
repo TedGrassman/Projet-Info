@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 
+
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
@@ -28,6 +29,7 @@ public abstract class Objet {
 	BufferedImage[] images; // Images de l'objet
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
+	String typeObjet; // Type de l'objet
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravit
@@ -35,7 +37,7 @@ public abstract class Objet {
 	Shape limites; //Forme englobant l'objet à l'écran
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
-			Rectangle aframe, String nom, int nbIm, int masse) {
+			Rectangle aframe, String nom, String type, int nbIm, int masse) {
 		NbImages = nbIm;
 		try {
 			images = new BufferedImage[NbImages];
@@ -61,6 +63,7 @@ public abstract class Objet {
 		drawY = (int)(y-h/2);	// correspondant au coin supérieur gauche (affichage de l'image)
 		//vitesse = avitesse;
 		nom_objet = nom;
+		typeObjet = type;
 		limitesframe = aframe;
 		actif = true;
 		this.masse = masse;
@@ -72,7 +75,15 @@ public abstract class Objet {
 
 	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la liberté de mouvement
 
-	public static Shape Collision(Objet O1, Objet O2) { // Teste la collision entre deux objets O1 et O2
-		return Shape.intersect(O1.limites, O2.limites);
+//	public static Shape Collision(Objet O1, Objet O2) { // Teste la collision entre deux objets O1 et O2
+//		return Shape.intersect(O1.limites, O2.limites);
+//	}
+	
+	public Boolean Collision(Objet O1){
+		if(O1.limites.getBoundsInParent().intersects(this.limites.getBoundsInParent()) && this!=O1)
+			return true;
+		else
+			return false;
 	}
+	
 }

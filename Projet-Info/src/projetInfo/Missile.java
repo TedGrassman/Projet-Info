@@ -17,21 +17,21 @@ import javafx.scene.shape.Polygon;
 public class Missile extends Astre {
 
 
-	Polygon limites; //hitbox triangulaire
+	//Polygon limites; //hitbox triangulaire
 	double angle; //orientation du missile
 	static final int MASSE_MISSILE=10;
 	static String[] NomImage = {"missile2.png"};
 
 	public Missile(int ax, int ay, Rectangle aframe, String[] tab) {
-		super(ax, ay, 0, 0, tab, aframe, "Missile", 1, MASSE_MISSILE);
+		super(ax, ay, 0, 0, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
 		limites = new Polygon(10.0, 50, 20.0, 0.0, 0.0, 0.0);
 		angle = 0.0 ;
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 	}
 	
-	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe) {
-		super(ax, ay, adx, ady, NomImage, aframe, "Missile", 1, MASSE_MISSILE);
+	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom) {
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
 		limites = new Polygon(10.0, 50, 20.0, 0.0, 0.0, 0.0);
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
@@ -50,7 +50,7 @@ public class Missile extends Astre {
 			yAstre = liste.get(i).centreG.y;
 			masse = liste.get(i).masse;
 
-			if(this.centreG.x != xAstre && this.centreG.y != yAstre && liste.get(i).nom_objet != "Missile"){
+			if(this.centreG.x != xAstre && this.centreG.y != yAstre && !liste.get(i).typeObjet.equals(this.typeObjet)){
 				// determiner angle a partir de deltax et deltay. Calculer force en norme. Projeter en dx dy.
 				teta=Math.atan2(yAstre-this.y, xAstre-this.x);
 				vitesse = (masse*this.masse)/((yAstre-this.y)*(yAstre-this.y)+(xAstre-this.x)*(xAstre-this.x));
@@ -62,8 +62,8 @@ public class Missile extends Astre {
 		this.centreG.y = (centreG.y+this.dy);
 		this.x = x+this.dx;
 		this.y = y+this.dy;
-		limites.setTranslateX(this.dx);
-		limites.setTranslateY(this.dy);
+		limites.setTranslateX(this.centreG.x);
+		limites.setTranslateY(this.centreG.y);
 		//limites.getTransforms().add(new Translate(this.dx, this.dy));
 
 		angle = Math.atan2(dy, dx); // met a jour l'orientation du missile

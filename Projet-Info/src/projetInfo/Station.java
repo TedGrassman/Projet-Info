@@ -11,10 +11,10 @@ import javafx.scene.shape.Circle;
 public class Station extends Objet {
 
 	static String[] NomImage = {"base.png"};
-	Circle limites;
+	//Circle limites;
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom) {
-		super(ax, ay, 0, 0, NomImage,aframe, nom, 1, 0);
+		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
 		limites = new Circle();
 //		((Circle) limites).setCenterX((float)(ax+images[0].getWidth(null)/2));
 //		((Circle) limites).setCenterY((float)(ay+images[0].getHeight(null)/2));

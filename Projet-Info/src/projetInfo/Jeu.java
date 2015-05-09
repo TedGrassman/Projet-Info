@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import javafx.scene.shape.Rectangle;
-//import javafx.scene.shape.Shape;
+import javafx.scene.shape.Shape;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -38,13 +39,16 @@ public class Jeu extends JFrame {
 	Station Vaisseau1, Vaisseau2; // L'objet que l'utilisateur va déplacer
 	AstreSpherique Planet1, Planet2, Planet3, Planet4;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
-	LinkedList<Objet> Objets; // Liste de tous les objets du jeu
+	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
+	ArrayList<Missile> Missiles; // Liste de tous les missiles
+	ArrayList<Trajectoire> Trajectoires; // Liste de toutes les trajectoires
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] NomImageM = {"missile2.png"};
 	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
+	//Shape Inter;
 
 	public Jeu() {
 		this.setSize(1366, 720); // Définition de la fenêtre (HD)
@@ -69,17 +73,20 @@ public class Jeu extends JFrame {
 				BufferedImage.TYPE_INT_RGB);
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
-		Objets = new LinkedList<Objet>(); // Créer la liste chainée en mémoire
+
+		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
+		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
+		Trajectoires = new ArrayList<Trajectoire>(); // Créer la liste chainée en mémoire
 
 		
-		Planet1 = new AstreSpherique(300, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		Planet2 = new AstreSpherique(1000, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		Planet3 = new AstreSpherique(750, 100, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		//Planet4 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		Objets.add(Planet1);
-		Objets.add(Planet2);
-		Objets.add(Planet3);
-		//Objets.add(Planet4);
+		//Planet1 = new AstreSpherique(300, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		//Planet2 = new AstreSpherique(1000, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		//Planet3 = new AstreSpherique(750, 100, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet4 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		//Objets.add(Planet1);
+		//Objets.add(Planet2);
+		//Objets.add(Planet3);
+		Objets.add(Planet4);
 		
 		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1");
 		Vaisseau2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,
@@ -88,11 +95,11 @@ public class Jeu extends JFrame {
 		Objets.add(Vaisseau2);
 		
 
-		Missile1 = new Missile(650, 400, 1.5f, -1.5f, Ecran);
-		Missile2 = new Missile(600, 500, 1.4f, -1.6f, Ecran);
-		Missile3 = new Missile(50, 50, 2f, 1f, Ecran);
-		Missile4 = new Missile(1300, 600, -1.5f, -1f, Ecran);
-		Missile5 = new Missile(650, 325, -1.5f, 2f, Ecran);
+		Missile1 = new Missile(650, 200, 2.5f, 1f, Ecran, "Missile1");
+		Missile2 = new Missile(600, 700, 1.5f, -1.5f, Ecran, "Missile2");
+		Missile3 = new Missile(300, 300, 1f, 2f, Ecran, "Missile3");
+		Missile4 = new Missile(1300, 750, -0.5f, -1f, Ecran, "Missile4");
+		Missile5 = new Missile(450, 325, -1.5f, 2f, Ecran, "Missile5");
 		
 		Objets.add(Missile1);
 		Objets.add(Missile2);
@@ -100,15 +107,27 @@ public class Jeu extends JFrame {
 		Objets.add(Missile4);
 		Objets.add(Missile5);
 		
+		Missiles.add(Missile1);
+		Missiles.add(Missile2);
+		Missiles.add(Missile3);
+		Missiles.add(Missile4);
+		Missiles.add(Missile5);
+		
 		/* TEST
 		 * A FAIRE PLUS PROPREMENT
 		 *    :----)
 		 */
-		Trajectoire1 = new Trajectoire (Missile1, 150, 0, Color.RED);
-		Trajectoire2 = new Trajectoire (Missile2, 150, 10, Color.GREEN);
-		Trajectoire3 = new Trajectoire (Missile3, 150, 0, Color.BLUE);
-		Trajectoire4 = new Trajectoire (Missile4, 150, 10, Color.YELLOW);
-		Trajectoire5 = new Trajectoire (Missile5, 150, 0, Color.WHITE);
+		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
+		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
+		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
+		Trajectoire4 = new Trajectoire (Missile4, 70, 10, Color.YELLOW);
+		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
+		
+		Trajectoires.add(Trajectoire1);
+		Trajectoires.add(Trajectoire2);
+		Trajectoires.add(Trajectoire3);
+		Trajectoires.add(Trajectoire4);
+		Trajectoires.add(Trajectoire5);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -148,11 +167,10 @@ public class Jeu extends JFrame {
 			 * 
 			 * 
 			 */
-			Trajectoire1.draw(temps, buffer);
-			Trajectoire2.draw(temps, buffer);
-			Trajectoire3.draw(temps, buffer);
-			Trajectoire4.draw(temps, buffer);
-			Trajectoire5.draw(temps, buffer);
+			
+			for(int i=0; i<Trajectoires.size(); i++){
+				Trajectoires.get(i).draw(temps, buffer);
+			}
 			
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
@@ -213,20 +231,28 @@ public class Jeu extends JFrame {
 		 * 
 		 */
 		
-		Trajectoire1.actualisation();
-		Trajectoire2.actualisation();
-		Trajectoire3.actualisation();
-		Trajectoire4.actualisation();
-		Trajectoire5.actualisation();
+		for(int i=0; i<Trajectoires.size(); i++){
+			Trajectoires.get(i).actualisation();
+		}
 		
-//		Shape Inter = Objet.Collision(Vaisseau1, Vaisseau2);
+		for(int i=0; i<Missiles.size(); i++){
+			if(Missiles.get(i).Collision() != Missiles.get(i)){
+				System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
+				//timer.stop();
+				
+				//timer.start();
+			}
+		}
+		
+		
+		
 //		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
 //			System.out.println("Pas de collision !");
 //		else
 //			System.out.println("Collision !");
 //		System.out.println(Inter);
-//		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
-//		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
 		
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
 		

@@ -24,7 +24,7 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Jeu extends JFrame {
 
-	final int MASSE_PLANETE = 150;
+	final int MASSE_PLANETE = 300;
 	Timer timer; // Horloge de temps avec un intervalle de temps de 40ms
 	long temps; // Mesure du temps qui s'écoule
 	BufferedImage ArrierePlan; // Buffer pour accélérer la fluidité des animations
@@ -95,11 +95,11 @@ public class Jeu extends JFrame {
 		Objets.add(Vaisseau2);
 		
 
-		Missile1 = new Missile(650, 200, 2.5f, 1f, Ecran, "Missile1");
-		Missile2 = new Missile(600, 700, 1.5f, -1.5f, Ecran, "Missile2");
-		Missile3 = new Missile(300, 300, 1f, 2f, Ecran, "Missile3");
-		Missile4 = new Missile(1300, 750, -0.5f, -1f, Ecran, "Missile4");
-		Missile5 = new Missile(450, 325, -1.5f, 2f, Ecran, "Missile5");
+		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1");
+		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2");
+		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3");
+		Missile4 = new Missile(1100, 650, -0.5f, -1f, Ecran, "Missile4");
+		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5");
 		
 		Objets.add(Missile1);
 		Objets.add(Missile2);
@@ -171,7 +171,10 @@ public class Jeu extends JFrame {
 			for(int i=0; i<Trajectoires.size(); i++){
 				Trajectoires.get(i).draw(temps, buffer);
 			}
-			
+			int[]xtrig = {0, 10, 20};
+			int[]ytrig = {50, 0, 50};
+			buffer.drawPolygon(xtrig, ytrig, 3);
+			buffer.drawRect((int)(Planet4.x),(int)(Planet4.y),50, 50);
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);
@@ -238,7 +241,7 @@ public class Jeu extends JFrame {
 		for(int i=0; i<Missiles.size(); i++){
 			if(Missiles.get(i).Collision() != Missiles.get(i)){
 				System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
-				//timer.stop();
+				timer.stop();
 				
 				//timer.start();
 			}

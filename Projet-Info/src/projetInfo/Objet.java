@@ -2,7 +2,11 @@ package projetInfo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
+
+
+
 
 
 
@@ -12,6 +16,8 @@ import javafx.scene.shape.Shape;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+
+import com.sun.javafx.geom.Area;
 
 /**
  * @author Tanguy
@@ -80,10 +86,20 @@ public abstract class Objet {
 //	}
 	
 	public Boolean Collision(Objet O1){
-		if(O1.limites.getBoundsInParent().intersects(this.limites.getBoundsInParent()) && this!=O1)
+		/*if(O1.limites.getBoundsInParent().intersects(this.limites.getBoundsInParent()) && this!=O1)
 			return true;
 		else
 			return false;
+			*/
+	Shape inter = Shape.intersect (this.limites, O1.limites);
+	if(inter.getBoundsInLocal().getWidth() != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+	
+		
 	}
 	
 }

@@ -25,7 +25,7 @@ public class Missile extends Astre {
 	public Missile(int ax, int ay, Rectangle aframe, String[] tab) {
 		super(ax, ay, 0, 0, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		limites = new Polygon(10.0, 50, 20.0, 0.0, 0.0, 0.0);
+		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
 		angle = 0.0 ;
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 	}
@@ -33,7 +33,7 @@ public class Missile extends Astre {
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		limites = new Polygon(10.0, 50, 20.0, 0.0, 0.0, 0.0);
+		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 		angle = 0.0 ;
 	}
@@ -62,18 +62,22 @@ public class Missile extends Astre {
 		this.centreG.y = (centreG.y+this.dy);
 		this.x = x+this.dx;
 		this.y = y+this.dy;
+		this.drawX=(int) (this.drawX+dx);
+		this.drawY=(int) (this.drawY+dy);
 		limites.setTranslateX(this.centreG.x);
 		limites.setTranslateY(this.centreG.y);
 		//limites.getTransforms().add(new Translate(this.dx, this.dy));
 
 		angle = Math.atan2(dy, dx); // met a jour l'orientation du missile
 		limites.setRotate(angle-Math.PI*3/2); // me demandez pas pourquoi il faut faire *3PI/2 ... ^-^
+		System.out.println(limites.getTransforms());
+		
 	}
 	
 	public void draw(long t, Graphics g) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation
 		AffineTransform at = new AffineTransform(); //crée une transformation a appliquer à l'image
-		at.translate(centreG.x, centreG.y); //translate l'image jusqu'à son centre de gravité
-		at.rotate(limites.getRotate()-0.1); //rotation de l'image, correction de 0.1
+		at.translate(limites.getTranslateX(), limites.getTranslateY()); //translate l'image jusqu'à son centre de gravité
+		at.rotate(limites.getRotate()); //rotation de l'image, [correction de 0.1]
 		at.translate(-images[(int) t % NbImages].getWidth()/2, -images[(int) t % NbImages].getHeight()/2); // decale l'image pour que la rotation se fasse autour de son centre
 		Graphics2D g2d =(Graphics2D)g; // cast le graphics en graphics2d pour pouvoir appliquer la transformation
 		g2d.drawImage(images[(int) t % NbImages], at, null); // dessine l'image

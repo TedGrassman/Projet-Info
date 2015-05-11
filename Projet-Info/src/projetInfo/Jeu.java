@@ -4,10 +4,9 @@ package projetInfo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -95,11 +94,11 @@ public class Jeu extends JFrame {
 		Objets.add(Vaisseau2);
 		
 
-		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1");
-		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2");
-		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3");
-		Missile4 = new Missile(1100, 650, -0.5f, -1f, Ecran, "Missile4");
-		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5");
+		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
+		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
+		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
+		Missile4 = new Missile(1100, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
+		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5", Color.WHITE);
 		
 		Objets.add(Missile1);
 		Objets.add(Missile2);
@@ -171,10 +170,6 @@ public class Jeu extends JFrame {
 			for(int i=0; i<Trajectoires.size(); i++){
 				Trajectoires.get(i).draw(temps, buffer);
 			}
-			int[]xtrig = {0, 10, 20};
-			int[]ytrig = {50, 0, 50};
-			buffer.drawPolygon(xtrig, ytrig, 3);
-			buffer.drawRect((int)(Planet4.x),(int)(Planet4.y),50, 50);
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);
@@ -186,6 +181,7 @@ public class Jeu extends JFrame {
 		// buffer.drawString("Temps : " + temps, Ecran.width - 175, 50);
 		// dessine une seule fois le buffer dans le Panel
 		g.drawImage(ArrierePlan, 0, 0, this);
+		
 	}
 
 	public void boucle_principale_jeu() {

@@ -2,22 +2,18 @@ package projetInfo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
-
-
-
-
-
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import com.sun.javafx.geom.Area;
+import java.awt.geom.Area;
+import java.awt.Rectangle;
+import java.awt.Shape;
 
 /**
  * @author Tanguy
@@ -40,7 +36,7 @@ public abstract class Objet {
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravit
 	CentreGravite centreG; //centre de gravité de l'objet
-	Shape limites; //Forme englobant l'objet à l'écran
+	Area limites; //Forme englobant l'objet à l'écran
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
 			Rectangle aframe, String nom, String type, int nbIm, int masse) {
@@ -85,21 +81,19 @@ public abstract class Objet {
 //		return Shape.intersect(O1.limites, O2.limites);
 //	}
 	
-	public Boolean Collision(Objet O1){
-		/*if(O1.limites.getBoundsInParent().intersects(this.limites.getBoundsInParent()) && this!=O1)
+	/*public Boolean Collision(Objet O1){
+		if(O1.limites.getBoundsInParent().intersects(this.limites.getBoundsInParent()) && this!=O1)
 			return true;
 		else
 			return false;
-			*/
-	Shape inter = Shape.intersect (this.limites, O1.limites);
+			
+		Shape inter = Shape.intersect (this.limites, O1.limites);
 	if(inter.getBoundsInLocal().getWidth() != -1) {
         return true;
     }
     else {
         return false;
     }
-	
-		
 	}
-	
+*/
 }

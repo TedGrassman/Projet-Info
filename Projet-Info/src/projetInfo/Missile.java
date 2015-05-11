@@ -2,16 +2,20 @@
 package projetInfo;
 
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.Color;
 import java.awt.Graphics;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Polygon;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 //import javafx.scene.shape.Polygon;
 //import javafx.scene.transform.Translate;
+
+
+
+import java.awt.geom.GeneralPath;
+import java.awt.image.AffineTransformOp;
+import java.awt.Rectangle;
 
 
 public class Missile extends Astre {
@@ -21,21 +25,28 @@ public class Missile extends Astre {
 	double angle; //orientation du missile
 	static final int MASSE_MISSILE=10;
 	static String[] NomImage = {"missile2.png"};
+	Color couleur;
 
-	public Missile(int ax, int ay, Rectangle aframe, String[] tab) {
+	public Missile(int ax, int ay, Rectangle aframe, String[] tab, Color acouleur) {
 		super(ax, ay, 0, 0, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
+		int[]xpoints = {-10,0,10};
+		int[]ypoints = {25,-25,25};
+		limites = new Area(new Polygon(xpoints, ypoints, 3));
 		angle = 0.0 ;
+		couleur=acouleur;
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 	}
 	
-	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom) {
+	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 1, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
+		int[]xpoints = {-10,0,10};
+		int[]ypoints = {25,-25,25};
+		limites = new Area (new Polygon(xpoints, ypoints, 3));
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 		angle = 0.0 ;
+		couleur=acouleur;
 	}
 
 	@Override
@@ -64,25 +75,43 @@ public class Missile extends Astre {
 		this.y = y+this.dy;
 		this.drawX=(int) (this.drawX+dx);
 		this.drawY=(int) (this.drawY+dy);
-		limites.setTranslateX(this.centreG.x);
-		limites.setTranslateY(this.centreG.y);
+		transfo.setToIdentity();
+		transfo.translate(this.centreG.x,this.centreG.y);
+		
+		//limites.setTranslateX(this.centreG.x);
+		//limites.setTranslateY(this.centreG.y);
 		//limites.getTransforms().add(new Translate(this.dx, this.dy));
 
-		angle = Math.atan2(dy, dx); // met a jour l'orientation du missile
-		limites.setRotate(angle-Math.PI*3/2); // me demandez pas pourquoi il faut faire *3PI/2 ... ^-^
-		System.out.println(limites.getTransforms());
+		angle = Math.atan2(dy, dx)-Math.PI*3/2; // met a jour l'orientation du missile
+		//limites.setRotate(angle-Math.PI*3/2); // me demandez pas pourquoi il faut faire *3PI/2 ... ^-^
+		transfo.rotate(angle);
+		//transfo.translate(-images[(int) t % NbImages].getWidth()/2, -images[(int) t % NbImages].getHeight()/2);
+		//limites.transform(transfo);
 		
 	}
 	
 	public void draw(long t, Graphics g) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation
-		AffineTransform at = new AffineTransform(); //crée une transformation a appliquer à l'image
-		at.translate(limites.getTranslateX(), limites.getTranslateY()); //translate l'image jusqu'à son centre de gravité
-		at.rotate(limites.getRotate()); //rotation de l'image, [correction de 0.1]
-		at.translate(-images[(int) t % NbImages].getWidth()/2, -images[(int) t % NbImages].getHeight()/2); // decale l'image pour que la rotation se fasse autour de son centre
+		
+		AffineTransform at = new AffineTransform();
+		at.rotate(angle);
+		at.translate(-10, -25);
+		AffineTransformOp op = new AffineTransformOp (at, 1);
 		Graphics2D g2d =(Graphics2D)g; // cast le graphics en graphics2d pour pouvoir appliquer la transformation
-		g2d.drawImage(images[(int) t % NbImages], at, null); // dessine l'image
+		g2d.drawImage(images[(int) t % NbImages], op, (int)centreG.x, (int)centreG.y); // dessine l'image
+		/*
+		GeneralPath path1 = new GeneralPath();
+		AffineTransform at2 = new AffineTransform();
+		at2.translate(centreG.x, centreG.y);
+		at2.rotate(angle);
+        path1.append(limites.getPathIterator(at2), true);
+        g2d.setColor(couleur);
+        g2d.fill(path1);
+        g2d.draw(path1.getBounds());
+        */
+
+		
 	}
-	
+	/*
 	public void placer(int posx, int posy, double aangle){
 		centreG = new CentreGravite(posx, posy);
 		angle=aangle;
@@ -92,6 +121,7 @@ public class Missile extends Astre {
 		drawX = (int)(x-l/2);
 		drawY = (int)(y-h/2);
 	}
+	*/
 	
 //	public void draw(long t, Graphics g){
 //		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
@@ -100,4 +130,45 @@ public class Missile extends Astre {
 //		g.setColor(Color.green);
 //		g.drawOval((int)x-1, (int)y-1, 2, 2);
 //	}
+	public Astre Collision(){
+		for (int i=0; i<liste.size(); i++){
+			
+			if (this.Collision(liste.get(i))){
+				return liste.get(i);
+			}
+		}
+		return this;
+	}
+	/*public boolean Collision (Astre A1){
+		AffineTransform at1 = transfo;
+		GeneralPath path1 = new GeneralPath();
+        path1.append(this.limites.getPathIterator(at1), true);
+        AffineTransform at2 = new AffineTransform();
+        at2.translate(A1.centreG.x, A1.centreG.y);
+		GeneralPath path2 = new GeneralPath();
+        path2.append(A1.limites.getPathIterator(at2), true);
+        Area a1 = new Area(path1);
+        Area a2 = new Area(path2);
+        a2.intersect(a1);
+        if (!a2.isEmpty()) {
+        	return true;
+        }
+        return false;
+	}
+	*/
+	public boolean Collision (Astre A1){
+		AffineTransform at1 = transfo;
+		GeneralPath path1 = new GeneralPath();
+        path1.append(this.limites.getPathIterator(at1), true);
+        AffineTransform at2 = A1.transfo;
+		GeneralPath path2 = new GeneralPath();
+        path2.append(A1.limites.getPathIterator(at2), true);
+        Area a1 = new Area(path1);
+        Area a2 = new Area(path2);
+        a2.intersect(a1);
+        if (!a2.isEmpty()) {
+        	return true;
+        }
+        return false;
+	}
 }

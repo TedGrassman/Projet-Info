@@ -4,9 +4,7 @@ package projetInfo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -23,7 +20,7 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Jeu extends JFrame {
 
-	final int MASSE_PLANETE = 300;
+	final int MASSE_PLANETE = 500;
 	Timer timer; // Horloge de temps avec un intervalle de temps de 40ms
 	long temps; // Mesure du temps qui s'écoule
 	BufferedImage ArrierePlan; // Buffer pour accélérer la fluidité des animations
@@ -68,8 +65,7 @@ public class Jeu extends JFrame {
 		Ecran = new Rectangle(getInsets().left, getInsets().top, getSize().width
 				- getInsets().right - getInsets().left, getSize().height - getInsets().bottom
 				- getInsets().top);
-		ArrierePlan = new BufferedImage(getSize().width, getSize().height,
-				BufferedImage.TYPE_INT_RGB);
+		ArrierePlan = new BufferedImage(getSize().width, getSize().height,BufferedImage.TYPE_INT_RGB);
 		buffer = ArrierePlan.getGraphics();
 		timer = new Timer(10, new TimerAction()); // Timer à 10ms, normalement fluide
 
@@ -97,7 +93,7 @@ public class Jeu extends JFrame {
 		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
 		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
 		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
-		Missile4 = new Missile(1100, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
+		Missile4 = new Missile(300, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
 		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5", Color.WHITE);
 		
 		Objets.add(Missile1);
@@ -111,22 +107,6 @@ public class Jeu extends JFrame {
 		Missiles.add(Missile3);
 		Missiles.add(Missile4);
 		Missiles.add(Missile5);
-		
-		/* TEST
-		 * A FAIRE PLUS PROPREMENT
-		 *    :----)
-		 */
-		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
-		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
-		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
-		Trajectoire4 = new Trajectoire (Missile4, 70, 10, Color.YELLOW);
-		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
-		
-		Trajectoires.add(Trajectoire1);
-		Trajectoires.add(Trajectoire2);
-		Trajectoires.add(Trajectoire3);
-		Trajectoires.add(Trajectoire4);
-		Trajectoires.add(Trajectoire5);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -143,13 +123,12 @@ public class Jeu extends JFrame {
 
 	public void paint(Graphics g) {
 		// remplir le buffer de noir
-		buffer.setColor(Color.black);
+		buffer.setColor(Color.BLACK);
 
 		buffer.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
 
 		buffer.setColor(Color.white);
 		buffer.setFont(font.deriveFont(100.0f));
-		//buffer.drawString("WelcomE", 275, (int) Ecran.getHeight() / 2 + 20);
 		if (finjeu) {
 			// Message de fin de jeu
 			buffer.setColor(Color.white);
@@ -161,15 +140,7 @@ public class Jeu extends JFrame {
 				Objet O = (Objet) Objets.get(k);
 				O.draw(temps, buffer);
 			}
-			/*
-			 *  TRAJECTOIRES
-			 * 
-			 * 
-			 */
 			
-			for(int i=0; i<Trajectoires.size(); i++){
-				Trajectoires.get(i).draw(temps, buffer);
-			}
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);
@@ -179,6 +150,7 @@ public class Jeu extends JFrame {
 		// Ecran.height - 15);
 		// buffer.setFont(font.deriveFont(30.0f));
 		// buffer.drawString("Temps : " + temps, Ecran.width - 175, 50);
+		
 		// dessine une seule fois le buffer dans le Panel
 		g.drawImage(ArrierePlan, 0, 0, this);
 		
@@ -224,47 +196,27 @@ public class Jeu extends JFrame {
 			Objet O = (Objet) Objets.get(k);
 			O.move(temps);
 		}
-		/*
-		 * TRAJECTOIRES 
-		 * 
-		 * 
-		 */
-		
-		for(int i=0; i<Trajectoires.size(); i++){
-			Trajectoires.get(i).actualisation();
-		}
 		
 		for(int i=0; i<Missiles.size(); i++){
 			if(Missiles.get(i).Collision() != Missiles.get(i)){
 				System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
-				timer.stop();
+				//timer.stop();						DEBBUGING : stop quand collision détectée
 				
-				//timer.start();
 			}
 		}
-		
-		
-		
-//		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
-//			System.out.println("Pas de collision !");
-//		else
-//			System.out.println("Collision !");
-//		System.out.println(Inter);
-		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
-		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
 		
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
 		
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		Jeu monJeu = new Jeu();
 	}
 
 	private class TimerAction implements ActionListener {
 
-		// ActionListener appelee toutes les 100 millisecondes
+		// ActionListener appelee toutes les 10 millisecondes
 		public void actionPerformed(ActionEvent e) {
 			boucle_principale_jeu();
 			temps++;

@@ -2,23 +2,23 @@ package projetInfo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 
 
 
-public class Station extends Objet {
+public class Station extends Astre {
 
 	static String[] NomImage = {"base.png"};
-	//Circle limites;
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
-		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null)));
-//		((Circle) limites).setCenterX((float)(ax+images[0].getWidth(null)/2));
-//		((Circle) limites).setCenterY((float)(ay+images[0].getHeight(null)/2));
-//		((Circle) limites).setRadius(images[0].getWidth(null));
+		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
+
 	}
 	
 	public void move(long t) {
@@ -37,14 +37,20 @@ public class Station extends Objet {
 		
 		drawX = (int)(x-l/2);
 		drawY = (int)(y-h/2);
-		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null)));
+		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null)));	//Actualisation de la hitbox
 	}
 	
-//	public void draw(long t, Graphics g){
-//		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
-//		g.setColor(Color.white);
-//		g.drawOval(drawX, drawY, l, h);
-//		g.setColor(Color.red);
-//		g.drawOval((int)x, (int)y, 10, 10);
-//	}
+	public void draw(long t, Graphics g){
+		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
+		
+		/*
+		Graphics2D g2d =(Graphics2D)g;							------------
+		AffineTransform at2 = new AffineTransform();			DEBBUGING : dessin de la hitbox
+		GeneralPath path1 = new GeneralPath();					------------
+		path1.append(limites.getPathIterator(at2), true);
+		g2d.setColor(Color.WHITE);
+        g2d.fill(path1);
+        g2d.draw(path1.getBounds());
+		*/
+	}
 }

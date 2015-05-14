@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -42,13 +45,17 @@ public class Jeu extends JFrame {
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
 	ArrayList<Trajectoire> Trajectoires; // Liste de toutes les trajectoires
+	ArrayList<Station> Stations; // Liste de toutes les stations
 	int score; // Score du joueur
 	Boolean finjeu; // Jeu fini ou non
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] NomImageM = {"missile2.png"};
 	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
-	//Shape Inter;
+	boolean Click; // Si le joueur definit la trajectoire de son missile
+	boolean DebutTour;
+	double mx,my;
+	int compt;
 
 	public Jeu() {
 		this.setSize(1366, 720); // Définition de la fenêtre (HD)
@@ -66,6 +73,8 @@ public class Jeu extends JFrame {
 		temps = 0;
 		score = 0;
 		finjeu = false;
+		DebutTour=false;
+		Click=false;
 		Ecran = new Rectangle(getInsets().left, getInsets().top, getSize().width
 				- getInsets().right - getInsets().left, getSize().height - getInsets().bottom
 				- getInsets().top);
@@ -77,7 +86,7 @@ public class Jeu extends JFrame {
 		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
 		Trajectoires = new ArrayList<Trajectoire>(); // Créer la liste chainée en mémoire
-
+		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
 		
 		//Planet1 = new AstreSpherique(300, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
 		//Planet2 = new AstreSpherique(1000, 500, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
@@ -93,6 +102,8 @@ public class Jeu extends JFrame {
 				"DeathStar 2");
 		Objets.add(Vaisseau1);
 		Objets.add(Vaisseau2);
+		Stations.add(Vaisseau1);
+		Stations.add(Vaisseau2);
 		
 
 		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1");
@@ -118,9 +129,9 @@ public class Jeu extends JFrame {
 		 *    :----)
 		 */
 		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
-		Trajectoire2 = new Trajectoire (Missile2, 70, 10, Color.GREEN);
+		Trajectoire2 = new Trajectoire (Missile2, 70, 0, Color.GREEN);
 		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
-		Trajectoire4 = new Trajectoire (Missile4, 70, 10, Color.YELLOW);
+		Trajectoire4 = new Trajectoire (Missile4, 70, 0, Color.YELLOW);
 		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
 		
 		Trajectoires.add(Trajectoire1);
@@ -130,6 +141,9 @@ public class Jeu extends JFrame {
 		Trajectoires.add(Trajectoire5);
 		
 		
+		
+		 compt=0;
+		
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
 		} catch (Exception err) {
@@ -138,6 +152,8 @@ public class Jeu extends JFrame {
 		if (font != null)
 			buffer.setFont(font.deriveFont(40.0f));
 		this.addKeyListener(new Jeu_this_keyAdapter()); // Ajout du KeyListener pour entrées clavier
+		this.addMouseListener( new gestionSouris() );
+	    this.addMouseMotionListener( new gestionSouris() );
 		this.setVisible(true); // Rend la fenêtre visible
 		timer.start(); // Lance le timer
 	}
@@ -189,73 +205,109 @@ public class Jeu extends JFrame {
 	}
 
 	public void boucle_principale_jeu() {
-		// déplacement du Vaisseau 1 (prise en compte des actions utilisateurs sur touches)
-		if (ToucheGauche) {
-			Vaisseau1.dx = -1;
-			Vaisseau1.dy = 0;
-		} else if (ToucheDroit) {
-			Vaisseau1.dx = +1;
-			Vaisseau1.dy = 0;
-		} else if (ToucheHaut) {
-			Vaisseau1.dx = 0;
-			Vaisseau1.dy = -1;
-		} else if (ToucheBas) {
-			Vaisseau1.dx = 0;
-			Vaisseau1.dy = +1;
-		} else {
-			Vaisseau1.dx = 0;
-			Vaisseau1.dy = 0;
-		}
-		// déplacement du Vaisseau 2 (prise en compte des actions utilisateurs sur touches)
-		if (ToucheQ) {
-			Vaisseau2.dx = -1;
-			Vaisseau2.dy = 0;
-		} else if (ToucheD) {
-			Vaisseau2.dx = +1;
-			Vaisseau2.dy = 0;
-		} else if (ToucheZ) {
-			Vaisseau2.dx = 0;
-			Vaisseau2.dy = -1;
-		} else if (ToucheS) {
-			Vaisseau2.dx = 0;
-			Vaisseau2.dy = +1;
-		} else {
-			Vaisseau2.dx = 0;
-			Vaisseau2.dy = 0;
-		}
-		// déplace tous les objets par Polymorphisme
-		for (int k = 0; k < Objets.size(); k++) {
-			Objet O = (Objet) Objets.get(k);
-			O.move(temps);
-		}
-		/*
-		 * TRAJECTOIRES 
-		 * 
-		 * 
-		 */
 		
-		for(int i=0; i<Trajectoires.size(); i++){
-			Trajectoires.get(i).actualisation();
-		}
-		
-		for(int i=0; i<Missiles.size(); i++){
-			if(Missiles.get(i).Collision() != Missiles.get(i)){
-				System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
-				timer.stop();
-				
-				//timer.start();
+		if(DebutTour==false){
+			System.out.println("Tour de préparation");
+			boolean tirCree=false;
+			for (int i=0; i<Stations.size(); i++){
+				System.out.println("Station n°"+(i+1));
+				if(tirCree==false){
+					if (Stations.get(i).tirFait==false){
+						System.out.println("Tir pas fait");
+						if (Click){
+							String nom = "Missile Station n°"+(i+1);
+							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom);
+							Objets.add(missile);
+							Stations.get(i).tirFait = true;
+							System.out.println("Missile créé, tir fait");
+							//timer.stop();
+							compt++;
+							tirCree = true;
+							Click=false;
+						}
+					} else {
+						System.out.println("Tir déjà fait");
+					}
+				} else {
+					tirCree=false;
+				}
 			}
+			if (compt==Stations.size()){
+				DebutTour=true;
+				System.out.println("Début du jeu");
+			}
+			
 		}
+					
+		else {
 		
-		
-		
-//		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
-//			System.out.println("Pas de collision !");
-//		else
-//			System.out.println("Collision !");
-//		System.out.println(Inter);
-		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
-		//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+			// déplacement du Vaisseau 1 (prise en compte des actions utilisateurs sur touches)
+			if (ToucheGauche) {
+				Vaisseau1.dx = -1;
+				Vaisseau1.dy = 0;
+			} else if (ToucheDroit) {
+				Vaisseau1.dx = +1;
+				Vaisseau1.dy = 0;
+			} else if (ToucheHaut) {
+				Vaisseau1.dx = 0;
+				Vaisseau1.dy = -1;
+			} else if (ToucheBas) {
+				Vaisseau1.dx = 0;
+				Vaisseau1.dy = +1;
+			} else {
+				Vaisseau1.dx = 0;
+				Vaisseau1.dy = 0;
+			}
+			// déplacement du Vaisseau 2 (prise en compte des actions utilisateurs sur touches)
+			if (ToucheQ) {
+				Vaisseau2.dx = -1;
+				Vaisseau2.dy = 0;
+			} else if (ToucheD) {
+				Vaisseau2.dx = +1;
+				Vaisseau2.dy = 0;
+			} else if (ToucheZ) {
+				Vaisseau2.dx = 0;
+				Vaisseau2.dy = -1;
+			} else if (ToucheS) {
+				Vaisseau2.dx = 0;
+				Vaisseau2.dy = +1;
+			} else {
+				Vaisseau2.dx = 0;
+				Vaisseau2.dy = 0;
+			}
+			// déplace tous les objets par Polymorphisme
+			for (int k = 0; k < Objets.size(); k++) {
+				Objet O = (Objet) Objets.get(k);
+				O.move(temps);
+			}
+			/*
+			 * TRAJECTOIRES 
+			 * 
+			 * 
+			 */
+			
+			for(int i=0; i<Trajectoires.size(); i++){
+				Trajectoires.get(i).actualisation();
+			}
+			
+			for(int i=0; i<Missiles.size(); i++){
+				if(Missiles.get(i).Collision() != Missiles.get(i)){
+					System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
+					//timer.stop();				
+					//timer.start();
+				}
+			}
+			
+			
+			
+	//		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
+	//			System.out.println("Pas de collision !");
+	//		else
+	//			System.out.println("Collision !");
+	//		System.out.println(Inter);
+			//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+			//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+		}
 		
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
 		
@@ -359,5 +411,53 @@ public class Jeu extends JFrame {
 			// this.setTitle("touche relachée");
 			}
 		}
+	}
+	
+	private class gestionSouris implements MouseListener, MouseMotionListener {
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			Click=true;
+			mx=e.getX();   my=e.getY(); 
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 } // Fin classe Jeu !!

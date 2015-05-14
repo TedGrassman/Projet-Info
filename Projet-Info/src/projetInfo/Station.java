@@ -12,6 +12,7 @@ public class Station extends Objet {
 
 	static String[] NomImage = {"base.png"};
 	//Circle limites;
+	boolean tirFait;
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
@@ -22,6 +23,7 @@ public class Station extends Objet {
 		((Circle) limites).setCenterX(ax);
 		((Circle) limites).setCenterY(ay);
 		((Circle) limites).setRadius(images[0].getWidth(null)/2);
+		tirFait = false;
 	}
 	
 	public void move(long t) {

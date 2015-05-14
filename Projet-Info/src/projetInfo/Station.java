@@ -11,6 +11,7 @@ import java.awt.geom.GeneralPath;
 
 
 
+@SuppressWarnings("unused")
 public class Station extends Astre {
 
 

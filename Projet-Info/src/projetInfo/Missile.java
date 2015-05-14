@@ -16,6 +16,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.Rectangle;
 
 
+@SuppressWarnings("unused")
 public class Missile extends Astre {
 
 //	Polygon limites;								//hitbox triangulaire

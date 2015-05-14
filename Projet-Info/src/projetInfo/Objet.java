@@ -20,6 +20,7 @@ import java.awt.Shape;
  * @author Marc
  * @author Sami
  */
+@SuppressWarnings("unused")
 public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPanel
 
 	double x, y; // Position de l'objet à l'écran (centre de l'objet de préférence) [A SUPPRIMER ??]

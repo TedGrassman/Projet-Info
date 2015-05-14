@@ -37,15 +37,18 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	int masse; // Masse de l'objet (pour l'action de la gravité)
 	CentreGravite centreG; //centre de gravité de l'objet
 	Area limites; //Hitbox de l'objet
+	int error;
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse) {
 		NbImages = nbIm;
 		try {
 			images = new BufferedImage[NbImages];
-			for (int k = 0; k < NbImages; k++)
+			for (int k = 0; k < NbImages; k++){
 				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
+				error = k;
+			}
 		} catch (Exception err) {
-			System.out.println(NomImage + " introuvable !");
+			System.out.println(NomImage[error] + " introuvable !");
 			System.exit(0);
 		}
 		

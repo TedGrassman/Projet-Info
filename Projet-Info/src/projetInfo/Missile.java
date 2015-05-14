@@ -22,7 +22,9 @@ public class Missile extends Astre {
 //	Polygon limites;								//hitbox triangulaire
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
 	double angle; 									//orientation du missile par rapport à la verticale
-	static String[] NomImage = {"missile2.png"};	//nom des PNG du missile
+	static String[] NomImage = {"missile1.png","missile2.png","missile3.png","missile4.png","missile5.png","missile6.png",
+		"missile7.png", "missile8.png","missile7.png","missile6.png","missile5.png","missile4.png","missile3.png",
+		"missile2.png"};	//nom des PNG du missile
 	Color couleur;									//couleur de la trajectoire
 	Trajectoire traj;								//trajectoire du missile
 
@@ -40,7 +42,7 @@ public class Missile extends Astre {
 	}
 	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 1, MASSE_MISSILE);
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", NomImage.length, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
 		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
@@ -97,8 +99,9 @@ public class Missile extends Astre {
 		at.translate(-10, -25);
 		AffineTransformOp op = new AffineTransformOp (at, 1);
 		Graphics2D g2d =(Graphics2D)g; 													// cast le graphics en graphics2d pour pouvoir appliquer la transformation
+		traj.draw(t, g2d);
 		g2d.drawImage(images[(int) t % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
-		traj.draw(t, g2d);																// dessine la trajectoire
+																		// dessine la trajectoire
 		
 		/*
 		GeneralPath path1 = new GeneralPath();					------------------

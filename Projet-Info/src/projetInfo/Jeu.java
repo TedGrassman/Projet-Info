@@ -46,7 +46,7 @@ public class Jeu extends JFrame {
 	Boolean finjeu; // Jeu fini ou non
 	Font font; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
-	String[] NomImageM = {"missile2.png"};
+	String[] NomImageM = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};
 	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
 	boolean Click; // Si le joueur definit la trajectoire de son missile
 	boolean DebutTour;

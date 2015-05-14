@@ -30,15 +30,15 @@ public class Station extends Objet {
 		x += (2 * dx);
 		y += (2 * dy);
 
-		if (x < limitesframe.getX())
-			x = limitesframe.getX();
-		else if (x + l > limitesframe.getX() + limitesframe.getWidth())
-			x = limitesframe.getX() + limitesframe.getWidth() - l;
+		if (x -l/2 < limitesframe.getX())
+			x = limitesframe.getX() + l/2;
+		else if (x + l/2 > limitesframe.getX() + limitesframe.getWidth())
+			x = limitesframe.getX() + limitesframe.getWidth() - l/2;
 
-		if (y < limitesframe.getY())
-			y = limitesframe.getY();
-		else if (y + h > limitesframe.getY() + limitesframe.getHeight())
-			y = limitesframe.getY() + limitesframe.getHeight() - h;
+		if (y - h/2 < limitesframe.getY())
+			y = limitesframe.getY() + h/2;
+		else if (y + h/2 > limitesframe.getY() + limitesframe.getHeight())
+			y = limitesframe.getY() + limitesframe.getHeight() - h/2;
 
 		((Circle) limites).setCenterX(x);
 		((Circle) limites).setCenterY(y);

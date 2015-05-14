@@ -187,10 +187,10 @@ public class Jeu extends JFrame {
 			for(int i=0; i<Trajectoires.size(); i++){
 				Trajectoires.get(i).draw(temps, buffer);
 			}
-			int[]xtrig = {0, 10, 20};
-			int[]ytrig = {50, 0, 50};
-			buffer.drawPolygon(xtrig, ytrig, 3);
-			buffer.drawRect((int)(Planet4.x),(int)(Planet4.y),50, 50);
+//			int[]xtrig = {0, 10, 20};
+//			int[]ytrig = {50, 0, 50};
+//			buffer.drawPolygon(xtrig, ytrig, 3);
+//			buffer.drawRect((int)(Planet4.x),(int)(Planet4.y),50, 50);
 		}
 		// Ecris le score et le nombre de vies restantes, et le temps
 		// buffer.setColor(Color.white);

@@ -20,19 +20,19 @@ public class Missile extends Astre {
 	//Polygon limites; //hitbox triangulaire
 	double angle; //orientation du missile
 	static final int MASSE_MISSILE=10;
-	static String[] NomImage = {"missile.png"}; //missile2.png
+	static String[] NomImage = {"missile2.png"}; //missile2.png
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
 		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE);
-		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
-		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
+		centreG = new CentreGravite(ax, ay);
+		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
 		angle = 0.0 ;
-		limites = new Circle(ax, ay, images[0].getWidth(null)/2);
+		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 	}
 	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 1, MASSE_MISSILE);
-		centreG = new CentreGravite(ax, ay); // A MODIFIER !!!!
+		centreG = new CentreGravite(ax, ay);
 		limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
 		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 		angle = 0.0 ;

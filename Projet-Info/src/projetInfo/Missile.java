@@ -24,7 +24,7 @@ public class Missile extends Astre {
 	double angle; 									//orientation du missile par rapport à la verticale
 	static String[] NomImage = {"missile1.png","missile2.png","missile3.png","missile4.png","missile5.png","missile6.png",
 		"missile7.png", "missile8.png","missile7.png","missile6.png","missile5.png","missile4.png","missile3.png",
-		"missile2.png"};	//nom des PNG du missile
+		"missile2.png","missile1.png"};	//nom des PNG du missile
 	Color couleur;									//couleur de la trajectoire
 	Trajectoire traj;								//trajectoire du missile
 

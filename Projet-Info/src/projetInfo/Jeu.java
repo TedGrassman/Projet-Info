@@ -118,7 +118,7 @@ public class Jeu extends JFrame {
 		Missiles.add(Missile3);
 		Missiles.add(Missile4);
 		Missiles.add(Missile5);
-//<<<<<<< HEAD
+
 //		
 //		/* TEST
 //		 * A FAIRE PLUS PROPREMENT
@@ -135,12 +135,8 @@ public class Jeu extends JFrame {
 //		Trajectoires.add(Trajectoire3);
 //		Trajectoires.add(Trajectoire4);
 //		Trajectoires.add(Trajectoire5);
-//=======
-//>>>>>>> refs/remotes/origin/reecriture
-		
-		
-		
-		 compt=0;
+
+		compt=0;
 		
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
@@ -213,8 +209,9 @@ public class Jeu extends JFrame {
 						System.out.println("Tir pas fait");
 						if (Click){
 							String nom = "Missile Station n°"+(i+1);
-							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom);
+							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom, Color.RED);
 							Objets.add(missile);
+							Missiles.add(missile);
 							Stations.get(i).tirFait = true;
 							System.out.println("Missile créé, tir fait");
 							//timer.stop();

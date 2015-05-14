@@ -11,8 +11,6 @@ import java.awt.geom.Area;
 //import javafx.scene.shape.Polygon;
 //import javafx.scene.transform.Translate;
 
-
-
 import java.awt.geom.GeneralPath;
 import java.awt.image.AffineTransformOp;
 import java.awt.Rectangle;

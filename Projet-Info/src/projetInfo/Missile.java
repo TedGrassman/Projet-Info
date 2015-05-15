@@ -17,21 +17,22 @@ import java.awt.Rectangle;
 
 
 @SuppressWarnings("unused")
-public class Missile extends Astre {
+public class Missile extends Objet {
 
 //	Polygon limites;								//hitbox triangulaire
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
 	double angle; 									//orientation du missile par rapport à la verticale
-	static String[] NomImage = {"missile1.png","missile2.png","missile3.png","missile4.png","missile5.png","missile6.png",
-		"missile7.png", "missile8.png","missile7.png","missile6.png","missile5.png","missile4.png","missile3.png",
-		"missile2.png","missile1.png"};	//nom des PNG du missile
-	Color couleur;									//couleur de la trajectoire
+	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
+		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
+		"missile1_2.png","missile1_1.png"};			//nom des PNG du missile
+	Color couleur = Color.black;									//couleur de la trajectoire
 	Trajectoire traj;								//trajectoire du missile
-
+	static int nbr=0;					// Nombre de missiles créés, s'incrémentent dans constructeur
 
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
 		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE);
+		nbr++;
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
 		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
@@ -39,10 +40,13 @@ public class Missile extends Astre {
 		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
 		int[]ypoints = {25,-25,25};
 		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
+		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
+		
 	}
 	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", NomImage.length, MASSE_MISSILE);
+		nbr++;
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
 		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
@@ -51,9 +55,10 @@ public class Missile extends Astre {
 		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
 		int[]ypoints = {25,-25,25};
 		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
-		angle = 0.0 ;												//Orientation initiale du missile : verticale
+		angle = Math.atan2(dy, dx)-Math.PI*3/2;						//Orientation initiale du missile : dépend de sa vitesse initiale
 		couleur = acouleur;
 		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
+		
 
 	}
 
@@ -69,7 +74,7 @@ public class Missile extends Astre {
 			yAstre = liste.get(i).centreG.y;
 			masse = liste.get(i).masse;
 
-			if(this.centreG.x != xAstre && this.centreG.y != yAstre && !liste.get(i).typeObjet.equals(this.typeObjet)){
+			if(this.centreG.x != xAstre && this.centreG.y != yAstre && !liste.get(i).typeObjet.equals(this.typeObjet) && !liste.get(i).typeObjet.equals("Station")){
 				// determiner angle a partir de deltax et deltay. Calculer force en norme. Projeter en dx dy.
 				teta=Math.atan2(yAstre-this.y, xAstre-this.x);
 				vitesse = (masse*this.masse)/((yAstre-this.y)*(yAstre-this.y)+(xAstre-this.x)*(xAstre-this.x));
@@ -99,20 +104,19 @@ public class Missile extends Astre {
 		at.translate(-10, -25);
 		AffineTransformOp op = new AffineTransformOp (at, 1);
 		Graphics2D g2d =(Graphics2D)g; 													// cast le graphics en graphics2d pour pouvoir appliquer la transformation
-		traj.draw(t, g2d);
+		traj.draw(t, g2d);																// dessine la trajectoire
 		g2d.drawImage(images[(int) t % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
-																		// dessine la trajectoire
+																		
 		
-		/*
-		GeneralPath path1 = new GeneralPath();					------------------
-		AffineTransform at2 = new AffineTransform();			DEBBUGING 
-		at2.translate(centreG.x, centreG.y);					A UTILISER POUR VISUALISER LA HITBOX
-		at2.rotate(angle);										------------------
-        path1.append(limites.getPathIterator(at2), true);
-        g2d.setColor(couleur);
-        g2d.fill(path1);
-        g2d.draw(path1.getBounds());
-        */
+//		GeneralPath path1 = new GeneralPath();					//------------------
+//		AffineTransform at2 = new AffineTransform();			//DEBBUGING 
+//		at2.translate(centreG.x, centreG.y);					//A UTILISER POUR VISUALISER LA HITBOX
+//		at2.rotate(angle);										//------------------
+//      path1.append(limites.getPathIterator(at2), true);
+//      g2d.setColor(couleur);
+//      g2d.fill(path1);
+//      g2d.draw(path1.getBounds());
+        
 
 		
 	}

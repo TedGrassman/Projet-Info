@@ -54,15 +54,15 @@ public class Jeu extends JFrame {
 	int compt;
 
 	public Jeu() {
-		this.setSize(1366, 720); // Définition de la fenêtre (HD)
-		this.setResizable(false); // Fenêtre fixe (pour le moment)
-		this.setLocationRelativeTo(null); // Localisation de la fenêtre
-		this.setTitle("Projet de la Mort"); // Titre de la fenêtre
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
-		try { // Récupération de l'icône du programme
+		this.setSize(1366, 720);	// Définition de la fenêtre (HD)
+		this.setResizable(false);	// Fenêtre fixe (pour le moment)
+		this.setLocationRelativeTo(null);			// Localisation de la fenêtre
+		this.setTitle("Projet de la Mort");			// Titre de la fenêtre
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		// Arrêt du thread à la fermeture de la fenêtre
+		try {						// Récupération de l'icône du programme
 			this.setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
 		} catch (Exception err) {
-			System.out.println("Icône introuvable !");
+			System.err.println("Icône introuvable !");
 		}
 		ToucheHaut = ToucheBas = ToucheGauche = ToucheDroit = ToucheEspace = false;
 		ToucheZ = ToucheQ = ToucheS = ToucheD = false; 
@@ -92,15 +92,14 @@ public class Jeu extends JFrame {
 		//Objets.add(Planet3);
 		Objets.add(Planet4);
 		
-		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1");
+		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1", Color.red);
 		Vaisseau2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,
-				"DeathStar 2");
+				"DeathStar 2", Color.blue);
 		Objets.add(Vaisseau1);
 		Objets.add(Vaisseau2);
 		Stations.add(Vaisseau1);
 		Stations.add(Vaisseau2);
 		
-
 		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
 		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
 		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
@@ -141,7 +140,7 @@ public class Jeu extends JFrame {
 		try { // Récupération de la police d'écriture
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
 		} catch (Exception err) {
-			System.out.println("Police d'écriture introuvable !");
+			System.err.println("Police d'écriture introuvable !");
 		}
 		if (font != null)
 			buffer.setFont(font.deriveFont(40.0f));
@@ -209,7 +208,7 @@ public class Jeu extends JFrame {
 						System.out.println("Tir pas fait");
 						if (Click){
 							String nom = "Missile Station n°"+(i+1);
-							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom, Color.RED);
+							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom, Stations.get(i).color);
 							Objets.add(missile);
 							Missiles.add(missile);
 							Stations.get(i).tirFait = true;

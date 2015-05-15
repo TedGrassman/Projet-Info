@@ -12,15 +12,16 @@ import java.awt.geom.GeneralPath;
 
 
 @SuppressWarnings("unused")
-public class Station extends Astre {
+public class Station extends Objet {
 
 
 	static String[] NomImage = {"base.png"};
 	//Circle limites;
 	boolean tirFait;
+	Color color = Color.black;	//Couleur de la station, qui sert lors de la création d'un missile par cette station
 
 	
-	public Station(int ax, int ay, Rectangle aframe, String nom) {
+	public Station(int ax, int ay, Rectangle aframe, String nom, Color color) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
 
 //		limites = new Circle();
@@ -29,6 +30,7 @@ public class Station extends Astre {
 //		((Circle) limites).setRadius(images[0].getWidth(null)/2);
 		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
+		this.color = color; 
 	}
 	
 	public void move(long t) {
@@ -53,9 +55,9 @@ public class Station extends Astre {
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 		
 		/*
-		Graphics2D g2d =(Graphics2D)g;							------------
-		AffineTransform at2 = new AffineTransform();			DEBBUGING : dessin de la hitbox
-		GeneralPath path1 = new GeneralPath();					------------
+		Graphics2D g2d =(Graphics2D)g;							//------------
+		AffineTransform at2 = new AffineTransform();			//DEBBUGING : dessin de la hitbox
+		GeneralPath path1 = new GeneralPath();					//------------
 		path1.append(limites.getPathIterator(at2), true);
 		g2d.setColor(Color.WHITE);
         g2d.fill(path1);

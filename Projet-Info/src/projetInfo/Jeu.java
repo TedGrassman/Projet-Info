@@ -119,22 +119,6 @@ public class Jeu extends JFrame {
 		Missiles.add(Missile4);
 		Missiles.add(Missile5);
 
-//		
-//		/* TEST
-//		 * A FAIRE PLUS PROPREMENT
-//		 *    :----)
-//		 */
-//		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
-//		Trajectoire2 = new Trajectoire (Missile2, 70, 0, Color.GREEN);
-//		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
-//		Trajectoire4 = new Trajectoire (Missile4, 70, 0, Color.YELLOW);
-//		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
-//		
-//		Trajectoires.add(Trajectoire1);
-//		Trajectoires.add(Trajectoire2);
-//		Trajectoires.add(Trajectoire3);
-//		Trajectoires.add(Trajectoire4);
-//		Trajectoires.add(Trajectoire5);
 
 		compt=0;
 		
@@ -173,25 +157,7 @@ public class Jeu extends JFrame {
 			}
 			
 
-//			for(int i=0; i<Trajectoires.size(); i++){
-//				Trajectoires.get(i).draw(temps, buffer);		// Trajectoires intégrées à classe Missile, dessinées via le draw de la classe
-//			}
-//			int[]xtrig = {0, 10, 20};
-//			int[]ytrig = {50, 0, 50};
-//			buffer.drawPolygon(xtrig, ytrig, 3);
-//			buffer.drawRect((int)(Planet4.x),(int)(Planet4.y),50, 50);
-
 		}
-		// Ecris le score et le nombre de vies restantes, et le temps
-		// buffer.setColor(Color.white);
-		// buffer.setFont(font.deriveFont(40.0f));
-		// buffer.drawString("SCORE : " + score, 15, Ecran.height - 15);
-		// buffer.drawString("VIES : " + nombreViesRestantes, Ecran.width - 155,
-		// Ecran.height - 15);
-		// buffer.setFont(font.deriveFont(30.0f));
-		// buffer.drawString("Temps : " + temps, Ecran.width - 175, 50);
-		
-		// dessine une seule fois le buffer dans le Panel
 		g.drawImage(ArrierePlan, 0, 0, this);
 		
 	}
@@ -294,13 +260,7 @@ public class Jeu extends JFrame {
 			
 			
 			
-	//		if(Inter.getLayoutX()==0 && Inter.getLayoutY()==0)
-	//			System.out.println("Pas de collision !");
-	//		else
-	//			System.out.println("Collision !");
-	//		System.out.println(Inter);
-			//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
-			//System.out.println("LayoutX = " + Inter.getLayoutX() +" ; LayoutY = "+Inter.getLayoutY());
+
 		}
 		
 		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage

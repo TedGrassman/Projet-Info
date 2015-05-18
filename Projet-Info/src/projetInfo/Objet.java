@@ -1,5 +1,6 @@
 package projetInfo;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -38,11 +39,14 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	int masse; // Masse de l'objet (pour l'action de la gravité)
 	CentreGravite centreG; //centre de gravité de l'objet
 	Area limites; //Hitbox de l'objet
+	Explosion explosion;
+	int nbImEx = 27;
+	static String prefixeExplosion = "Explosion_Sequence_A ";
 	
 	public static ArrayList<Objet> liste = new ArrayList<Objet> ();	//Liste de tous les Objets pour effectuer les opérations
-	AffineTransform transfo = new AffineTransform();				//AffineTransform "vide" pour pouvoir créer une méthode Collision travaillant avec tout type d'astre
+	AffineTransform transfo = new AffineTransform();				//AffineTransform "vide" pour pouvoir créer une méthode Collision travaillant avec tout type d'Objets
 
-	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse) {
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse, String av) {
 		NbImages = nbIm;
 		int error = 0; //Si une image n'et pas trouvée, permet de savoir laquelle
 		try {
@@ -61,7 +65,7 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		
 		x = ax;									//initialise tous les autres attributs
 		y = ay;
-		centreG = new CentreGravite(x, y);
+		centreG = new CentreGravite(ax, ay);
 		dx = adx;
 		dy = ady;
 		drawX = (int)(x-l/2);	// Initialise les positions drawX et drawY,
@@ -72,7 +76,8 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		limitesframe = aframe;
 		actif = true;
 		this.masse = masse;
-		
+		prefixeExplosion = av;
+		explosion = new Explosion(x, y, nbImEx, prefixeExplosion);
 		liste.add(this);
 	}
 	
@@ -102,7 +107,7 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
         return false;
 	}
 	
-	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans l'interface graphique g
+	public void draw(long t, Graphics g, Font f) { // Dessine l'objet au temps t dans l'interface graphique g
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 	}
 

@@ -14,8 +14,8 @@ public abstract class Astre extends Objet{							//Classe abstraite dont hériten
 //	AffineTransform transfo = new AffineTransform();				//AffineTransform "vide" pour pouvoir créer une méthode Collision travaillant avec tout type d'astre
 	
 	public Astre(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, type, nbIm, masse);
-		liste.add(this);							//Ajoute l'astre nouvellement créé à la liste d'astres
+		super(ax, ay, adx, ady, NomImage, aframe, nom, type, nbIm, masse, prefixeExplosion);
+		//liste.add(this);							//Ajoute l'astre nouvellement créé à la liste d'astres
 	}
 
 //	public Astre Collision(){						//Renvoie l'Astre en collision avec l'Astre appelant la méthode

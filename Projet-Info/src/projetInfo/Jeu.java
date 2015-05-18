@@ -322,7 +322,7 @@ public class Jeu extends JFrame {
 					//timer.stop();				
 					//timer.start();
 					O.actif = false;
-					if(OC.typeObjet != "AstreSpherique" && OC.typeObjet != "Station")
+					if(OC.typeObjet != "AstreSpherique")
 						OC.actif = false;
 					if(O.typeObjet == "Missile"){
 						O.explosion.activer(O.x, O.y, temps);

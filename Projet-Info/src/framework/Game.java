@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class Game {
 	public static boolean Click = false;
-	public static enum ETAT{J1, J2, SIMULATION}
+	public static enum ETAT{J1, J2, SIMULATION, PAUSE}
 	public static ETAT etat;
 	Rectangle Ecran; // Les limites de la fenêtre
 	final int MASSE_PLANETE = 500;
@@ -212,6 +212,8 @@ public class Game {
 				Objet O = Objets.get(k);
 				O.move(gameTime);
     		}
+    		break;
+    	case PAUSE:
     		break;
 
 		}

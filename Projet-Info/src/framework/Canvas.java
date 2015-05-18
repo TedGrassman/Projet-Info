@@ -6,11 +6,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 /**
@@ -19,7 +21,7 @@ import javax.swing.JPanel;
  * @author www.gametutorial.net
  */
 
-public abstract class Canvas extends JPanel implements KeyListener, MouseListener {
+public abstract class Canvas extends JPanel implements KeyListener, MouseListener, ActionListener {
 	
     // Keyboard states - Here are stored states for keyboard keys - is it down or not.
     private static boolean[] keyboardState = new boolean[525];

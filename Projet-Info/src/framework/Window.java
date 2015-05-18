@@ -17,7 +17,7 @@ public class Window extends JFrame{
     private Window()
     {
         // Sets the title for this frame.
-        this.setTitle("Start Shooter");
+        this.setTitle("Star Shooter");
         
         // Sets size of the frame.
         if(false) // Full screen mode
@@ -47,8 +47,9 @@ public class Window extends JFrame{
         this.addComponentListener(new ComponentListener() {
             public void componentResized(ComponentEvent e) {
             	Framework.resized = true;
+            	if(Framework.gameState==Framework.GameState.PLAYING){
                 Framework.gameState=Framework.GameState.VISUALIZING;
-                
+            	}
             }
 
 			@Override

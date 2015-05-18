@@ -1,9 +1,14 @@
 package framework;
 
+import java.awt.CardLayout;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * Framework that controls the game (Game.java) that created it, update it and draw it on the screen.
@@ -12,6 +17,16 @@ import java.awt.event.MouseEvent;
  */
 
 public class Framework extends Canvas {
+	JPanel panel = new JPanel();
+	JPanel menu = new JPanel(); 
+	JButton play = new customButton("Lancer une partie");
+	JButton reprendre = new JButton ("Reprendre la partie");
+	JButton settings = new JButton("Options");
+	JButton exit = new JButton("Ragequit");
+	JButton mainMenu = new JButton("Retour menu");
+	CardLayout layout = new CardLayout();
+	Game.ETAT old = Game.ETAT.J1; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
+	
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
 	public static int gauche, haut, droite, bas; // taille des bords de la fenetre
@@ -69,7 +84,20 @@ public class Framework extends Canvas {
     public Framework ()
     {
         super();
-        
+        panel.setLayout(layout);
+    	play.addActionListener(this);
+    	settings.addActionListener(this);
+    	exit.addActionListener(this);
+    	mainMenu.addActionListener(this);
+    	reprendre.addActionListener(this);
+    	menu.add(play);
+    	menu.add(settings);
+    	menu.add(exit);
+    	menu.setBackground(null);
+    	panel.setBackground(null);
+    	panel.add(menu, "Menu");
+    	add(panel);
+    	layout.show(panel, "Menu");
         gameState = GameState.VISUALIZING;
         
         //We start game in new thread.
@@ -89,7 +117,7 @@ public class Framework extends Canvas {
      */
     private void Initialize()
     {
-
+    	
     }
     
     /**
@@ -168,7 +196,7 @@ public class Framework extends Canvas {
                         	resized=false;
                         }
                         else{
-                        	gameState = GameState.STARTING;
+                        	gameState = GameState.MAIN_MENU;
                         }
                         
                     }
@@ -205,13 +233,15 @@ public class Framework extends Canvas {
         switch (gameState)
         {
             case PLAYING:
+            	panel.setVisible(false);
                 game.Draw(gameTime, g2d, mousePosition());
             break;
             case GAMEOVER:
                 //...
             break;
             case MAIN_MENU:
-                //...
+            	
+            	panel.setVisible(true);
             break;
             case OPTIONS:
                 //...
@@ -283,8 +313,25 @@ public class Framework extends Canvas {
      */
     @Override
     public void keyReleasedFramework(KeyEvent e)
-    {
-        
+    {	
+    	if(e.getKeyCode()==80){
+    		if(game !=null){
+	    		if(menu.getComponentCount()==3 && old != Game.ETAT.PAUSE){
+	    			menu.add(reprendre);
+	    		}
+	    		if(gameState==GameState.MAIN_MENU){
+	    			//panel.setVisible(false);
+	     		   gameState = GameState.PLAYING;
+	     		   game.etat=old;
+	    		}
+	    		else{
+	    			old = game.etat;
+	    			game.etat=Game.ETAT.PAUSE;
+	    			gameState=GameState.MAIN_MENU;
+	    		}
+    		}
+        System.out.println(e);
+    	}
     }
     
     /**
@@ -299,6 +346,34 @@ public class Framework extends Canvas {
     }
     
     public void mouseReleased(MouseEvent e) {
-    	game.Click=true;
+    	if(game!=null){
+    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    			game.Click=true;
+    		}
+    	}
+    	
+    }
+    
+    public void actionPerformed(ActionEvent event) {
+
+    	   Object source = event.getSource();
+
+    	   if (source == exit) {
+    	       System.exit(0);
+    	   } else if (source == play) {
+    	       gameState= GameState.STARTING;
+    	       
+    		   
+    	       this.validate();
+    	   } else if (source == settings){
+
+    	   } else if (source == mainMenu){
+    	       gameState = GameState.MAIN_MENU;
+    	       this.validate();
+    	   } else if (source == reprendre){
+    		   gameState = GameState.PLAYING;
+     		   game.etat=old;
+     		   this.validate();
+    	   }
     }
 }

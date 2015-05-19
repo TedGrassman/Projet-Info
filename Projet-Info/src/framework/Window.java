@@ -1,5 +1,6 @@
 package framework;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -31,7 +32,7 @@ public class Window extends JFrame{
         else // Window mode
         {
             // Size of the frame.
-            this.setSize(1400, 800);
+            this.setSize((int)GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth(), (int)GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight());
             // Puts frame to center of the screen.
             this.setLocationRelativeTo(null);
             // So that frame cannot be resizable by the user.

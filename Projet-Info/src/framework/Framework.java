@@ -316,7 +316,7 @@ public class Framework extends Canvas {
     @Override
     public void keyReleasedFramework(KeyEvent e)
     {	
-    	if(e.getKeyCode()==80){
+    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
     		if(game !=null){
 	    		if(menu.getComponentCount()==3 && old != Game.ETAT.PAUSE){
 	    			menu.add(reprendre);

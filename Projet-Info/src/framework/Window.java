@@ -22,7 +22,7 @@ public class Window extends JFrame{
         this.setTitle("Star Shooter");
         
         // Sets size of the frame.
-        if(false) // Full screen mode
+        if(true) // Full screen mode
         {
             // Disables decorations for this frame.
             this.setUndecorated(true);

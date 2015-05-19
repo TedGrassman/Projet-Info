@@ -182,7 +182,7 @@ public class Framework extends Canvas {
                     // So we wait one second for the window/frame to be set to its correct size. Just in case we
                     // also insert 'this.getWidth() > 1' condition in case when the window/frame size wasn't set in time,
                     // so that we although get approximately size.
-                    if(this.getWidth() > 1 && visualizingTime > secInNanosec)
+                    if(this.getWidth() > 1 && visualizingTime > secInNanosec/2)
                     {
                         frameWidth = this.getWidth();
                         frameHeight = this.getHeight();
@@ -193,6 +193,8 @@ public class Framework extends Canvas {
                         
                         // When we get size of frame we change status.
                         if(resized && game !=null){
+                        	frameWidth = this.getWidth();
+                            frameHeight = this.getHeight();
                         	gameState = GameState.PLAYING;
                         	resized=false;
                         }
@@ -262,8 +264,12 @@ public class Framework extends Canvas {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
-        
-        game = new Game();
+        if(game==null){
+        	game = new Game();
+        }
+        else{
+        game.RestartGame();
+        }
     }
     
     /**
@@ -315,7 +321,7 @@ public class Framework extends Canvas {
     @Override
     public void keyReleasedFramework(KeyEvent e)
     {	
-    	if(e.getKeyCode()==80){
+    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
     		if(game !=null){
 	    		if(menu.getComponentCount()==3 && old != Game.ETAT.PAUSE){
 	    			menu.add(reprendre);

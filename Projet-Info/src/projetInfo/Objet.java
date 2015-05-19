@@ -26,7 +26,7 @@ import java.awt.Shape;
 public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPanel
 
 	double x, y; // Position de l'objet à l'écran (centre de l'objet de préférence) [A SUPPRIMER ??]
-	int drawX, drawY; //Position de l'image à l'écran (coin en haut à gauche)
+	transient int drawX, drawY; //Position de l'image à l'écran (coin en haut à gauche)
 	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
 	double dx, dy; // Vecteur unitaire de déplacement
 

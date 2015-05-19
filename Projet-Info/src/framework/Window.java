@@ -1,5 +1,6 @@
 package framework;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
@@ -39,7 +40,8 @@ public class Window extends JFrame{
         else // Window mode
         {
             // Size of the frame.
-            this.setSize(1366, 768);
+
+            this.setSize((int)GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth(), (int)GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight());
             // Puts frame to center of the screen.
             this.setLocationRelativeTo(null);
             // So that frame cannot be resizable by the user.
@@ -56,9 +58,10 @@ public class Window extends JFrame{
         this.addComponentListener(new ComponentListener() {
             public void componentResized(ComponentEvent e) {
             	Framework.resized = true;
-            	if(Framework.gameState==Framework.GameState.PLAYING){
-            		Framework.gameState=Framework.GameState.VISUALIZING;
-            	}
+
+            	//if(Framework.gameState==Framework.GameState.PLAYING){
+                Framework.gameState=Framework.GameState.VISUALIZING;
+            	//}
             }
 
 			@Override

@@ -123,7 +123,7 @@ public class Game {
     {
     	etat=ETAT.J1;
     	score = 0;
-		
+    	Astre.liste= new ArrayList<Astre>();
 		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
 		Trajectoires = new ArrayList<Trajectoire>(); // Créer la liste chainée en mémoire
@@ -158,7 +158,8 @@ public class Game {
 		Missiles.add(Missile3);
 		Missiles.add(Missile4);
 		Missiles.add(Missile5);
-
+		
+		
 		
 		compt=0;
     }

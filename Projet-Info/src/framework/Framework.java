@@ -263,8 +263,12 @@ public class Framework extends Canvas {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
-        
-        game = new Game();
+        if(game==null){
+        	game = new Game();
+        }
+        else{
+        game.RestartGame();
+        }
     }
     
     /**

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public class Trajectoire {
 	ArrayList<Point> listePoints; //liste des points de la courbe
 	int nbPoints; // nombre de points a afficher simultanément
-	Astre cible; // astre dont on veut tracer la trajectoire
+	Objet cible; // astre dont on veut tracer la trajectoire
 	int delai; // nombre de cycles d'attente avant de dessiner la trajectoire 
 	Color couleur; // couleur de la courbe
 	
-	public Trajectoire(Astre acible, int anbPoints, int adelai, Color acouleur){
+	public Trajectoire(Objet acible, int anbPoints, int adelai, Color acouleur){
 		listePoints = new ArrayList<Point>();
 		nbPoints=anbPoints;
 		cible=acible;

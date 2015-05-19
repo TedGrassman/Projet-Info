@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
  * @author www.gametutorial.net
  */
 
+@SuppressWarnings("serial")
 public class Window extends JFrame{
         
     private Window()

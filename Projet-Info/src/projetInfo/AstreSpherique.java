@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 
 
 
+@SuppressWarnings("unused")
 public class AstreSpherique extends Astre { 	//Astre de forme sphérique défini par son rayon
 	
 	//Circle limites;

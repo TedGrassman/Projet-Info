@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+
 @SuppressWarnings("serial")
 public class Jeu extends JFrame {
 
@@ -35,7 +36,7 @@ public class Jeu extends JFrame {
 	boolean ToucheEspace; // Si le joueur a pressé la touche "barre espace"
 	boolean ToucheZ, ToucheQ, ToucheS, ToucheD; // Contrôles du deuxième joueur
 	Rectangle Ecran; // Les limites de la fenêtre
-	Station Vaisseau1, Vaisseau2; // L'objet que l'utilisateur va déplacer
+	Station Station1, Station2; // L'objet que l'utilisateur va déplacer
 	AstreSpherique Planet1, Planet2, Planet3, Planet4;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
@@ -43,34 +44,38 @@ public class Jeu extends JFrame {
 	ArrayList<Trajectoire> Trajectoires; // Liste de toutes les trajectoires
 	ArrayList<Station> Stations; // Liste de toutes les stations
 	int score; // Score du joueur
-	Boolean finjeu; // Jeu fini ou non
-	Font font; // Objet de police d'écriture
+	boolean finJeu; // Jeu fini ou non
+	Font font1, font2; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] NomImageM = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};
 	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
-	boolean Click; // Si le joueur definit la trajectoire de son missile
-	boolean DebutTour;
+	boolean mouseClicked, mousePressed, mouseReleased; // Si le joueur definit la trajectoire de son missile
+	boolean debutTour;
 	double mx,my;
 	int compt;
+	Station stationCourante;
+	boolean vecteurMissile = false;
+	String winner = "";
+	String load = "";
 
 	public Jeu() {
-		this.setSize(1366, 720); // Définition de la fenêtre (HD)
-		this.setResizable(false); // Fenêtre fixe (pour le moment)
-		this.setLocationRelativeTo(null); // Localisation de la fenêtre
-		this.setTitle("Projet de la Mort"); // Titre de la fenêtre
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
-		try { // Récupération de l'icône du programme
+		this.setSize(1366, 720);	// Définition de la fenêtre (HD)
+		this.setResizable(false);	// Fenêtre fixe (pour le moment)
+		this.setLocationRelativeTo(null);			// Localisation de la fenêtre
+		this.setTitle("Projet de la Mort");			// Titre de la fenêtre
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		// Arrêt du thread à la fermeture de la fenêtre
+		try {						// Récupération de l'icône du programme
 			this.setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
 		} catch (Exception err) {
-			System.out.println("Icône introuvable !");
+			System.err.println("Icône introuvable !");
 		}
 		ToucheHaut = ToucheBas = ToucheGauche = ToucheDroit = ToucheEspace = false;
 		ToucheZ = ToucheQ = ToucheS = ToucheD = false; 
 		temps = 0;
 		score = 0;
-		finjeu = false;
-		DebutTour=false;
-		Click=false;
+		finJeu = false;
+		debutTour=false;
+		mouseClicked = mousePressed = mouseReleased = false;
 		Ecran = new Rectangle(getInsets().left, getInsets().top, getSize().width
 				- getInsets().right - getInsets().left, getSize().height - getInsets().bottom
 				- getInsets().top);
@@ -92,43 +97,56 @@ public class Jeu extends JFrame {
 		//Objets.add(Planet3);
 		Objets.add(Planet4);
 		
-		Vaisseau1 = new Station(100, 100, Ecran,"DeathStar 1");
-		Vaisseau2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,
-				"DeathStar 2");
-		Objets.add(Vaisseau1);
-		Objets.add(Vaisseau2);
-		Stations.add(Vaisseau1);
-		Stations.add(Vaisseau2);
+		Station1 = new Station(400, 300, Ecran,"DeathStar 1", Color.red);
+		Station2 = new Station((int) (Ecran.getWidth() - 400), (int) (Ecran.getHeight() - 300), Ecran,
+				"DeathStar 2", Color.blue);
+		Objets.add(Station1);
+		Objets.add(Station2);
+		Stations.add(Station1);
+		Stations.add(Station2);
 		
+		stationCourante = Stations.get(0);
+		
+//		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
+//		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
+//		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
+//		Missile4 = new Missile(300, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
+//		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5", Color.WHITE);
+//		
+//		Objets.add(Missile1);
+//		Objets.add(Missile2);
+//		Objets.add(Missile3);
+//		Objets.add(Missile4);
+//		Objets.add(Missile5);
+//		
+//		Missiles.add(Missile1);
+//		Missiles.add(Missile2);
+//		Missiles.add(Missile3);
+//		Missiles.add(Missile4);
+//		Missiles.add(Missile5);
 
-		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
-		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
-		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
-		Missile4 = new Missile(300, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
-		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5", Color.WHITE);
-		
-		Objets.add(Missile1);
-		Objets.add(Missile2);
-		Objets.add(Missile3);
-		Objets.add(Missile4);
-		Objets.add(Missile5);
-		
-		Missiles.add(Missile1);
-		Missiles.add(Missile2);
-		Missiles.add(Missile3);
-		Missiles.add(Missile4);
-		Missiles.add(Missile5);
-
+//		Trajectoire1 = new Trajectoire (Missile1, 50, 0, Color.RED);
+//		Trajectoire2 = new Trajectoire (Missile2, 70, 0, Color.GREEN);
+//		Trajectoire3 = new Trajectoire (Missile3, 50, 0, Color.BLUE);
+//		Trajectoire4 = new Trajectoire (Missile4, 70, 0, Color.YELLOW);
+//		Trajectoire5 = new Trajectoire (Missile5, 50, 0, Color.WHITE);
+//		
+//		Trajectoires.add(Trajectoire1);
+//		Trajectoires.add(Trajectoire2);
+//		Trajectoires.add(Trajectoire3);
+//		Trajectoires.add(Trajectoire4);
+//		Trajectoires.add(Trajectoire5);
 
 		compt=0;
 		
 		try { // Récupération de la police d'écriture
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
+			font1 = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
+			font2 = Font.createFont(Font.TRUETYPE_FONT, new File("res/13_Misa.ttf"));
 		} catch (Exception err) {
-			System.out.println("Police d'écriture introuvable !");
+			System.err.println("Police(s) d'écriture introuvable(s) !");
 		}
-		if (font != null)
-			buffer.setFont(font.deriveFont(40.0f));
+		if (font1 != null)
+			buffer.setFont(font1.deriveFont(40.0f));
 		this.addKeyListener(new Jeu_this_keyAdapter()); // Ajout du KeyListener pour entrées clavier
 		this.addMouseListener( new gestionSouris() );
 	    this.addMouseMotionListener( new gestionSouris() );
@@ -139,43 +157,108 @@ public class Jeu extends JFrame {
 	public void paint(Graphics g) {
 		// remplir le buffer de noir
 		buffer.setColor(Color.BLACK);
-
 		buffer.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
-
 		buffer.setColor(Color.white);
-		buffer.setFont(font.deriveFont(100.0f));
-		if (finjeu) {
+		buffer.setFont(font1.deriveFont(100.0f));
+		
+		// dessine TOUS les objets dans le buffer
+		for (int k = 0; k < Objets.size(); k++) {
+			Objet O = (Objet) Objets.get(k);
+			O.draw(temps, buffer, font2);
+		}
+		
+		
+
+//		for(int i=0; i<Trajectoires.size(); i++){
+//			Trajectoires.get(i).draw(temps, buffer);		// Trajectoires intégrées à classe Missile, dessinées via le draw de la classe
+//		}
+		
+		for(int i=0; i<Explosion.liste.size(); i++){
+			Explosion.liste.get(i).draw(temps, buffer);
+		}
+		
+		if(!debutTour) {
+			buffer.setColor(Color.white);
+			buffer.setFont(font1.deriveFont(25.0f));
+			buffer.drawString("Phase de préparation", 425, 100);
+			buffer.setFont(font1.deriveFont(20.0f));
+			int compt = 0;
+			for (int k = 0; k < Stations.size(); k++) {
+				Station O = Stations.get(k);
+				buffer.setColor(O.color);
+				if (O.tirFait == false && compt == 0) {
+					buffer.drawString("Joueur "+(k+1), 575, 150);
+					compt++;
+				}
+			}
+			if(vecteurMissile){
+				buffer.setColor(Color.white);
+				buffer.drawLine((int)(stationCourante.x), (int)(stationCourante.y), (int)(mx), (int)(my));
+			}
+		} else if (debutTour && !finJeu){
+			buffer.setColor(Color.white);
+			buffer.setFont(font1.deriveFont(25.0f));
+			switch ( (int)(temps) % 100){
+				case 0 : load = "."; break;
+				case 20 : load = ". ."; break;
+				case 40 : load = ". . ."; break;
+				case 60 : load = " "; break;
+			}
+			buffer.drawString("Phase de jeu "+load, 500, 100);
+		} else if (finJeu){
 			// Message de fin de jeu
 			buffer.setColor(Color.white);
-			buffer.setFont(font.deriveFont(100.0f));
-			buffer.drawString("GAME OVER", 100, (int) Ecran.getHeight() / 2 + 20);
-		} else {
-			// dessine TOUS les objets dans le buffer
-			for (int k = 0; k < Objets.size(); k++) {
-				Objet O = (Objet) Objets.get(k);
-				O.draw(temps, buffer);
+			buffer.setFont(font1.deriveFont(100.0f));
+			buffer.drawString("GAME OVER", 250, (int) Ecran.getHeight() / 2 - 100);
+			buffer.setFont(font1.deriveFont(50.0f));
+			for (int k = 0; k < Stations.size(); k++) {
+				Station O = Stations.get(k);
+				if(O.actif)
+					buffer.setColor(O.color);
 			}
+
 			
 
+
+			buffer.drawString(winner, 350, (int) Ecran.getHeight() / 2 + 150);
+
 		}
+
+
+		// dessine une seule fois le buffer dans le Panel
+
 		g.drawImage(ArrierePlan, 0, 0, this);
 		
 	}
 
 	public void boucle_principale_jeu() {
 		
-		if(DebutTour==false){
+		if(debutTour==false && finJeu==false){
 			
 			System.out.println("Tour de préparation");
 			boolean tirCree=false;
+			
 			for (int i=0; i<Stations.size(); i++){
 				System.out.println("Station n°"+(i+1));
+				
 				if(tirCree==false){
+					
 					if (Stations.get(i).tirFait==false){
 						System.out.println("Tir pas fait");
-						if (Click){
+						
+						if(mousePressed){
+							stationCourante = Stations.get(i);
+							vecteurMissile = true;
+							mousePressed = false;
+						}
+						if(mouseReleased){
+							int x, y;
+							double angle=Math.atan2(my-stationCourante.y, mx-stationCourante.x);
+							x = (int) (stationCourante.x+(stationCourante.l/2 + 25)*Math.cos(angle));
+							y = (int) (stationCourante.y+(stationCourante.h/2 + 25)*Math.sin(angle));
+							vecteurMissile = false;
 							String nom = "Missile Station n°"+(i+1);
-							Missile missile = new Missile((int)(Stations.get(i).centreG.x), (int)(Stations.get(i).centreG.y), (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom, Color.RED);
+							Missile missile = new Missile(x, y, (float)((mx-Stations.get(i).centreG.x)/100), (float)((my-Stations.get(i).centreG.y)/100), Ecran, nom, Stations.get(i).color, Stations.get(i));
 							Objets.add(missile);
 							Missiles.add(missile);
 							Stations.get(i).tirFait = true;
@@ -183,7 +266,10 @@ public class Jeu extends JFrame {
 							//timer.stop();
 							compt++;
 							tirCree = true;
-							Click=false;
+							mouseReleased=false;
+						}
+						if (mouseClicked){
+							mouseClicked = false;
 						}
 					} else {
 						System.out.println("Tir déjà fait");
@@ -193,79 +279,121 @@ public class Jeu extends JFrame {
 				}
 			}
 			if (compt==Stations.size()){
-				DebutTour=true;
+				debutTour=true;
 				System.out.println("Début du jeu");
+				for (int i=0; i<Stations.size(); i++){
+					Stations.get(i).tirFait = false;
+				}
+				compt=0;
 			}
 			
 		}
 					
-		else {
+		else if(debutTour==true && finJeu==false){
 		
 			// déplacement du Vaisseau 1 (prise en compte des actions utilisateurs sur touches)
-			if (ToucheGauche) {
-				Vaisseau1.dx = -1;
-				Vaisseau1.dy = 0;
-			} else if (ToucheDroit) {
-				Vaisseau1.dx = +1;
-				Vaisseau1.dy = 0;
-			} else if (ToucheHaut) {
-				Vaisseau1.dx = 0;
-				Vaisseau1.dy = -1;
-			} else if (ToucheBas) {
-				Vaisseau1.dx = 0;
-				Vaisseau1.dy = +1;
-			} else {
-				Vaisseau1.dx = 0;
-				Vaisseau1.dy = 0;
-			}
+			if (ToucheGauche) { Station1.dx = -1; Station1.dy = 0; }
+			else if (ToucheDroit) { Station1.dx = +1; Station1.dy = 0; }
+			else if (ToucheHaut) { Station1.dx = 0; Station1.dy = -1; }
+			else if (ToucheBas) { Station1.dx = 0; Station1.dy = +1; }
+			else { Station1.dx = 0; Station1.dy = 0; }
 			// déplacement du Vaisseau 2 (prise en compte des actions utilisateurs sur touches)
-			if (ToucheQ) {
-				Vaisseau2.dx = -1;
-				Vaisseau2.dy = 0;
-			} else if (ToucheD) {
-				Vaisseau2.dx = +1;
-				Vaisseau2.dy = 0;
-			} else if (ToucheZ) {
-				Vaisseau2.dx = 0;
-				Vaisseau2.dy = -1;
-			} else if (ToucheS) {
-				Vaisseau2.dx = 0;
-				Vaisseau2.dy = +1;
-			} else {
-				Vaisseau2.dx = 0;
-				Vaisseau2.dy = 0;
-			}
+			if (ToucheQ) { Station2.dx = -1; Station2.dy = 0; }
+			else if (ToucheD) { Station2.dx = +1; Station2.dy = 0;}
+			else if (ToucheZ) { Station2.dx = 0; Station2.dy = -1; }
+			else if (ToucheS) { Station2.dx = 0; Station2.dy = +1; }
+			else { Station2.dx = 0; Station2.dy = 0; }
+			
+			// MOUVEMENTS
 			// déplace tous les objets par Polymorphisme
 			for (int k = 0; k < Objets.size(); k++) {
 				Objet O = (Objet) Objets.get(k);
 				O.move(temps);
 			}
-			/*
-			 * TRAJECTOIRES 
-			 * 
-			 * 
-			 */
 			
-			for(int i=0; i<Trajectoires.size(); i++){
-				Trajectoires.get(i).actualisation();
-			}
-			
-			for(int i=0; i<Missiles.size(); i++){
-				if(Missiles.get(i).Collision() != Missiles.get(i)){
-					System.out.println("Collision de Missile "+(i+1)+" avec " +Missiles.get(i).Collision().nom_objet);
+			// COLLISIONS
+			for(int i=0; i<Objets.size(); i++){
+				Objet O = Objets.get(i);
+				Objet OC = Objets.get(i).Collision();
+				if(OC != O){
+					System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);
 					//timer.stop();				
 					//timer.start();
+					O.actif = false;
+					if(OC.typeObjet != "AstreSpherique")
+						OC.actif = false;
+					if(O.typeObjet == "Missile"){
+						O.explosion.activer(O.x, O.y, temps);
+					}
+					if(OC.typeObjet == "Station"){
+						OC.explosion.activer(OC.x, OC.y, temps);
+					}
 				}
 			}
 			
-			
-			
-
 		}
 		
-		repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
+		//ACTUALISATION des EXPLOSIONS
+		for(int i=0; i<Explosion.liste.size(); i++){
+			Explosion.liste.get(i).actualisation(temps);
+		}
 		
-	}
+		//ACTUALISATION des TRAJECTOIRES
+		for(int i=0; i<Trajectoires.size(); i++){
+			Trajectoires.get(i).actualisation();
+		}
+		
+		// GARBAGE COLLECTOR
+		
+		for (int k = 0; k < Objets.size(); k++) {
+			Objet O = (Objet) Objets.get(k);
+			if (O.actif == false) {
+				Objets.remove(k);
+				k--; // parceque la liste s'est déplacée pour boucher le trou
+			}
+		}
+		
+		for (int k = 0; k < Missiles.size(); k++) {
+			Missile O = Missiles.get(k);
+			if (O.actif == false) {
+				Missiles.remove(k);
+				k--; // parceque la liste s'est déplacée pour boucher le trou
+			}
+		}
+		for (int k = 0; k < Objet.liste.size(); k++) {
+			Objet O = Objet.liste.get(k);
+			if (O.actif == false) {
+				Objet.liste.remove(k);
+				k--; // parceque la liste s'est déplacée pour boucher le trou
+			}
+		}
+		
+		if (Missiles.isEmpty()){
+			debutTour = false;
+			if(!Stations.get(0).actif || !Stations.get(1).actif){
+				debutTour = true;
+				finJeu = true;
+				if(!Stations.get(0).actif && Stations.get(1).actif)
+					winner = "Joueur 2 gagne !";
+				if(Stations.get(0).actif && !Stations.get(1).actif)
+					winner = "Joueur 1 gagne !";
+				if(!Stations.get(0).actif && !Stations.get(1).actif)
+					winner = "      Egalité !";
+			}
+		}
+		
+//			for (int k = 0; k < Stations.size(); k++) {
+//				Station O = Stations.get(k);
+//				if (O.actif == false) {
+//					Stations.remove(k);
+//					k--; // parceque la liste s'est déplacée pour boucher le trou
+//				}
+//			}
+
+	
+	repaint(); // appel implicite de la méthode paint pour raffraichir la zone d'affichage
+
+	}	
 
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
@@ -372,44 +500,49 @@ public class Jeu extends JFrame {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			// TODO Auto-generated method stub
+			mx=e.getX();   my=e.getY();
 			
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			// TODO Auto-generated method stub
+			mx=e.getX();   my=e.getY();
 			
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			mouseClicked=true;
+			mx=e.getX();   my=e.getY();
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			mousePressed=true;
+			mx=e.getX();   my=e.getY();
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			Click=true;
-			mx=e.getX();   my=e.getY(); 
-			
+			mouseReleased=true;
+			mx=e.getX();   my=e.getY();			
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
+			mx=e.getX();   my=e.getY();
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
+			mx=e.getX();   my=e.getY();
 			
 		}
 		

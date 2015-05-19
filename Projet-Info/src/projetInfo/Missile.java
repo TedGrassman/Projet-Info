@@ -26,8 +26,9 @@ import javax.imageio.ImageIO;
 public class Missile extends Objet {
 
 //	Polygon limites;								//hitbox triangulaire
-	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
+	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)								//couleur de la trajectoire
 	double angle; 									//orientation du missile par rapport à la verticale
+	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
 	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
 		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
 		"missile1_2.png","missile1_1.png"};			//nom des PNG du missile
@@ -40,6 +41,7 @@ public class Missile extends Objet {
 
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
+
 		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 1, MASSE_MISSILE, prefixeExplosion);
 		nbr++;
 		centreG = new CentreGravite(ax, ay);
@@ -132,10 +134,11 @@ public class Missile extends Objet {
 		AffineTransform at = new AffineTransform();
 		at.rotate(angle);
 		at.translate(-10, -25);
+		//at.translate(-15, -50);
 		AffineTransformOp op = new AffineTransformOp (at, 1);
 		Graphics2D g2d =(Graphics2D)g; 													// cast le graphics en graphics2d pour pouvoir appliquer la transformation
 		traj.draw(t, g2d);																// dessine la trajectoire
-		g2d.drawImage(images[(int) t % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
+		g2d.drawImage(images[(int) t/5 % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
 		
 		g.setColor(Color.white);
 		g.setFont(f.deriveFont(15.0f));

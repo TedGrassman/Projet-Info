@@ -37,7 +37,9 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravité)
+
 	CentreGravite centreG; //centre de gravité de l'objet
+<<<<<<< HEAD
 	Area limites; //Hitbox de l'objet
 	Explosion explosion;
 	int nbImEx = 27;
@@ -47,6 +49,18 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	AffineTransform transfo = new AffineTransform();				//AffineTransform "vide" pour pouvoir créer une méthode Collision travaillant avec tout type d'Objets
 
 	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse, String av) {
+=======
+	Area limites; //Hitbox de l'objet
+	Explosion explosion;
+	int nbImEx = 27;
+	static String prefixeExplosion = "Explosion_Sequence_A ";
+	
+	public static ArrayList<Objet> liste = new ArrayList<Objet> ();	//Liste de tous les Objets pour effectuer les opérations
+	AffineTransform transfo = new AffineTransform();				//AffineTransform "vide" pour pouvoir créer une méthode Collision travaillant avec tout type d'Objets
+
+
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse, String av) {
+>>>>>>> refs/heads/Marc
 		NbImages = nbIm;
 		int error = 0; //Si une image n'et pas trouvée, permet de savoir laquelle
 		try {
@@ -68,6 +82,7 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		centreG = new CentreGravite(ax, ay);
 		dx = adx;
 		dy = ady;
+
 		drawX = (int)(x-l/2);	// Initialise les positions drawX et drawY,
 		drawY = (int)(y-h/2);	// correspondant au coin supérieur gauche (affichage de l'image)
 		
@@ -78,7 +93,11 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		this.masse = masse;
 		prefixeExplosion = av;
 		explosion = new Explosion(x, y, nbImEx, prefixeExplosion);
+<<<<<<< HEAD
 		liste.add(this);
+=======
+		liste.add(this);
+>>>>>>> refs/heads/Marc
 	}
 	
 	public Objet Collision(){						//Renvoie l'Astre en collision avec l'Astre appelant la méthode

@@ -332,9 +332,7 @@ public class Jeu extends JFrame {
 					}
 				}
 			}
-			
-			
-			
+
 		}
 		
 		//ACTUALISATION des EXPLOSIONS
@@ -550,5 +548,4 @@ public class Jeu extends JFrame {
 			
 		}
 		
-	}
-} // Fin classe Jeu !!
+	}sse Jeu !!

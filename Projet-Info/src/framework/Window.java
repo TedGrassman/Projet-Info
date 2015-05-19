@@ -48,9 +48,9 @@ public class Window extends JFrame{
         this.addComponentListener(new ComponentListener() {
             public void componentResized(ComponentEvent e) {
             	Framework.resized = true;
-            	if(Framework.gameState==Framework.GameState.PLAYING){
+            	//if(Framework.gameState==Framework.GameState.PLAYING){
                 Framework.gameState=Framework.GameState.VISUALIZING;
-            	}
+            	//}
             }
 
 			@Override

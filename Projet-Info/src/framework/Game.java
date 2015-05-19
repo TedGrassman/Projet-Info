@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class Game {
 	public static boolean Click = false;
 	public static enum ETAT{J1, J2, SIMULATION, PAUSE}
-	public static ETAT etat;
+	public volatile static ETAT etat;
 	Rectangle Ecran; // Les limites de la fenêtre
 	final int MASSE_PLANETE = 500;
 	Station Vaisseau1, Vaisseau2; // L'objet que l'utilisateur va déplacer

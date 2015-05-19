@@ -33,7 +33,7 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	BufferedImage[] images; // Image(s) de l'objet
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
-	String typeObjet; // Type de l'objet											[INUTILE??]
+	public String typeObjet; // Type de l'objet											[INUTILE??]
 	Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravité)

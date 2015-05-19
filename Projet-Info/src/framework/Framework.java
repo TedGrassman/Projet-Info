@@ -16,6 +16,7 @@ import javax.swing.JPanel;
  * @author www.gametutorial.net
  */
 
+@SuppressWarnings("serial")
 public class Framework extends Canvas {
 	JPanel panel = new JPanel();
 	JPanel menu = new JPanel(); 
@@ -25,7 +26,7 @@ public class Framework extends Canvas {
 	JButton exit = new JButton("Ragequit");
 	JButton mainMenu = new JButton("Retour menu");
 	CardLayout layout = new CardLayout();
-	Game.ETAT old = Game.ETAT.J1; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
+	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
@@ -340,15 +341,25 @@ public class Framework extends Canvas {
      * @param e MouseEvent
      */
     @Override
-    public void mouseClicked(MouseEvent e)
-    {
-
+    public void mouseClicked(MouseEvent e) {
+    	if(game!=null){
+    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    			game.mouseClicked=true;
+    		}
+    	}
     }
-    
+    public void mousePressed(MouseEvent e) {
+    	if(game!=null){
+    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    			game.mousePressed=true;
+    		}
+    	}
+    	
+    }
     public void mouseReleased(MouseEvent e) {
     	if(game!=null){
     		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
-    			game.Click=true;
+    			game.mouseReleased=true;
     		}
     	}
     	

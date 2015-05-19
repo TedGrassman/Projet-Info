@@ -3,44 +3,63 @@ package framework;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-//import javafx.scene.shape.Polygon;
-//import javafx.scene.transform.Translate;
-
 import java.awt.geom.GeneralPath;
 import java.awt.image.AffineTransformOp;
 import java.awt.Rectangle;
 
 
 @SuppressWarnings("unused")
-public class Missile extends Astre {
+public class Missile extends Objet {
 
-//	Polygon limites;								//hitbox triangulaire
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
 	double angle; 									//orientation du missile par rapport à la verticale
-	static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
-	Color couleur;									//couleur de la trajectoire
+	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
+	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
+		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
+		"missile1_2.png","missile1_1.png"};			//nom des PNG du missile
+	Color couleur = Color.black;									//couleur de la trajectoire
 	Trajectoire traj;								//trajectoire du missile
-
+	Station station;
+	static String prefixeExplosion = "explosion_missile_";
+	boolean horsLimites = false;
+	static int nbr=0;					// Nombre de missiles créés, s'incrémentent dans constructeur
 
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
-		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE);
+		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE, prefixeExplosion);
+		nbr++;
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
-		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
-		//limites = new Circle(ax, ay, images[0].getWidth(null)/2);
 		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
 		int[]ypoints = {25,-25,25};
 		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
+		this.station = null;
 	}
 	
+	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur, Station station) {
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE, prefixeExplosion);
+		nbr++;
+		centreG = new CentreGravite(ax, ay);
+		angle = 0.0 ;
+		centreG = new CentreGravite(ax, ay);						//Creation du centre de gravité au centre du missile
+		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
+		int[]ypoints = {25,-25,25};
+		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
+		angle = Math.atan2(dy, dx)-Math.PI*3/2;												//Orientation initiale du missile : verticale
+		couleur = acouleur;
+		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
+		this.station = station;
+	}
+
+	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE);
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE, prefixeExplosion);
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
 		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
@@ -49,13 +68,12 @@ public class Missile extends Astre {
 		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
 		int[]ypoints = {25,-25,25};
 		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
-		angle = 0.0 ;												//Orientation initiale du missile : verticale
+		angle = Math.atan2(dy, dx)-Math.PI*3/2;												//Orientation initiale du missile : verticale
 		couleur = acouleur;
 		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
-
+		this.station = null;
 	}
 
-	
 	public void move(long t) {										//déplacement du missile à chaque cycle
 		double xAstre=0.0;
 		double yAstre=0.0;
@@ -87,18 +105,160 @@ public class Missile extends Astre {
 		angle = Math.atan2(dy, dx)-Math.PI*3/2; 					//Met a jour l'orientation du missile
 		transfo.rotate(angle);										//Fait pivoter la hitbox
 		
-		traj.actualisation();										//Actualisation de la trajectoire apres le déplacement
+		traj.actualisation();	//Actualisation de la trajectoire apres le déplacement
+		
+		if (x < limitesframe.getX() - 1000)											//------------------------------
+			this.actif = false;														// Désactivation du missile
+		else if (x > limitesframe.getX() + limitesframe.getWidth() + 1000)			// s'il sort d'une bande
+			this.actif = false;														// de 1000 autour du rectangle
+		if (y < limitesframe.getY() - 1000)											// délimitant l'aire de jeu
+			this.actif = false;														//------------------------------
+		else if (y > limitesframe.getY() + limitesframe.getHeight() + 1000)
+			this.actif = false;
+		
+		if (x < limitesframe.getX() - 10)
+			horsLimites = true;
+		else if (x > limitesframe.getX() + limitesframe.getWidth() + 10)
+			horsLimites = true;
+		if (y < limitesframe.getY() - 10)
+			horsLimites = true;
+		else if (y > limitesframe.getY() + limitesframe.getHeight() + 10)
+			horsLimites = true;
+		else if (x > limitesframe.getX() && x < limitesframe.getX() + limitesframe.getWidth()
+				&& y > limitesframe.getY() && y < limitesframe.getY() + limitesframe.getHeight())
+			horsLimites = false;
 	}
 	
-	public void draw(long t, Graphics g) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation
+	public void draw(long t, Graphics g, Font f) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation
 		
 		AffineTransform at = new AffineTransform();
 		at.rotate(angle);
 		at.translate(-15, -50);
 		AffineTransformOp op = new AffineTransformOp (at, 1);
 		Graphics2D g2d =(Graphics2D)g; 													// cast le graphics en graphics2d pour pouvoir appliquer la transformation
-		g2d.drawImage(images[(int) (t/100000000 % NbImages)], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
 		traj.draw(t, g2d);																// dessine la trajectoire
+		g2d.drawImage(images[currentFrameNumber % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
+		currentFrameNumber++;
+		
+		g.setColor(Color.white);
+		g.setFont(f.deriveFont(15.0f));
+		g.drawString(nom_objet, (int)x, (int)(y+30));
+		g.drawString("x=" +(int)x, (int)x, (int)(y-30));
+		g.drawString("y=" +(int)y, (int)x, (int)(y-18));
+		
+		double xMax = limitesframe.getWidth();
+		double yMax = limitesframe.getHeight(); 
+		double taille = Math.sqrt(Math.pow((limitesframe.getWidth()/2-x)*720/1366, 2)+Math.pow((limitesframe.getHeight()/2-y)*1366/720, 2))/10;
+		double angle = Math.atan2(limitesframe.getWidth()/2-x, limitesframe.getHeight()/2-y);
+		
+		g.setColor(station.color);	
+		
+		if(horsLimites){
+			if(x<0 && y<0){
+				//taille = Math.sqrt(Math.pow((0-x), 2)+Math.pow((0-y), 2))/5;
+				g.drawLine(0, 0, (int)(taille*Math.sin(angle)), (int)(taille*Math.cos(angle)));
+			}
+			//	X	|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+
+			if(x>xMax && y>yMax){
+				//taille = Math.sqrt(Math.pow((xMax-x), 2)+Math.pow((yMax-y), 2))/5;		
+				g.drawLine((int)xMax, (int)yMax, (int)xMax+(int)(taille*Math.sin(angle)),
+						(int)yMax+(int)(taille*Math.cos(angle)));		
+			}
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|	X
+
+			if(x<0 && y>0 && y<yMax){
+				//taille = Math.sqrt(Math.pow((0-x), 2))/2.5;
+				g.drawLine(0, (int)y, 0+(int)(taille*Math.sin(angle)),
+						(int)y+(int)(taille*Math.cos(angle)));
+			}
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//	X	|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|	
+			if(y<0 && x>0 && x<xMax){
+				//taille = Math.sqrt(Math.pow((0-y), 2))/2.5;
+				g.drawLine((int)x, 0, (int)x+(int)(taille*Math.sin(angle)),
+						0+(int)(taille*Math.cos(angle)));
+			}
+			//		|	  X		|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|	
+
+			if(x<0 && y>yMax){
+				//taille = Math.sqrt(Math.pow((0-x), 2)+Math.pow((yMax-y), 2))/5;
+				g.drawLine(0, (int)yMax, 0+(int)(taille*Math.sin(angle)),
+						(int)yMax+(int)(taille*Math.cos(angle)));
+			}
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//	X	|			|	
+
+			if(y<0 && x>xMax){
+				//taille = Math.sqrt(Math.pow((xMax-x), 2)+Math.pow((0-y), 2))/5;
+				g.drawLine((int)xMax, 0, (int)xMax+(int)(taille*Math.sin(angle)),
+						0+(int)(taille*Math.cos(angle)));
+			}			
+			//		|			|	X	
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|	
+
+			if(x>xMax && y>0 && y<yMax){
+				//taille = Math.sqrt(Math.pow((xMax-x), 2))/2.5;
+				g.drawLine((int)xMax, (int)y, (int)xMax+(int)(taille*Math.sin(angle)),
+						(int)y+(int)(taille*Math.cos(angle)));
+			}
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|	X	
+			//______|___________|______
+			//		|			|		
+			//		|			|	
+
+			if(y>yMax && x>0 && x<xMax){
+				//taille = Math.sqrt(Math.pow((yMax-y), 2))/2.5;
+				g.drawLine((int)x, (int)yMax, (int)x+(int)(taille*Math.sin(angle)),
+						(int)yMax+(int)(taille*Math.cos(angle)));
+			}
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|			|		
+			//______|___________|______
+			//		|			|		
+			//		|	  X		|	
+
+			
+		}
+		
 		
 		/*
 		GeneralPath path1 = new GeneralPath();					------------------
@@ -113,15 +273,4 @@ public class Missile extends Astre {
 
 		
 	}
-	/*
-	public void placer(int posx, int posy, double aangle){
-		centreG = new CentreGravite(posx, posy);
-		angle=aangle;
-		limites = new Polygon(posx, posy+25, posx+10, posy-25, posx-10, posy-25);
-		centreG.x = x;
-		centreG.y = y;
-		drawX = (int)(x-l/2);
-		drawY = (int)(y-h/2);
-	}
-	*/
 }

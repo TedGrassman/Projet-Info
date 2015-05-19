@@ -2,7 +2,9 @@ package framework;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -15,13 +17,19 @@ import javax.swing.SwingUtilities;
 @SuppressWarnings("serial")
 public class Window extends JFrame{
         
-    private Window()
+    @SuppressWarnings("unused")
+	private Window()
     {
         // Sets the title for this frame.
         this.setTitle("Star Shooter");
+		try {						// Récupération de l'icône du programme
+			this.setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
+		} catch (Exception err) {
+			System.err.println("Icône introuvable !");
+		}
         
         // Sets size of the frame.
-        if(false) // Full screen mode
+        if(true) // Full screen mode
         {
             // Disables decorations for this frame.
             this.setUndecorated(true);
@@ -31,7 +39,7 @@ public class Window extends JFrame{
         else // Window mode
         {
             // Size of the frame.
-            this.setSize(1400, 800);
+            this.setSize(1366, 768);
             // Puts frame to center of the screen.
             this.setLocationRelativeTo(null);
             // So that frame cannot be resizable by the user.
@@ -39,7 +47,7 @@ public class Window extends JFrame{
         }
         
         // Exit the application when user close frame.
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
         
         // Creates the instance of the Framework.java that extends the Canvas.java and puts it on the frame.
         this.setContentPane(new Framework());
@@ -49,7 +57,7 @@ public class Window extends JFrame{
             public void componentResized(ComponentEvent e) {
             	Framework.resized = true;
             	if(Framework.gameState==Framework.GameState.PLAYING){
-                Framework.gameState=Framework.GameState.VISUALIZING;
+            		Framework.gameState=Framework.GameState.VISUALIZING;
             	}
             }
 

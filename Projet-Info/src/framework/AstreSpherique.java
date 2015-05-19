@@ -30,7 +30,8 @@ public class AstreSpherique extends Astre { 	//Astre de forme sphérique défini p
 	
 	public void draw(long t, Graphics g){
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.drawImage(images[(int) t % NbImages], drawX, drawY, null);
+		g2d.drawImage(images[currentFrameNumber % NbImages], drawX, drawY, null);
+		currentFrameNumber++;
 		
 		/*AffineTransform at = new AffineTransform();
 		GeneralPath path1 = new GeneralPath();				----------

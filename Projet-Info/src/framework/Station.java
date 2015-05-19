@@ -1,6 +1,7 @@
 package framework;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -12,23 +13,28 @@ import java.awt.geom.GeneralPath;
 
 
 @SuppressWarnings("unused")
-public class Station extends Astre {
+public class Station extends Objet {
 
 
 	static String[] NomImage = {"base.png"};
-	//Circle limites;
 	boolean tirFait;
+	Color color = Color.black;	//Couleur de la station, qui sert lors de la création d'un missile par cette station
+	static String prefixeExplosion = "Explosion_Sequence_A ";
 
 	
-	public Station(int ax, int ay, Rectangle aframe, String nom) {
-		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
-
-//		limites = new Circle();
-//		((Circle) limites).setCenterX(ax);
-//		((Circle) limites).setCenterY(ay);
-//		((Circle) limites).setRadius(images[0].getWidth(null)/2);
+	public Station(int ax, int ay, Rectangle aframe, String nom, Color color) {
+		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
 		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
+		this.color = color; 
+	}
+	
+	public Station(int ax, int ay, Rectangle aframe, String nom, Color color, Joueur joueur) {
+		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
+		tirFait = false;
+		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
+		this.color = color;
+		joueur.Stations.add(this);
 	}
 	
 	public void move(long t) {
@@ -49,8 +55,14 @@ public class Station extends Astre {
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null)));	//Actualisation de la hitbox
 	}
 	
-	public void draw(long t, Graphics g){
+	public void draw(long t, Graphics g, Font f){
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
+		
+		g.setColor(Color.white);
+		g.setFont(f.deriveFont(15.0f));
+		g.drawString(nom_objet, (int)x + l/2, (int)(y+15));
+		g.drawString("x=" +(int)x, (int)x + l/2, (int)(y-30));
+		g.drawString("y=" +(int)y, (int)x + l/2, (int)(y-15));
 		
 		/*
 		Graphics2D g2d =(Graphics2D)g;							------------

@@ -18,7 +18,7 @@ import java.awt.Rectangle;
 public class Missile extends Objet {
 
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
-	double angle; 									//orientation du missile par rapport à la verticale
+	double angle, poussée=0.1; 									//orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
 	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
 	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
 		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
@@ -29,6 +29,7 @@ public class Missile extends Objet {
 	static String prefixeExplosion = "explosion_missile_";
 	boolean horsLimites = false;
 	static int nbr=0;					// Nombre de missiles créés, s'incrémentent dans constructeur
+	int lifetime = 1000;
 
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
@@ -75,58 +76,74 @@ public class Missile extends Objet {
 	}
 
 	public void move(long t) {										//déplacement du missile à chaque cycle
-		double xAstre=0.0;
-		double yAstre=0.0;
-		double teta=0.0;
-		int masse = 0;
-		double vitesse=0;
-		for (int i=0; i<liste.size(); i++){							//calcul du déplacement lié à la gravité
-			xAstre = liste.get(i).centreG.x;
-			yAstre = liste.get(i).centreG.y;
-			masse = liste.get(i).masse;
-
-			if(this.centreG.x != xAstre && this.centreG.y != yAstre && !liste.get(i).typeObjet.equals(this.typeObjet)){
-				// determiner angle a partir de deltax et deltay. Calculer force en norme. Projeter en dx dy.
-				teta=Math.atan2(yAstre-this.y, xAstre-this.x);
-				vitesse = (masse*this.masse)/((yAstre-this.y)*(yAstre-this.y)+(xAstre-this.x)*(xAstre-this.x));
-				this.dx = dx+vitesse*Math.cos(teta);
-				this.dy = dy+vitesse*Math.sin(teta);
+		lifetime--;
+		if(lifetime>0){
+			double xAstre=0.0;
+			double yAstre=0.0;
+			double teta=0.0;
+			int masse = 0;
+			Objet astr;
+			double vitesse=0;
+			for (int i=0; i<liste.size(); i++){							//calcul du déplacement lié à la gravité
+				astr = liste.get(i);
+				if(this.centreG.distance(astr.centreG) < 500){
+					
+					xAstre = astr.centreG.x;
+					yAstre = astr.centreG.y;
+					masse = astr.masse;
+					
+					if(this.centreG.x != xAstre && this.centreG.y != yAstre && !astr.typeObjet.equals(this.typeObjet)){
+						// determiner angle a partir de deltax et deltay. Calculer force en norme. Projeter en dx dy.
+						teta=Math.atan2(yAstre-this.y, xAstre-this.x);
+						vitesse = (masse*this.masse)/((yAstre-this.y)*(yAstre-this.y)+(xAstre-this.x)*(xAstre-this.x));
+						this.dx += vitesse*Math.cos(teta);
+						this.dy += vitesse*Math.sin(teta);
+					}
+				}
 			}
+			angle = Math.atan2(dy, dx)-Math.PI*3/2; 					//Met a jour l'orientation du missile
+			dx+= poussée*Math.cos(angle+Math.PI*3/2);
+			dy+= poussée*Math.sin(angle+Math.PI*3/2);
+			
+			this.centreG.x = (centreG.x+this.dx);						//translation des coordonnées du missile
+			this.centreG.y = (centreG.y+this.dy);
+			this.x = x+this.dx;
+			this.y = y+this.dy;
+			this.drawX=(int) (this.drawX+dx);
+			this.drawY=(int) (this.drawY+dy);
+			transfo.setToIdentity();									//Remise à zéro de la transformation affine
+			transfo.translate(this.centreG.x,this.centreG.y);			//Positionne la hitbox
+		
+			transfo.rotate(angle);										//Fait pivoter la hitbox
+			
+			traj.actualisation();	//Actualisation de la trajectoire apres le déplacement
+			
+			if (x < limitesframe.getX() - 500)											//------------------------------
+				this.actif = false;														// Désactivation du missile
+			else if (x > limitesframe.getX() + limitesframe.getWidth() + 1000)			// s'il sort d'une bande
+				this.actif = false;														// de 500 autour du rectangle
+			if (y < limitesframe.getY() - 500)											// délimitant l'aire de jeu
+				this.actif = false;														//------------------------------
+			else if (y > limitesframe.getY() + limitesframe.getHeight() + 1000)
+				this.actif = false;
+			
+			if (x < limitesframe.getX() - 10)
+				horsLimites = true;
+			else if (x > limitesframe.getX() + limitesframe.getWidth() + 10)
+				horsLimites = true;
+			if (y < limitesframe.getY() - 10)
+				horsLimites = true;
+			else if (y > limitesframe.getY() + limitesframe.getHeight() + 10)
+				horsLimites = true;
+			else if (x > limitesframe.getX() && x < limitesframe.getX() + limitesframe.getWidth()
+					&& y > limitesframe.getY() && y < limitesframe.getY() + limitesframe.getHeight())
+				horsLimites = false;
 		}
-		this.centreG.x = (centreG.x+this.dx);						//translation des coordonnées du missile
-		this.centreG.y = (centreG.y+this.dy);
-		this.x = x+this.dx;
-		this.y = y+this.dy;
-		this.drawX=(int) (this.drawX+dx);
-		this.drawY=(int) (this.drawY+dy);
-		transfo.setToIdentity();									//Remise à zéro de la transformation affine
-		transfo.translate(this.centreG.x,this.centreG.y);			//Positionne la hitbox
-	
-		angle = Math.atan2(dy, dx)-Math.PI*3/2; 					//Met a jour l'orientation du missile
-		transfo.rotate(angle);										//Fait pivoter la hitbox
+		else {
+			this.détruire(centreG.x, centreG.y, t);
+		}
 		
-		traj.actualisation();	//Actualisation de la trajectoire apres le déplacement
 		
-		if (x < limitesframe.getX() - 1000)											//------------------------------
-			this.actif = false;														// Désactivation du missile
-		else if (x > limitesframe.getX() + limitesframe.getWidth() + 1000)			// s'il sort d'une bande
-			this.actif = false;														// de 1000 autour du rectangle
-		if (y < limitesframe.getY() - 1000)											// délimitant l'aire de jeu
-			this.actif = false;														//------------------------------
-		else if (y > limitesframe.getY() + limitesframe.getHeight() + 1000)
-			this.actif = false;
-		
-		if (x < limitesframe.getX() - 10)
-			horsLimites = true;
-		else if (x > limitesframe.getX() + limitesframe.getWidth() + 10)
-			horsLimites = true;
-		if (y < limitesframe.getY() - 10)
-			horsLimites = true;
-		else if (y > limitesframe.getY() + limitesframe.getHeight() + 10)
-			horsLimites = true;
-		else if (x > limitesframe.getX() && x < limitesframe.getX() + limitesframe.getWidth()
-				&& y > limitesframe.getY() && y < limitesframe.getY() + limitesframe.getHeight())
-			horsLimites = false;
 	}
 	
 	public void draw(long t, Graphics g, Font f) { // Dessine le missile au temps t dans l'interface graphique g avec la bonne orientation

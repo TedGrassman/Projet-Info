@@ -119,10 +119,12 @@ public class Game {
     public void RestartGame()
     {
     	
-    	score = 0;
+    	score = 0;										//Reinitialisation des variables static
     	Astre.liste= new ArrayList<Astre>();
     	Joueur.Joueurs = new ArrayList<Joueur>();
     	Objet.liste = new ArrayList<Objet> ();
+    	Missile.nbr=0;
+    	
     	Ecran = new Rectangle(Framework.gauche, Framework.haut, Framework.frameWidth
 				- Framework.droite - Framework.gauche, Framework.frameHeight - Framework.bas
 				- Framework.haut);
@@ -231,19 +233,18 @@ public class Game {
 	    		}
 	    		
 	    		// COLLISIONS
-				for(int i=0; i<Objets.size(); i++){
-					Objet O = Objets.get(i);
-					Objet OC = Objets.get(i).Collision();
+				for(int i=0; i<Missiles.size(); i++){
+					Missile O = Missiles.get(i);
+					Objet OC = Missiles.get(i).Collision();
 					if(OC != O){
 						System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);
 						O.actif = false;
-						if(OC.typeObjet != "AstreSpherique")
-							OC.actif = false;
+						
 						if(O.typeObjet == "Missile"){
 							O.explosion.activer(O.x, O.y, gameTime);
 						}
 						if(OC.typeObjet == "Station"){
-							OC.détruire(OC.x, OC.y, gameTime);
+							OC.détruire(OC.centreG.x, OC.centreG.y, gameTime);
 						}
 					}
 				}
@@ -295,12 +296,14 @@ public class Game {
 						etat=ETAT.FIN;
 						finJeu = true;
 						//etat = ETAT.FIN;
-						if(!Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty())
+						if(!Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty()){
 							winner = "Joueur 1 gagne !";
-							stationGagnante = Joueur2.Stations.get(0);
-						if(Joueur1.Stations.isEmpty() && !Joueur2.Stations.isEmpty())
+							stationGagnante = Joueur1.Stations.get(0);
+						}
+						if(Joueur1.Stations.isEmpty() && !Joueur2.Stations.isEmpty()){
 							winner = "Joueur 2 gagne !";
 							stationGagnante = Joueur2.Stations.get(0);
+						}
 						if(Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty())
 							winner = "      Egalité !";
 					}

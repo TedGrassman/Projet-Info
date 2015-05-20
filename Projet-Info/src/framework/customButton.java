@@ -32,13 +32,13 @@ public class customButton extends JButton implements MouseListener, ActionListen
 		
 		this.libellé=libellé;
 		
-		switch(libellé){
-		case "Lancer une partie":
+		//switch(libellé){
+		//case "Lancer une partie":
 			NomImage[0]="LP0.png";
 			NomImage[1]="LP1.png";
 			NomImage[2]="LP2.png";
-			break;
-		}
+			//break;
+		//}
 		
 		try {
 			for (int k = 0; k < 3; k++)

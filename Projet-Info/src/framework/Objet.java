@@ -114,7 +114,6 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	}
 
 	public void draw(long t, Graphics g, Font f) { // Dessine l'objet au temps t dans l'interface graphique g
-		//g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 		g.drawImage(images[currentFrameNumber % NbImages], drawX, drawY, null);
 		currentFrameNumber++;
 	}

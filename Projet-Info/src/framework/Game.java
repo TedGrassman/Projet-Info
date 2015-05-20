@@ -192,8 +192,8 @@ public class Game {
 								if(mouseReleased){
 									int x, y;
 									double angle=Math.atan2(my-stationCourante.y, mx-stationCourante.x);
-									x = (int) (stationCourante.x+(stationCourante.l/2 + 25)*Math.cos(angle));
-									y = (int) (stationCourante.y+(stationCourante.h/2 + 25)*Math.sin(angle));
+									x = (int) (stationCourante.x+(stationCourante.l/2 + 27)*Math.cos(angle));
+									y = (int) (stationCourante.y+(stationCourante.h/2 + 27)*Math.sin(angle));
 									vecteurMissile = false;
 									String nom = "Missile Station n°"+(j+1);
 									Missile missile = new Missile(x, y, (float)((mx-S.centreG.x)/100), (float)((my-S.centreG.y)/100), Ecran, nom, S.color, S);

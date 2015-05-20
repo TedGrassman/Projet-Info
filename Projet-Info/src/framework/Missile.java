@@ -47,7 +47,6 @@ public class Missile extends Objet {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE, prefixeExplosion);
 		nbr++;
 		centreG = new CentreGravite(ax, ay);
-		angle = 0.0 ;
 		centreG = new CentreGravite(ax, ay);						//Creation du centre de gravité au centre du missile
 		int[]xpoints = {-10,0,10};									//Creation des tableaux de coordonnées du triangle de hitbox
 		int[]ypoints = {25,-25,25};

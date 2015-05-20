@@ -53,7 +53,6 @@ public class Window extends JFrame{
         
         // Creates the instance of the Framework.java that extends the Canvas.java and puts it on the frame.
         this.setContentPane(new Framework());
-        
         this.setVisible(true);
         this.addComponentListener(new ComponentListener() {
             public void componentResized(ComponentEvent e) {

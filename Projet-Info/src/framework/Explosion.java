@@ -83,6 +83,7 @@ public class Explosion {
 			g.drawImage(images[(int) ((currentFrameNumber-1) % NbImages)], drawX, drawY, null);
 			System.out.println("EXPLOSION");
 			currentFrameNumber++;
+			actualisation(t);
 		}
 	}
 	
@@ -91,7 +92,6 @@ public class Explosion {
 		y = ay;
 		actif = true;
 		//t0 = t;
-		actif = true;
 		drawX = (int)(x-l/2);
 		drawY = (int)(y-h/2);
 	}

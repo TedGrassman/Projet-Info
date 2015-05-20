@@ -349,14 +349,14 @@ public class Framework extends Canvas {
     @Override
     public void mouseClicked(MouseEvent e) {
     	if(game!=null){
-    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    		if(game.etat == Game.ETAT.PREPARATION){
     			game.mouseClicked=true;
     		}
     	}
     }
     public void mousePressed(MouseEvent e) {
     	if(game!=null){
-    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    		if(game.etat == Game.ETAT.PREPARATION){
     			game.mousePressed=true;
     		}
     	}
@@ -364,7 +364,7 @@ public class Framework extends Canvas {
     }
     public void mouseReleased(MouseEvent e) {
     	if(game!=null){
-    		if(game.etat != Game.ETAT.PAUSE && game.etat != Game.ETAT.SIMULATION){
+    		if(game.etat == Game.ETAT.PREPARATION){
     			game.mouseReleased=true;
     		}
     	}

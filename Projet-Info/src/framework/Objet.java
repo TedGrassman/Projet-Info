@@ -113,6 +113,11 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		g.drawImage(images[currentFrameNumber % NbImages], drawX, drawY, null);
 		currentFrameNumber++;
 	}
+	
+	public void détruire(double ax, double ay, long t){
+		this.explosion.activer(ax, ay, t);
+		this.actif=false;
+	}
 
 	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la liberté de mouvement
 

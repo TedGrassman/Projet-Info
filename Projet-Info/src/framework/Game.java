@@ -29,7 +29,6 @@ public class Game {
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
-	ArrayList<Trajectoire> Trajectoires; // Liste de toutes les trajectoires
 	ArrayList<Station> Stations; // Liste de toutes les stations
 	int score; // Score du joueur
 	Font font1, font2; // Objet de police d'écriture
@@ -76,7 +75,6 @@ public class Game {
 		score = 0;
 		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
-		Trajectoires = new ArrayList<Trajectoire>(); // Créer la liste chainée en mémoire
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
 		
 		Joueur1 = new Joueur("isHuman", "Joueur 1");
@@ -93,24 +91,6 @@ public class Game {
 		Objets.add(Planet1);
 		
 		stationGagnante = null;
-		
-//		Missile1 = new Missile(650, 600, 2.5f, 1f, Ecran, "Missile1", Color.RED);
-//		Missile2 = new Missile(700, 700, 1.5f, -1.5f, Ecran, "Missile2", Color.GREEN);
-//		Missile3 = new Missile(100, 300, 1f, 2f, Ecran, "Missile3", Color.BLUE);
-//		Missile4 = new Missile(300, 650, -0.5f, -1f, Ecran, "Missile4", Color.YELLOW);
-//		Missile5 = new Missile(1100, 550, -1.5f, 2f, Ecran, "Missile5", Color.WHITE);
-//		
-//		Objets.add(Missile1);
-//		Objets.add(Missile2);
-//		Objets.add(Missile3);
-//		Objets.add(Missile4);
-//		Objets.add(Missile5);
-//		
-//		Missiles.add(Missile1);
-//		Missiles.add(Missile2);
-//		Missiles.add(Missile3);
-//		Missiles.add(Missile4);
-//		Missiles.add(Missile5);
 		
 		try { // Récupération de la police d'écriture
 			font1 = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
@@ -138,37 +118,37 @@ public class Game {
      */
     public void RestartGame()
     {
-    	etat=ETAT.PREPARATION;
+    	
     	score = 0;
     	Astre.liste= new ArrayList<Astre>();
+    	Joueur.Joueurs = new ArrayList<Joueur>();
+    	Objet.liste = new ArrayList<Objet> ();
+    	Ecran = new Rectangle(Framework.gauche, Framework.haut, Framework.frameWidth
+				- Framework.droite - Framework.gauche, Framework.frameHeight - Framework.bas
+				- Framework.haut);
+    	
 		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
-		Trajectoires = new ArrayList<Trajectoire>(); // Créer la liste chainée en mémoire
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
-		
-		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-		Objets.add(Planet1);
 		
 		Joueur1 = new Joueur("isHuman", "Joueur 1");
 		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station(100, 100, Ecran,"DeathStar 1", Color.RED, Joueur1);
-		Station2 = new Station((int) (Ecran.getWidth() - 100), (int) (Ecran.getHeight() - 100), Ecran,"DeathStar 2", Color.BLUE, Joueur2);
+		Station1 = new Station(400, 300, Ecran,"DeathStar 1", Color.red, Joueur1);
+		Station2 = new Station((int) (Ecran.getWidth() - 400), (int) (Ecran.getHeight() - 300), Ecran,"DeathStar 2", Color.blue, Joueur2);
 		Objets.add(Station1);
 		Objets.add(Station2);
 		Stations.add(Station1);
 		Stations.add(Station2);
 		
+		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Objets.add(Planet1);
+		
 		stationGagnante = null;
-
-//		Missiles.add(Missile1);
-//		Missiles.add(Missile2);
-//		Missiles.add(Missile3);
-//		Missiles.add(Missile4);
-//		Missiles.add(Missile5);
 		
-		
+		etat=ETAT.PREPARATION;
 		compt=0;
+		mouseClicked = mousePressed = mouseReleased;
     }
     
     
@@ -263,21 +243,21 @@ public class Game {
 							O.explosion.activer(O.x, O.y, gameTime);
 						}
 						if(OC.typeObjet == "Station"){
-							OC.explosion.activer(OC.x, OC.y, gameTime);
+							OC.détruire(OC.x, OC.y, gameTime);
 						}
 					}
 				}
 				
-				//ACTUALISATION des EXPLOSIONS
+				/*//ACTUALISATION des EXPLOSIONS
 				for(int i=0; i<Explosion.liste.size(); i++){
 					Explosion.liste.get(i).actualisation(gameTime);
 				}
-				
+				*/
 				//ACTUALISATION des TRAJECTOIRES
-				for(int i=0; i<Trajectoires.size(); i++){
+				/*for(int i=0; i<Trajectoires.size(); i++){
 					Trajectoires.get(i).actualisation();
 				}
-				
+				*/
 				// GARBAGE COLLECTOR
 				
 				for (int k = 0; k < Objets.size(); k++) {
@@ -309,26 +289,33 @@ public class Game {
 					}
 				}
 				
-//				if (Missiles.isEmpty()){
-//					etat = ETAT.PREPARATION;
-//					if(Stations1.isEmpty() || Stations2.isEmpty()){
-//						debutTour = true;
-//						finJeu = true;
-//						//etat = ETAT.FIN;
-//						if(!Stations1.isEmpty() && Stations2.isEmpty())
-//							winner = "Joueur 1 gagne !";
-//							stationGagnante = Stations1.get(0);
-//						if(Stations1.isEmpty() && !Stations2.isEmpty())
-//							winner = "Joueur 2 gagne !";
-//							stationGagnante = Stations2.get(0);
-//						if(Stations1.isEmpty() && Stations2.isEmpty())
-//							winner = "      Egalité !";
-//					}
-//				}
+				if (Missiles.isEmpty()){
+					
+					if(Joueur1.Stations.isEmpty() || Joueur2.Stations.isEmpty()){
+						etat=ETAT.FIN;
+						finJeu = true;
+						//etat = ETAT.FIN;
+						if(!Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty())
+							winner = "Joueur 1 gagne !";
+							stationGagnante = Joueur2.Stations.get(0);
+						if(Joueur1.Stations.isEmpty() && !Joueur2.Stations.isEmpty())
+							winner = "Joueur 2 gagne !";
+							stationGagnante = Joueur2.Stations.get(0);
+						if(Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty())
+							winner = "      Egalité !";
+					}
+					else{
+						etat = ETAT.PREPARATION;
+						debutTour = true;
+						Joueur1.rearme();
+						Joueur2.rearme();
+					}
+					
+				}
 				
 	    		break;
 	    	
-	    	case PAUSE:
+	    	case PAUSE: //ne fait rien (jeu freezé)
 	    		break;
 	    	
 			case FIN:

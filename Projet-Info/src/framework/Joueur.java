@@ -16,4 +16,10 @@ public class Joueur {
 		Stations = new ArrayList<Station>();
 		Joueurs.add(this);
 	}
+	
+	public void rearme(){
+		for(int i=0; i<Stations.size(); i++){
+			Stations.get(i).tirFait=false;
+		}
+	}
 }

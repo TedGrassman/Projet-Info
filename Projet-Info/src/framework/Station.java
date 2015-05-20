@@ -20,6 +20,7 @@ public class Station extends Objet {
 	boolean tirFait;
 	Color color = Color.black;	//Couleur de la station, qui sert lors de la création d'un missile par cette station
 	static String prefixeExplosion = "Explosion_Sequence_A ";
+	Joueur joueur;
 
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom, Color color) {
@@ -34,6 +35,7 @@ public class Station extends Objet {
 		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
 		this.color = color;
+		this.joueur=joueur;
 		joueur.Stations.add(this);
 	}
 	
@@ -73,5 +75,10 @@ public class Station extends Objet {
         g2d.fill(path1);
         g2d.draw(path1.getBounds());
 		*/
+	}
+	
+	public void détruire(double ax, double ay, long t){
+		super.détruire(ax, ay, t);
+		joueur.Stations.remove(this);
 	}
 }

@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
+import javax.swing.event.ChangeListener;
 
 /**
  * Create a JPanel on which we draw and listen for keyboard and mouse events.
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
  * @author www.gametutorial.net
  */
 
-public abstract class Canvas extends JPanel implements KeyListener, MouseListener, ActionListener {
+public abstract class Canvas extends JPanel implements KeyListener, MouseListener, ActionListener, ChangeListener {
 	
     // Keyboard states - Here are stored states for keyboard keys - is it down or not.
     private static boolean[] keyboardState = new boolean[525];

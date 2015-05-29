@@ -1,6 +1,8 @@
 package framework;
 
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -11,8 +13,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
 
 /**
  * Framework that controls the game (Game.java) that created it, update it and draw it on the screen.
@@ -23,11 +30,13 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
 	JPanel panel = new JPanel();
-	JPanel card1 = new JPanel(), card2 = new JPanel();
+	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
-	customButton play, reprendre, settings, exit, menu;
+	customButton play, reprendre, settings, exit, menu, menu2;
+	JSlider sliderPoussee;
+	customText mainMenu;
 
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
@@ -92,35 +101,70 @@ public class Framework extends Canvas {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        menuPrincipal.setLayout((new BoxLayout(menuPrincipal, BoxLayout.Y_AXIS)));
+        menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
+        menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
         play = new customButton("Lancer une partie");				//initialise les boutons
-    	reprendre = new customButton ("Reprendre la partie");
+        play.setAlignmentX(Component.CENTER_ALIGNMENT);				//centre horizontalement les boutons
+        reprendre = new customButton ("Reprendre la partie");
+        reprendre.setAlignmentX(Component.CENTER_ALIGNMENT);
     	settings = new customButton ("Options du jeu");
+    	settings.setAlignmentX(Component.CENTER_ALIGNMENT);
     	exit = new customButton ("Quitter le jeu");
+    	exit.setAlignmentX(Component.CENTER_ALIGNMENT);
     	menu = new customButton ("Retour au menu");
+    	menu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	menu2 = new customButton ("Retour au menu");
+    	menu2.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	mainMenu = new customText("MENU PRINCIPAL");
+    	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
     	
     	play.addActionListener(this);								//crée les listeners
     	settings.addActionListener(this);
     	exit.addActionListener(this);
     	reprendre.addActionListener(this);
     	menu.addActionListener(this);
-
+    	menu2.addActionListener(this);
     	
-        card1.add(play);											//ajoute les boutons dans les cartes
-        card1.add(settings);										//une carte = un menu
-        card1.add(exit);
-        card2.add(reprendre);
-        card2.add(menu);
+    	menuPrincipal.add(mainMenu);
+    	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(play);											//ajoute les boutons dans les cartes
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(settings);										//une carte = un menu
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(exit);
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPause.add(reprendre);
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPause.add(menu);
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        
+        sliderPoussee = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);	// slider horizontal, min 0, max 10, défaut à 5
+        sliderPoussee.setOpaque(false);								//fond transparent
+        sliderPoussee.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sliderPoussee.setMajorTickSpacing(1);						//espacement et dessin des crans
+        sliderPoussee.setPaintTicks(true);
+        sliderPoussee.setPaintLabels(true);							//dessin des chiffres sous les crans
+        
+        sliderPoussee.addChangeListener(this);
+        
+        menuOptions.add(sliderPoussee);
+        menuOptions.add(menu2);
 
         
         panel.setLayout(layout);									//définit le layout du panel principal en type "card"
         panel.setOpaque(false);										//arrière plan transparent
         
-        card1.setOpaque(false);
-        card2.setOpaque(false);
+        menuPrincipal.setOpaque(false);
+        menuPause.setOpaque(false);
+        menuOptions.setOpaque(false);
         
     	
-    	panel.add(card1, "mDepart");								//ajoute les cartes au panel principal
-    	panel.add(card2, "mPause");
+    	panel.add(menuPrincipal, "mDepart");								//ajoute les cartes au panel principal
+    	panel.add(menuPause, "mPause");
+    	panel.add(menuOptions, "mOptions");
     	layout.show(panel, "mDepart");								//affiche la première carte
     	add(panel);													//ajoute le panel au framework
         gameState = GameState.VISUALIZING;
@@ -407,8 +451,8 @@ public class Framework extends Canvas {
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
-
-    	   } else if (source == menu){
+    		   layout.show(panel, "mOptions");
+    	   } else if (source == menu || source == menu2){
     		   layout.show(panel, "mDepart");
     		   
     	   } else if (source == reprendre){
@@ -417,4 +461,17 @@ public class Framework extends Canvas {
      		   this.validate();
     	   }
     }
+
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		Object source = e.getSource();
+		if(source == sliderPoussee){
+			if (!sliderPoussee.getValueIsAdjusting()) {
+				double val = sliderPoussee.getValue();
+				Missile.poussée=val/50;
+			}
+
+		}
+	}
 }

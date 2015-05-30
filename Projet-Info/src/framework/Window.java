@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
 public class Window extends JFrame{
         
     @SuppressWarnings("unused")
-	private Window()
+	public Window()
     {
         // Sets the title for this frame.
         this.setTitle("Star Shooter");
@@ -82,9 +82,7 @@ public class Window extends JFrame{
 			}
         });
     }
-
-    public static void main(String[] args)
-    {
+    public static void main(String[] args)  {
         // Use the event dispatch thread to build the UI for thread-safety.
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -93,4 +91,5 @@ public class Window extends JFrame{
             }
         });
     }
+    
 }

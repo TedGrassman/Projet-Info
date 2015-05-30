@@ -15,10 +15,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 /**
@@ -29,7 +27,7 @@ import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
-	Son musiqueMenu;
+	mp3 musiqueMenu;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel();
 	CardLayout layout = new CardLayout();
@@ -176,7 +174,7 @@ public class Framework extends Canvas {
     	layout.show(panel, "mDepart");								//affiche la première carte
     	add(panel);													//ajoute le panel au framework
         
-    	musiqueMenu = new Son ("res/sons/menu.wav");
+    	musiqueMenu = new mp3 ("res/sons/menu.mp3");
     	
     	
     	
@@ -464,6 +462,7 @@ public class Framework extends Canvas {
     	   Object source = event.getSource();
 
     	   if (source == exit) {
+    		   musiqueMenu.stop();
     	       System.exit(0);
     	   } else if (source == play) {
     	       gameState= GameState.STARTING;

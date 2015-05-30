@@ -1,6 +1,8 @@
 package framework;
 
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -11,8 +13,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
 
 /**
  * Framework that controls the game (Game.java) that created it, update it and draw it on the screen.
@@ -22,12 +29,15 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
+	Son musiqueMenu;
 	JPanel panel = new JPanel();
-	JPanel card1 = new JPanel(), card2 = new JPanel();
+	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
-	customButton play, reprendre, settings, exit, menu;
+	customButton play, reprendre, settings, exit, menu, menu2;
+	JSlider sliderPoussee;
+	customText textMenu, textOptions, poussée;
 
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
@@ -66,7 +76,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED, PAUSE}
     /**
      * Current state of the game
      */
@@ -92,38 +102,84 @@ public class Framework extends Canvas {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        menuPrincipal.setLayout((new BoxLayout(menuPrincipal, BoxLayout.Y_AXIS)));
+        menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
+        menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
         play = new customButton("Lancer une partie");				//initialise les boutons
-    	reprendre = new customButton ("Reprendre la partie");
+        play.setAlignmentX(Component.CENTER_ALIGNMENT);				//centre horizontalement les boutons
+        reprendre = new customButton ("Reprendre la partie");
+        reprendre.setAlignmentX(Component.CENTER_ALIGNMENT);
     	settings = new customButton ("Options du jeu");
+    	settings.setAlignmentX(Component.CENTER_ALIGNMENT);
     	exit = new customButton ("Quitter le jeu");
+    	exit.setAlignmentX(Component.CENTER_ALIGNMENT);
     	menu = new customButton ("Retour au menu");
+    	menu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	menu2 = new customButton ("Retour au menu");
+    	menu2.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	textMenu = new customText("MENU PRINCIPAL", 60);
+    	textMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	textOptions = new customText("OPTIONS", 60);
+    	textOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	poussée = new customText("Force de poussée des missiles", 30);
+    	poussée.setAlignmentX(Component.CENTER_ALIGNMENT);
     	
     	play.addActionListener(this);								//crée les listeners
     	settings.addActionListener(this);
     	exit.addActionListener(this);
     	reprendre.addActionListener(this);
     	menu.addActionListener(this);
-
+    	menu2.addActionListener(this);
     	
-        card1.add(play);											//ajoute les boutons dans les cartes
-        card1.add(settings);										//une carte = un menu
-        card1.add(exit);
-        card2.add(reprendre);
-        card2.add(menu);
+    	menuPrincipal.add(textMenu);
+    	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(play);											//ajoute les boutons dans les cartes
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(settings);										//une carte = un menu
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPrincipal.add(exit);
+        menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPause.add(reprendre);
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuPause.add(menu);
+        menuPause.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        
+        sliderPoussee = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);	// slider horizontal, min 0, max 10, défaut à 5
+        sliderPoussee.setOpaque(false);								//fond transparent
+        sliderPoussee.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sliderPoussee.setMajorTickSpacing(1);						//espacement et dessin des crans
+        sliderPoussee.setPaintTicks(true);
+        sliderPoussee.setPaintLabels(true);							//dessin des chiffres sous les crans
+        
+        sliderPoussee.addChangeListener(this);
+        
+        menuOptions.add(textOptions);
+        menuOptions.add(poussée);
+        menuOptions.add(sliderPoussee);
+        menuOptions.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuOptions.add(menu2);
 
         
         panel.setLayout(layout);									//définit le layout du panel principal en type "card"
         panel.setOpaque(false);										//arrière plan transparent
         
-        card1.setOpaque(false);
-        card2.setOpaque(false);
+        menuPrincipal.setOpaque(false);
+        menuPause.setOpaque(false);
+        menuOptions.setOpaque(false);
         
     	
-    	panel.add(card1, "mDepart");								//ajoute les cartes au panel principal
-    	panel.add(card2, "mPause");
+    	panel.add(menuPrincipal, "mDepart");								//ajoute les cartes au panel principal
+    	panel.add(menuPause, "mPause");
+    	panel.add(menuOptions, "mOptions");
     	layout.show(panel, "mDepart");								//affiche la première carte
     	add(panel);													//ajoute le panel au framework
-        gameState = GameState.VISUALIZING;
+        
+    	musiqueMenu = new Son ("res/sons/menu.wav");
+    	
+    	
+    	gameState = GameState.VISUALIZING;
         
         //We start game in new thread.
         Thread gameThread = new Thread("boucle jeu") {
@@ -142,7 +198,6 @@ public class Framework extends Canvas {
      */
     private void Initialize()
     {
-    	
     }
     
     /**
@@ -185,6 +240,8 @@ public class Framework extends Canvas {
                 case MAIN_MENU:
                     //...
                 break;
+                case PAUSE:
+                break;
                 case OPTIONS:
                     //...
                 break;
@@ -196,7 +253,7 @@ public class Framework extends Canvas {
                     Initialize();
                     // Load files - images, sounds, ...
                     LoadContent();
-                    
+                    musiqueMenu.stop();
                     // When all things that are called above finished, we change game status to main menu.
                     gameState = GameState.PLAYING;
                     newGame();
@@ -214,7 +271,7 @@ public class Framework extends Canvas {
                         haut=this.getInsets().top;
                         droite=this.getInsets().right;
                         bas=this.getInsets().bottom;
-                        bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_FAST);
+                        bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
                         
                         // When we get size of frame we change status.
                         if(resized && game !=null){
@@ -225,6 +282,8 @@ public class Framework extends Canvas {
                         }
                         else{
                         	gameState = GameState.MAIN_MENU;
+                        	musiqueMenu.jouer();
+                        	musiqueMenu.boucle();
                         }
                         
                     }
@@ -269,11 +328,15 @@ public class Framework extends Canvas {
                 //...
             break;
             case MAIN_MENU:
-            	
+            	layout.show(panel, "mDepart");
+            	panel.setVisible(true);
+            break;
+            case PAUSE:
+            	layout.show(panel, "mPause");
             	panel.setVisible(true);
             break;
             case OPTIONS:
-                //...
+            	layout.show(panel, "mOptions");
             break;
             case GAME_CONTENT_LOADING:
                 g2d.drawString("CHARGEMENT", frameWidth-200, frameHeight-50);
@@ -347,24 +410,22 @@ public class Framework extends Canvas {
     @Override
     public void keyReleasedFramework(KeyEvent e)
     {	
-    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
-    		if(game !=null){
-	    		if(old != Game.ETAT.PAUSE){
-	    			layout.show(panel, "mPause");
+    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){	//si la touche échap est pressée...
+    		//System.out.println(gameState);     DEBBUGING
+    		if(game !=null){					//on vérifie que le jeu existe
+	    		if(gameState==GameState.PAUSE){	//si le jeu est en pause...
+	    				game.etat=old;					//on restaure son état d'avant la pause
+	    				gameState = GameState.PLAYING;	//et on le relance
+	    				return;							//on force le retour car sinon le "if" suivant se lance immédiatement
 	    		}
-	    		if(gameState==GameState.MAIN_MENU){
-	    			//panel.setVisible(false);
-	     		   gameState = GameState.PLAYING;
-	     		   game.etat=old;
-	    		}
-	    		else{
-	    			old = game.etat;
-	    			game.etat=Game.ETAT.PAUSE;
-	    			gameState=GameState.MAIN_MENU;
+	    		if(gameState == GameState.PLAYING){		//si on joue
+	    			old = game.etat;					//on stocke l'etat dans lequel était le jeu
+	    			game.etat=Game.ETAT.PAUSE;			//on le met en pause
+	    			gameState=GameState.PAUSE;			//on affiche le menu pause
 	    		}
     		}
-        System.out.println(e);
     	}
+    	
     }
     
     /**
@@ -407,14 +468,35 @@ public class Framework extends Canvas {
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
-
-    	   } else if (source == menu){
-    		   layout.show(panel, "mDepart");
+    		   gameState= GameState.OPTIONS;
+    		   this.validate();
+    	   } else if (source == menu || source == menu2){
+    		   
+    		   if(source == menu){
+    			   musiqueMenu.jouer();
+    			   musiqueMenu.boucle();
+    			   Game.etat = Game.ETAT.FIN;
+    		   }
+    		   gameState = GameState.MAIN_MENU;
     		   
     	   } else if (source == reprendre){
+    		   musiqueMenu.stop();
     		   gameState = GameState.PLAYING;
      		   game.etat=old;
      		   this.validate();
     	   }
     }
+
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		Object source = e.getSource();
+		if(source == sliderPoussee){
+			if (!sliderPoussee.getValueIsAdjusting()) {
+				double val = sliderPoussee.getValue();
+				Missile.poussée=val/50;
+			}
+
+		}
+	}
 }

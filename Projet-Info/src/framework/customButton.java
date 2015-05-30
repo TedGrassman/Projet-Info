@@ -3,7 +3,10 @@ package framework;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -12,12 +15,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.border.EmptyBorder;
 
 public class customButton extends JButton implements MouseListener, ActionListener {
 	
 	BufferedImage[] images = new BufferedImage[3];
+	
+	Son sonBoutonClic, sonBoutonEntered;
 	
 	String[] NomImage = new String[3];
 	String libellé;
@@ -26,11 +33,14 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	int state=0;
 	
 	public customButton(String libellé){
-		super(libellé);
+		super();
 		enableInputMethods(true);
 		addMouseListener(this);
-		
+		this.setBorder(BorderFactory.createEmptyBorder(50, 0, 5, 0));
 		this.libellé=libellé;
+		
+		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
+    	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
 		
 		//switch(libellé){
 		//case "Lancer une partie":
@@ -64,15 +74,23 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	}
 	
 	public void paintComponent(Graphics g) {
-		//super.paintComponent(g);
+		this.paintBorder(g);
 		g.drawImage(images[state], 0, 0, null);
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Harrington", 1, 20));
-		g.drawString(libellé, l/2-90, h/2+5);
+		drawCenteredString(libellé, g);
 	}
-	protected void paintBorder(Graphics g){
-		
-	}
+	
+	public void drawCenteredString(String s, Graphics g) {
+	    FontMetrics fm = g.getFontMetrics();
+	    int x = (l - fm.stringWidth(s)) / 2;
+	    int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
+	    Graphics2D g2d = (Graphics2D)g.create();					//anti aliasing sur le texte
+	    g2d.setRenderingHint(
+	            RenderingHints.KEY_TEXT_ANTIALIASING,
+	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	    g2d.drawString(s, x, y);
+	  }
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -84,6 +102,7 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		state=2;
+		sonBoutonClic.jouer();
 	}
 
 	@Override
@@ -96,6 +115,8 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		state=1;
+		sonBoutonClic.stop();
+		sonBoutonEntered.jouer();
 	}
 
 	@Override

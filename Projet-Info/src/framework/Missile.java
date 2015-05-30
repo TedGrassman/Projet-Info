@@ -18,7 +18,8 @@ import java.awt.Rectangle;
 public class Missile extends Objet {
 
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
-	double angle, poussée=0.01; 									//orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
+	double angle; 									//orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
+	static double poussée=0.01;
 	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
 	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
 		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
@@ -30,7 +31,7 @@ public class Missile extends Objet {
 	boolean horsLimites = false;
 	static int nbr=0;					// Nombre de missiles créés, s'incrémentent dans constructeur
 	int lifetime = 1000;
-
+	
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
 		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE, prefixeExplosion);
@@ -156,11 +157,11 @@ public class Missile extends Objet {
 		g2d.drawImage(images[currentFrameNumber % NbImages], op, (int)centreG.x, (int)centreG.y);	// dessine l'image
 		currentFrameNumber++;
 		
-		g.setColor(Color.white);
-		g.setFont(f.deriveFont(15.0f));
-		g.drawString(nom_objet, (int)x, (int)(y+30));
-		g.drawString("x=" +(int)x, (int)x, (int)(y-30));
-		g.drawString("y=" +(int)y, (int)x, (int)(y-18));
+//		g.setColor(Color.white);
+//		g.setFont(f.deriveFont(15.0f));
+//		g.drawString(nom_objet, (int)x, (int)(y+30));
+//		g.drawString("x=" +(int)x, (int)x, (int)(y-30));
+//		g.drawString("y=" +(int)y, (int)x, (int)(y-18));
 		
 		double xMax = limitesframe.getWidth();
 		double yMax = limitesframe.getHeight(); 

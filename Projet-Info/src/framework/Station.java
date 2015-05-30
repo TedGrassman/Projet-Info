@@ -60,11 +60,11 @@ public class Station extends Objet {
 	public void draw(long t, Graphics g, Font f){
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 		
-		g.setColor(Color.white);
-		g.setFont(f.deriveFont(15.0f));
-		g.drawString(nom_objet, (int)x + l/2, (int)(y+15));
-		g.drawString("x=" +(int)x, (int)x + l/2, (int)(y-30));
-		g.drawString("y=" +(int)y, (int)x + l/2, (int)(y-15));
+//		g.setColor(Color.white);
+//		g.setFont(f.deriveFont(15.0f));
+//		g.drawString(nom_objet, (int)x + l/2, (int)(y+15));
+//		g.drawString("x=" +(int)x, (int)x + l/2, (int)(y-30));
+//		g.drawString("y=" +(int)y, (int)x + l/2, (int)(y-15));
 		
 		/*
 		Graphics2D g2d =(Graphics2D)g;							------------

@@ -23,9 +23,11 @@ public class Game {
 	Rectangle Ecran; // Les limites de la fenêtre
 	final int MASSE_PLANETE = 500;
 	
+	static Son sonExplosion = new Son("res/sons/explosion-sourde.wav");
+	
 	Joueur Joueur1, Joueur2;
 	Station Station1, Station2; // L'objet que l'utilisateur va déplacer
-	AstreSpherique Planet1;
+	AstreSpherique Planet1, Planet2;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
@@ -80,16 +82,17 @@ public class Game {
 		Joueur1 = new Joueur("isHuman", "Joueur 1");
 		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station(400, 300, Ecran,"DeathStar 1", Color.red, Joueur1);
-		Station2 = new Station((int) (Ecran.getWidth() - 400), (int) (Ecran.getHeight() - 300), Ecran,"DeathStar 2", Color.blue, Joueur2);
+		Station1 = new Station(200, 100, Ecran,"DeathStar 1", Color.red, Joueur1);
+		Station2 = new Station((int) (Ecran.getWidth() - 200), (int) (Ecran.getHeight() - 100), Ecran,"DeathStar 2", Color.blue, Joueur2);
 		Objets.add(Station1);
 		Objets.add(Station2);
 		Stations.add(Station1);
 		Stations.add(Station2);
 		
-		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
+		Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
 		Objets.add(Planet1);
-		
+		Objets.add(Planet2);
 		stationGagnante = null;
 		
 		try { // Récupération de la police d'écriture
@@ -242,6 +245,7 @@ public class Game {
 						
 						if(O.typeObjet == "Missile"){
 							O.explosion.activer(O.x, O.y, gameTime);
+							sonExplosion.jouer();
 						}
 						if(OC.typeObjet == "Station"){
 							OC.détruire(OC.centreG.x, OC.centreG.y, gameTime);

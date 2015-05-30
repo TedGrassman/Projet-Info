@@ -29,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
+	Son musiqueMenu;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel();
 	CardLayout layout = new CardLayout();
@@ -36,7 +37,7 @@ public class Framework extends Canvas {
 	Image bg;
 	customButton play, reprendre, settings, exit, menu, menu2;
 	JSlider sliderPoussee;
-	customText mainMenu;
+	customText textMenu, textOptions, poussée;
 
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
@@ -75,7 +76,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED, PAUSE}
     /**
      * Current state of the game
      */
@@ -116,8 +117,12 @@ public class Framework extends Canvas {
     	menu.setAlignmentX(Component.CENTER_ALIGNMENT);
     	menu2 = new customButton ("Retour au menu");
     	menu2.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	mainMenu = new customText("MENU PRINCIPAL");
-    	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	textMenu = new customText("MENU PRINCIPAL", 60);
+    	textMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	textOptions = new customText("OPTIONS", 60);
+    	textOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	poussée = new customText("Force de poussée des missiles", 30);
+    	poussée.setAlignmentX(Component.CENTER_ALIGNMENT);
     	
     	play.addActionListener(this);								//crée les listeners
     	settings.addActionListener(this);
@@ -126,7 +131,7 @@ public class Framework extends Canvas {
     	menu.addActionListener(this);
     	menu2.addActionListener(this);
     	
-    	menuPrincipal.add(mainMenu);
+    	menuPrincipal.add(textMenu);
     	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
         menuPrincipal.add(play);											//ajoute les boutons dans les cartes
         menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
@@ -150,7 +155,10 @@ public class Framework extends Canvas {
         
         sliderPoussee.addChangeListener(this);
         
+        menuOptions.add(textOptions);
+        menuOptions.add(poussée);
         menuOptions.add(sliderPoussee);
+        menuOptions.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
         menuOptions.add(menu2);
 
         
@@ -167,7 +175,12 @@ public class Framework extends Canvas {
     	panel.add(menuOptions, "mOptions");
     	layout.show(panel, "mDepart");								//affiche la première carte
     	add(panel);													//ajoute le panel au framework
-        gameState = GameState.VISUALIZING;
+        
+    	musiqueMenu = new Son ("res/sons/menu.wav");
+    	
+    	
+    	
+    	gameState = GameState.VISUALIZING;
         
         //We start game in new thread.
         Thread gameThread = new Thread("boucle jeu") {
@@ -186,7 +199,6 @@ public class Framework extends Canvas {
      */
     private void Initialize()
     {
-    	
     }
     
     /**
@@ -229,6 +241,8 @@ public class Framework extends Canvas {
                 case MAIN_MENU:
                     //...
                 break;
+                case PAUSE:
+                break;
                 case OPTIONS:
                     //...
                 break;
@@ -240,7 +254,7 @@ public class Framework extends Canvas {
                     Initialize();
                     // Load files - images, sounds, ...
                     LoadContent();
-                    
+                    musiqueMenu.stop();
                     // When all things that are called above finished, we change game status to main menu.
                     gameState = GameState.PLAYING;
                     newGame();
@@ -258,7 +272,7 @@ public class Framework extends Canvas {
                         haut=this.getInsets().top;
                         droite=this.getInsets().right;
                         bas=this.getInsets().bottom;
-                        bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_FAST);
+                        bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
                         
                         // When we get size of frame we change status.
                         if(resized && game !=null){
@@ -269,6 +283,8 @@ public class Framework extends Canvas {
                         }
                         else{
                         	gameState = GameState.MAIN_MENU;
+                        	musiqueMenu.jouer();
+                        	musiqueMenu.boucle();
                         }
                         
                     }
@@ -313,11 +329,15 @@ public class Framework extends Canvas {
                 //...
             break;
             case MAIN_MENU:
-            	
+            	layout.show(panel, "mDepart");
+            	panel.setVisible(true);
+            break;
+            case PAUSE:
+            	layout.show(panel, "mPause");
             	panel.setVisible(true);
             break;
             case OPTIONS:
-                //...
+            	layout.show(panel, "mOptions");
             break;
             case GAME_CONTENT_LOADING:
                 g2d.drawString("CHARGEMENT", frameWidth-200, frameHeight-50);
@@ -391,24 +411,22 @@ public class Framework extends Canvas {
     @Override
     public void keyReleasedFramework(KeyEvent e)
     {	
-    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
-    		if(game !=null){
-	    		if(old != Game.ETAT.PAUSE){
-	    			layout.show(panel, "mPause");
+    	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){	//si la touche échap est pressée...
+    		//System.out.println(gameState);     DEBBUGING
+    		if(game !=null){					//on vérifie que le jeu existe
+	    		if(gameState==GameState.PAUSE){	//si le jeu est en pause...
+	    				game.etat=old;					//on restaure son état d'avant la pause
+	    				gameState = GameState.PLAYING;	//et on le relance
+	    				return;							//on force le retour car sinon le "if" suivant se lance immédiatement
 	    		}
-	    		if(gameState==GameState.MAIN_MENU){
-	    			//panel.setVisible(false);
-	     		   gameState = GameState.PLAYING;
-	     		   game.etat=old;
-	    		}
-	    		else{
-	    			old = game.etat;
-	    			game.etat=Game.ETAT.PAUSE;
-	    			gameState=GameState.MAIN_MENU;
+	    		if(gameState == GameState.PLAYING){		//si on joue
+	    			old = game.etat;					//on stocke l'etat dans lequel était le jeu
+	    			game.etat=Game.ETAT.PAUSE;			//on le met en pause
+	    			gameState=GameState.PAUSE;			//on affiche le menu pause
 	    		}
     		}
-        System.out.println(e);
     	}
+    	
     }
     
     /**
@@ -451,11 +469,19 @@ public class Framework extends Canvas {
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
-    		   layout.show(panel, "mOptions");
+    		   gameState= GameState.OPTIONS;
+    		   this.validate();
     	   } else if (source == menu || source == menu2){
-    		   layout.show(panel, "mDepart");
+    		   
+    		   if(source == menu){
+    			   musiqueMenu.jouer();
+    			   musiqueMenu.boucle();
+    			   Game.etat = Game.ETAT.FIN;
+    		   }
+    		   gameState = GameState.MAIN_MENU;
     		   
     	   } else if (source == reprendre){
+    		   musiqueMenu.stop();
     		   gameState = GameState.PLAYING;
      		   game.etat=old;
      		   this.validate();

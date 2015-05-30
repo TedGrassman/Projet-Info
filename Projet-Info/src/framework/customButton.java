@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -78,7 +80,11 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	    FontMetrics fm = g.getFontMetrics();
 	    int x = (l - fm.stringWidth(s)) / 2;
 	    int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
-	    g.drawString(s, x, y);
+	    Graphics2D g2d = (Graphics2D)g.create();					//anti aliasing sur le texte
+	    g2d.setRenderingHint(
+	            RenderingHints.KEY_TEXT_ANTIALIASING,
+	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	    g2d.drawString(s, x, y);
 	  }
 
 	@Override

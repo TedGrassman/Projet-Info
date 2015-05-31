@@ -190,20 +190,23 @@ public class Game {
 									vecteurMissile = true;
 									mousePressed = false;
 								}
-								if(mouseReleased){
-									int x, y;
-									double angle=Math.atan2(my-stationCourante.y, mx-stationCourante.x);
-									x = (int) (stationCourante.x+(stationCourante.l/2 + 27)*Math.cos(angle));
-									y = (int) (stationCourante.y+(stationCourante.h/2 + 27)*Math.sin(angle));
-									vecteurMissile = false;
-									String nom = "Missile Station n°"+(j+1);
-									Missile missile = new Missile(x, y, (float)((mx-S.centreG.x)/100), (float)((my-S.centreG.y)/100), Ecran, nom, S.color, S);
-									Objets.add(missile);
-									Missiles.add(missile);
-									S.tirFait = true;
-									System.out.println("Missile créé, tir fait");
-									tirCree = true;
+								if(mouseReleased){ 
+									if(vecteurMissile){		// deuxième condition au cas où le clic était maintenu depuis l'etat SIMULATION
+										int x, y;
+										double angle=Math.atan2(my-stationCourante.y, mx-stationCourante.x);
+										x = (int) (stationCourante.x+(stationCourante.l/2 + 27)*Math.cos(angle));
+										y = (int) (stationCourante.y+(stationCourante.h/2 + 27)*Math.sin(angle));
+										vecteurMissile = false;
+										String nom = "Missile Station n°"+(j+1);
+										Missile missile = new Missile(x, y, (float)((mx-S.centreG.x)/100), (float)((my-S.centreG.y)/100), Ecran, nom, S.color, S);
+										Objets.add(missile);
+										Missiles.add(missile);
+										S.tirFait = true;
+										System.out.println("Missile créé, tir fait");
+										tirCree = true;
+									}
 									mouseReleased=false;
+									
 								}
 								if (mouseClicked){
 									mouseClicked = false;
@@ -213,9 +216,7 @@ public class Game {
 	    					}
 	    				}
 	    			}
-	    		} else {
-					tirCree=false;
-				}
+	    		}
 	    		
 	    		if(Missiles.size() >= Stations.size()){
 	    			etat=ETAT.SIMULATION;
@@ -309,10 +310,11 @@ public class Game {
 							winner = "      Egalité !";
 					}
 					else{
-						etat = ETAT.PREPARATION;
+						
 						debutTour = true;
 						Joueur1.rearme();
 						Joueur2.rearme();
+						etat = ETAT.PREPARATION;
 					}
 					
 				}

@@ -457,7 +457,7 @@ public class Framework extends Canvas {
     	
     }
     
-    public void actionPerformed(ActionEvent event) {
+    public void actionPerformed(ActionEvent event) { //clics sur les boutons
 
     	   Object source = event.getSource();
 
@@ -478,6 +478,7 @@ public class Framework extends Canvas {
     			   Game.etat = Game.ETAT.FIN;
     		   }
     		   gameState = GameState.MAIN_MENU;
+    		   this.validate();
     		   
     	   } else if (source == reprendre){
     		   musiqueMenu.stop();

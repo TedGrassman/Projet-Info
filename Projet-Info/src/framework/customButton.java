@@ -89,14 +89,14 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		sonBoutonClic.jouer();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		state=2;
-		sonBoutonClic.jouer();
+		
 	}
 
 	@Override

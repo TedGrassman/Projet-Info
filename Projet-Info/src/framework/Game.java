@@ -36,6 +36,7 @@ public class Game {
 	int score; // Score du joueur
 	Font font1, font2; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
+	String[] imageSat = {"moon.png"};
 	//String[] NomImageM = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};
 	Trajectoire Trajectoire1, Trajectoire2, Trajectoire3, Trajectoire4, Trajectoire5;
 	int compt;
@@ -93,7 +94,7 @@ public class Game {
 		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
 		Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
 		
-		Satelite = new AstreSatelite(NomImage, Ecran, "Satelite 1",1,MASSE_PLANETE/10,50, Planet1,0.01);
+		Satelite = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
 		
 		Objets.add(Planet1);
 		Objets.add(Planet2);

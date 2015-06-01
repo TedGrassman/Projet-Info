@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Joueur {
 	
-	public static enum typeJoueur {isHuman,isComputer};
 	String typeJoueur; // "isHuman" : joueur humain ; "isComputer" : IA
 	ArrayList <Station> Stations;
 	static ArrayList <Joueur> Joueurs = new ArrayList<Joueur>();

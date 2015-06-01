@@ -17,8 +17,6 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.border.EmptyBorder;
 
 public class customButton extends JButton implements MouseListener, ActionListener {
 	
@@ -27,29 +25,25 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	Son sonBoutonClic, sonBoutonEntered;
 	
 	String[] NomImage = new String[3];
-	String libellé;
+	String libelle;
 	
 	int h,l;
 	int state=0;
 	
-	public customButton(String libellé){
+	public customButton(String libelle){
 		super();
 		enableInputMethods(true);
 		addMouseListener(this);
 		this.setBorder(BorderFactory.createEmptyBorder(50, 0, 5, 0));
-		this.libellé=libellé;
+		this.libelle=libelle;
 		
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
     	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
 		
-		//switch(libellé){
-		//case "Lancer une partie":
 			NomImage[0]="LP0.png";
 			NomImage[1]="LP1.png";
 			NomImage[2]="LP2.png";
-			//break;
-		//}
-		
+			
 		try {
 			for (int k = 0; k < 3; k++)
 				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
@@ -78,7 +72,7 @@ public class customButton extends JButton implements MouseListener, ActionListen
 		g.drawImage(images[state], 0, 0, null);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Harrington", 1, 20));
-		drawCenteredString(libellé, g);
+		drawCenteredString(libelle, g);
 	}
 	
 	public void drawCenteredString(String s, Graphics g) {

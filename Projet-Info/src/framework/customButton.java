@@ -76,7 +76,7 @@ public class customButton extends JButton implements MouseListener, ActionListen
 	public void paintComponent(Graphics g) {
 		this.paintBorder(g);
 		g.drawImage(images[state], 0, 0, null);
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Harrington", 1, 20));
 		drawCenteredString(libellé, g);
 	}

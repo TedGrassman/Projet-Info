@@ -1,6 +1,7 @@
 package framework;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -152,6 +153,7 @@ public class Framework extends Canvas {
         sliderPoussee.setMajorTickSpacing(1);						//espacement et dessin des crans
         sliderPoussee.setPaintTicks(true);
         sliderPoussee.setPaintLabels(true);							//dessin des chiffres sous les crans
+        sliderPoussee.setForeground(Color.WHITE);
         
         sliderPoussee.addChangeListener(this);
         

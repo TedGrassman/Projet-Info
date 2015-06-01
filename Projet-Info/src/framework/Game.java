@@ -27,6 +27,7 @@ public class Game {
 	
 	Joueur Joueur1, Joueur2;
 	Station Station1, Station2; // L'objet que l'utilisateur va déplacer
+	AstreSatelite Satelite;
 	AstreSpherique Planet1, Planet2;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
@@ -91,8 +92,12 @@ public class Game {
 		
 		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
 		Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		
+		Satelite = new AstreSatelite(NomImage, Ecran, "Satelite 1",1,MASSE_PLANETE/10,50, Planet1,0.01);
+		
 		Objets.add(Planet1);
 		Objets.add(Planet2);
+		Objets.add(Satelite);
 		stationGagnante = null;
 		
 		try { // Récupération de la police d'écriture

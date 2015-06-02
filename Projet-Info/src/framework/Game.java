@@ -95,7 +95,7 @@ public class Game {
 		
 		
 		
-		DisposeAstres(0);
+		DisposeAstres(2);
 		
 		
 		try { // Récupération de la police d'écriture
@@ -295,7 +295,7 @@ public class Game {
 						}
 					}
 					if(Joueur.Joueurs.size()==1){
-						winner="Le Vaiqueur est " +Joueur.Joueurs.get(0).nomJoueur;
+						winner="Le Vainqueur est " +Joueur.Joueurs.get(0).nomJoueur;
 						etat=ETAT.FIN;
 						finJeu = true;
 					}

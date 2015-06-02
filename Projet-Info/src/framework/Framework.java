@@ -497,7 +497,7 @@ public class Framework extends Canvas {
 		if(source == sliderPoussee){
 			if (!sliderPoussee.getValueIsAdjusting()) {
 				double val = sliderPoussee.getValue();
-				Missile.poussee=val/50;
+				Missile.poussee=val/100;
 			}
 
 		}

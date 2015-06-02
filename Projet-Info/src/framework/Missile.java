@@ -19,7 +19,7 @@ public class Missile extends Objet {
 
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
 	double angle; 									//orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
-	static double poussee=0.1;
+	static double poussee=0.05;
 	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
 	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
 		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",

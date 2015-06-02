@@ -413,18 +413,26 @@ public class Game {
 					case 40 : load = ". . ."; break;
 					case 60 : load = " "; break;
 				}
-				g2d.drawString("Phase de jeu "+load, (int) (CentreEcranX-(130*pW)), (int)(100*pH));
+				printCenteredString(g2d, "Phase de jeu "+load,  (int)(100*pH));
 				break;
 			case FIN :
 				// Message de fin de jeu
 				g2d.setColor(Color.white);
 				g2d.setFont(font1.deriveFont((float) (100*pW)));
-				g2d.drawString("GAME OVER", (int) (CentreEcranX-(400*pW)), (int) (CentreEcranY - (100*pH)));
+				printCenteredString(g2d, "GAME OVER",  (int) (CentreEcranY - (100*pH)));
 				g2d.setFont(font1.deriveFont(50.0f));
-				if(stationGagnante != null)
-						g2d.setColor(stationGagnante.color);
-				g2d.drawString(winner, (int) (CentreEcranX-(200*pW)), ((int) (CentreEcranY + (70*pH))));
+				if(stationGagnante != null)	g2d.setColor(stationGagnante.color);
+				//g2d.drawString(winner, (int) (CentreEcranX-(200*pW)), ((int) (CentreEcranY + (70*pH))));
+				printCenteredString(g2d, winner, (int) (CentreEcranY + (70*pH)));
 				break;
 		}
     }
+    
+    private void printCenteredString(Graphics2D g2d, String s,  int YPos){
+        int stringLen = (int)
+            g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
+        int start = Framework.frameWidth/2 - stringLen/2;
+        g2d.drawString(s, start , YPos);
+ }
+
 }

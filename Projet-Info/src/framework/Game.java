@@ -407,11 +407,11 @@ public class Game {
 			case SIMULATION :
 				g2d.setColor(Color.white);
 				g2d.setFont(font1.deriveFont((float) (25*pW)));
-				switch ( (int)(gameTime) % 100){
+				switch ( (int)(gameTime/Framework.secInNanosec) % 4){
 					case 0 : load = "."; break;
-					case 20 : load = ". ."; break;
-					case 40 : load = ". . ."; break;
-					case 60 : load = " "; break;
+					case 1 : load = ". ."; break;
+					case 2 : load = ". . ."; break;
+					case 3 : load = " "; break;
 				}
 				printCenteredString(g2d, "Phase de jeu "+load,  (int)(100*pH));
 				break;

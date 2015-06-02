@@ -45,6 +45,12 @@ public class Game {
 	boolean vecteurMissile = false;
 	String winner = "";
 	String load = "";
+	int CentreEcranX;
+	int CentreEcranY;
+	double pH;
+	double pW;
+	double height;
+	double width;
 	
     public Game()
     {
@@ -76,6 +82,12 @@ public class Game {
     	Ecran = new Rectangle(Framework.gauche, Framework.haut, Framework.frameWidth
 				- Framework.droite - Framework.gauche, Framework.frameHeight - Framework.bas
 				- Framework.haut);
+		CentreEcranX = (int)(Ecran.getWidth()/2);
+		CentreEcranY = (int)(Ecran.getHeight()/2);
+		width = Ecran.getWidth();
+		height = Ecran.getHeight();		
+		pH=height/768;		
+		pW=(width/1366);
 		score = 0;
 		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
@@ -84,14 +96,14 @@ public class Game {
 		Joueur1 = new Joueur("isHuman", "Joueur 1");
 		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station(200, 100, Ecran,"DeathStar 1", Color.red, Joueur1);
-		Station2 = new Station((int) (Ecran.getWidth() - 200), (int) (Ecran.getHeight() - 100), Ecran,"DeathStar 2", Color.blue, Joueur2);
+		Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+		Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
 		Objets.add(Station1);
 		Objets.add(Station2);
 		Stations.add(Station1);
 		Stations.add(Station2);
 		
-		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
+		Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
 		Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
 		
 		Satelite = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
@@ -145,14 +157,14 @@ public class Game {
 		Joueur1 = new Joueur("isHuman", "Joueur 1");
 		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station(400, 300, Ecran,"DeathStar 1", Color.red, Joueur1);
-		Station2 = new Station((int) (Ecran.getWidth() - 400), (int) (Ecran.getHeight() - 300), Ecran,"DeathStar 2", Color.blue, Joueur2);
+		Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+		Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
 		Objets.add(Station1);
 		Objets.add(Station2);
 		Stations.add(Station1);
 		Stations.add(Station2);
 		
-		Planet1 = new AstreSpherique(650, 360, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
 		Objets.add(Planet1);
 		
 		stationGagnante = null;
@@ -373,16 +385,16 @@ public class Game {
 		switch(etat){
 			case PREPARATION :
 				g2d.setColor(Color.white);
-				g2d.setFont(font1.deriveFont(25.0f));
-				g2d.drawString("Phase de préparation", 425, 50);
+				g2d.setFont(font1.deriveFont((float) (25*pW)));
+				g2d.drawString("Phase de préparation", (int) (CentreEcranX-(200*pW)), (int)(100*pH));
 				g2d.setFont(font1.deriveFont(20.0f));
-				g2d.drawString("Joueur 1", 575, 100);
+				g2d.drawString("Joueur 1", (int) (CentreEcranX-(50*pW)),(int) (130*pH));
 				int compt = 0;
 				for (int k = 0; k < Stations.size(); k++) {
 					Station O = Stations.get(k);
 					g2d.setColor(O.color);
 					if (O.tirFait == false && compt == 0) {
-						g2d.drawString("Station n° "+(k+1), 550, 125);
+						g2d.drawString("Station n° "+(k+1), (int) (CentreEcranX-(70*pW)),(int) (150*pH));
 						compt++;
 					}
 				}
@@ -394,24 +406,24 @@ public class Game {
 			
 			case SIMULATION :
 				g2d.setColor(Color.white);
-				g2d.setFont(font1.deriveFont(25.0f));
+				g2d.setFont(font1.deriveFont((float) (25*pW)));
 				switch ( (int)(gameTime) % 100){
 					case 0 : load = "."; break;
 					case 20 : load = ". ."; break;
 					case 40 : load = ". . ."; break;
 					case 60 : load = " "; break;
 				}
-				g2d.drawString("Phase de jeu "+load, 500, 100);
+				g2d.drawString("Phase de jeu "+load, (int) (CentreEcranX-(130*pW)), (int)(100*pH));
 				break;
 			case FIN :
 				// Message de fin de jeu
 				g2d.setColor(Color.white);
-				g2d.setFont(font1.deriveFont(100.0f));
-				g2d.drawString("GAME OVER", 250, (int) Ecran.getHeight() / 2 - 100);
+				g2d.setFont(font1.deriveFont((float) (100*pW)));
+				g2d.drawString("GAME OVER", (int) (CentreEcranX-(400*pW)), (int) (CentreEcranY - (100*pH)));
 				g2d.setFont(font1.deriveFont(50.0f));
 				if(stationGagnante != null)
 						g2d.setColor(stationGagnante.color);
-				g2d.drawString(winner, 350, (int) Ecran.getHeight() / 2 + 150);
+				g2d.drawString(winner, (int) (CentreEcranX-(200*pW)), ((int) (CentreEcranY + (70*pH))));
 				break;
 		}
     }

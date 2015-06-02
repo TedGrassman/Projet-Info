@@ -25,10 +25,10 @@ public class Game {
 	
 	static Son sonExplosion = new Son("res/sons/explosion-sourde.wav");
 	
-	Joueur Joueur1, Joueur2;
-	Station Station1, Station2; // L'objet que l'utilisateur va déplacer
-	AstreSatelite Satelite;
-	AstreSpherique Planet1, Planet2;
+	Joueur Joueur1, Joueur2, Joueur3, Joueur4;
+	Station Station1, Station2,Station3,Station4; // L'objet que l'utilisateur va déplacer
+	AstreSatelite Satelite1, Satelite2, Satelite3, Satelite4;
+	AstreSpherique Planet1, Planet2, Planet3, Planet4, Planet5;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
@@ -93,25 +93,10 @@ public class Game {
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
 		
-		Joueur1 = new Joueur("isHuman", "Joueur 1");
-		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
-		Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
-		Objets.add(Station1);
-		Objets.add(Station2);
-		Stations.add(Station1);
-		Stations.add(Station2);
 		
-		Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
-		Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		DisposeAstres(0);
 		
-		Satelite = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
-		
-		Objets.add(Planet1);
-		Objets.add(Planet2);
-		Objets.add(Satelite);
-		stationGagnante = null;
 		
 		try { // Récupération de la police d'écriture
 			font1 = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
@@ -154,20 +139,8 @@ public class Game {
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
 		
-		Joueur1 = new Joueur("isHuman", "Joueur 1");
-		Joueur2 = new Joueur("isHuman","Joueur 2");
 		
-		Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
-		Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
-		Objets.add(Station1);
-		Objets.add(Station2);
-		Stations.add(Station1);
-		Stations.add(Station2);
-		
-		Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
-		Objets.add(Planet1);
-		
-		stationGagnante = null;
+		DisposeAstres(2);
 		
 		etat=ETAT.PREPARATION;
 		compt=0;
@@ -260,7 +233,7 @@ public class Game {
 					Objet OC = Missiles.get(i).Collision();
 					if(OC != O){
 						System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);
-						O.actif = false;
+						
 						
 						if(O.typeObjet == "Missile"){
 							O.explosion.activer(O.x, O.y, gameTime);
@@ -269,6 +242,7 @@ public class Game {
 						if(OC.typeObjet == "Station"){
 							OC.détruire(OC.centreG.x, OC.centreG.y, gameTime);
 						}
+						O.actif = false;
 					}
 				}
 				
@@ -314,27 +288,29 @@ public class Game {
 				}
 				
 				if (Missiles.isEmpty()){
-					
-					if(Joueur1.Stations.isEmpty() || Joueur2.Stations.isEmpty()){
+					for(int i=0;i<Joueur.Joueurs.size();i++){
+						if(Joueur.Joueurs.get(i).Stations.isEmpty()){
+							Joueur.Joueurs.remove(i);
+							i--;
+						}
+					}
+					if(Joueur.Joueurs.size()==1){
+						winner="Le Vaiqueur est " +Joueur.Joueurs.get(0).nomJoueur;
 						etat=ETAT.FIN;
 						finJeu = true;
-						//etat = ETAT.FIN;
-						if(!Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty()){
-							winner = "Joueur 1 gagne !";
-							stationGagnante = Joueur1.Stations.get(0);
-						}
-						if(Joueur1.Stations.isEmpty() && !Joueur2.Stations.isEmpty()){
-							winner = "Joueur 2 gagne !";
-							stationGagnante = Joueur2.Stations.get(0);
-						}
-						if(Joueur1.Stations.isEmpty() && Joueur2.Stations.isEmpty())
-							winner = "      Egalité !";
 					}
-					else{
+							
+					if(Joueur.Joueurs.size()==0){
+						winner = "Egalité !";
+						etat=ETAT.FIN;
+						finJeu = true;
+					}	
+					if(Joueur.Joueurs.size()>1){
 						
 						debutTour = true;
-						Joueur1.rearme();
-						Joueur2.rearme();
+						for(int i=0;i<Joueur.Joueurs.size();i++){
+								Joueur.Joueurs.get(i).rearme();
+						}
 						etat = ETAT.PREPARATION;
 					}
 					
@@ -434,5 +410,118 @@ public class Game {
         int start = Framework.frameWidth/2 - stringLen/2;
         g2d.drawString(s, start , YPos);
  }
-
+    private void DisposeAstres (int map){
+    	switch(map){
+    		case 1 :
+    			Joueur1 = new Joueur("isHuman", "Joueur 1");
+    			Joueur2 = new Joueur("isHuman","Joueur 2");
+    			Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+    			Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
+    			Objets.add(Station1);
+    			Objets.add(Station2);
+    			Stations.add(Station1);
+    			Stations.add(Station2);
+			
+    			Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
+    			Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		
+    			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
+		
+    			Objets.add(Planet1);
+    			Objets.add(Planet2);
+    			Objets.add(Satelite1);
+    			stationGagnante = null;
+    			break;
+    		case 2 :
+    			Joueur1 = new Joueur("isHuman", "Joueur 1");
+    			Joueur2 = new Joueur("isHuman","Joueur 2");
+    			Joueur3 = new Joueur("isHuman","Joueur 3");
+    			Joueur4 = new Joueur("isHuman","Joueur 4");
+    			Station1 = new Station((int)(CentreEcranX-(455*pW)),(int) (CentreEcranY-(256*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+    			Station2 = new Station((int)(CentreEcranX+(455*pW)), (int) (CentreEcranY-(256*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
+    			Station3 = new Station((int)(CentreEcranX-(455*pW)),(int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 3", Color.green, Joueur3);
+    			Station4 = new Station((int)(CentreEcranX+(455*pW)), (int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 4", Color.pink, Joueur4);
+    			
+    			Objets.add(Station1);
+    			Objets.add(Station2);
+    			Objets.add(Station3);
+    			Objets.add(Station4);
+    			Stations.add(Station1);
+    			Stations.add(Station2);
+    			Stations.add(Station3);
+    			Stations.add(Station4);
+			
+    			Planet1 = new AstreSpherique((int)(CentreEcranX-(600*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet2 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY-(171*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet3 = new AstreSpherique((int)(CentreEcranX+(600*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet4 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY+(171*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet5 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
+    			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
+    			Satelite2 = new AstreSatelite(imageSat, Ecran, "Satelite 2", 1, MASSE_PLANETE/10, 15, Planet2,0.01);
+    			Satelite3= new AstreSatelite(imageSat, Ecran, "Satelite 3", 1, MASSE_PLANETE/10, 15, Planet3,0.01);
+    			Satelite4 = new AstreSatelite(imageSat, Ecran, "Satelite 4", 1, MASSE_PLANETE/10, 15, Planet4,0.01);
+    			Objets.add(Planet1);
+    			Objets.add(Planet2);
+    			Objets.add(Planet3);
+    			Objets.add(Planet4);
+    			Objets.add(Planet5);
+    			Objets.add(Satelite1);
+    			Objets.add(Satelite2);
+    			Objets.add(Satelite3);
+    			Objets.add(Satelite4);
+    			stationGagnante = null;
+    			break;
+    		case 3 :
+    			Joueur1 = new Joueur("isHuman", "Joueur 1");
+    			Joueur2 = new Joueur("isHuman","Joueur 2");
+    			Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+    			Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
+    			Objets.add(Station1);
+    			Objets.add(Station2);
+    			Stations.add(Station1);
+    			Stations.add(Station2);
+			
+    			Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
+    			Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		
+    			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
+		
+    			Objets.add(Planet1);
+    			Objets.add(Planet2);
+    			Objets.add(Satelite1);
+    			stationGagnante = null;
+    			break;
+    		case 4 :
+    			Joueur1 = new Joueur("isHuman", "Joueur 1");
+    			Joueur2 = new Joueur("isHuman","Joueur 2");
+    			Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+    			Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
+    			Objets.add(Station1);
+    			Objets.add(Station2);
+    			Stations.add(Station1);
+    			Stations.add(Station2);
+    			Planet1 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+100, 50);
+    			Planet2 = new AstreSpherique(900, 800, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+		
+    			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
+		
+    			Objets.add(Planet1);
+    			Objets.add(Planet2);
+    			Objets.add(Satelite1);
+    			stationGagnante = null;
+    			break;
+    		case 0 :
+    			Joueur1 = new Joueur("isHuman", "Joueur 1");
+    			Joueur2 = new Joueur("isHuman","Joueur 2");
+    			Station1 = new Station((int)(CentreEcranX-(341*pW)),(int) (CentreEcranY-(192*pH)), Ecran,"DeathStar 1", Color.red, Joueur1);
+    			Station2 = new Station((int)(CentreEcranX+(341*pW)), (int) (CentreEcranY+(192*pH)), Ecran,"DeathStar 2", Color.blue, Joueur2);
+    			Objets.add(Station1);
+    			Objets.add(Station2);
+    			Stations.add(Station1);
+    			Stations.add(Station2);
+      			stationGagnante = null;    			
+    			break;
+    	}
+		
+    }
 }

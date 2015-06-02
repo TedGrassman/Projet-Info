@@ -21,6 +21,7 @@ public class Station extends Objet {
 	Color color = Color.black;	//Couleur de la station, qui sert lors de la création d'un missile par cette station
 	static String prefixeExplosion = "Explosion_Sequence_A ";
 	Joueur joueur;
+	int numero;
 
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom, Color color) {
@@ -37,6 +38,7 @@ public class Station extends Objet {
 		this.color = color;
 		this.joueur=joueur;
 		joueur.Stations.add(this);
+		numero = joueur.Stations.size();
 	}
 	
 	public void move(long t) {

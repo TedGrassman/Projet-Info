@@ -367,10 +367,6 @@ public class Game {
     	int mx = mousePosition.x;
 		int my = mousePosition.y;
     	
-    	//g2d.setColor(Color.BLACK);
-		//g2d.fillRect((int)Ecran.getX(), (int) Ecran.getY(), (int) (Ecran.getX() + Ecran.getWidth()), (int) (Ecran.getY() + Ecran.getHeight()));
-		//g2d.setColor(Color.white);
-		
 		// dessine TOUS les objets dans le buffer
 		for (int k = 0; k < Objets.size(); k++) {
 			Objet O = Objets.get(k);
@@ -386,15 +382,15 @@ public class Game {
 			case PREPARATION :
 				g2d.setColor(Color.white);
 				g2d.setFont(font1.deriveFont((float) (25*pW)));
-				g2d.drawString("Phase de préparation", (int) (CentreEcranX-(200*pW)), (int)(100*pH));
+				printCenteredString(g2d,"Phase de préparation", (int)(100*pH));
 				g2d.setFont(font1.deriveFont(20.0f));
-				g2d.drawString("Joueur 1", (int) (CentreEcranX-(50*pW)),(int) (130*pH));
 				int compt = 0;
 				for (int k = 0; k < Stations.size(); k++) {
 					Station O = Stations.get(k);
 					g2d.setColor(O.color);
 					if (O.tirFait == false && compt == 0) {
-						g2d.drawString("Station n° "+(k+1), (int) (CentreEcranX-(70*pW)),(int) (150*pH));
+						printCenteredString(g2d, O.joueur.nomJoueur,(int) (130*pH));
+						printCenteredString(g2d, "Station n° "+ O.numero,(int) (150*pH));
 						compt++;
 					}
 				}

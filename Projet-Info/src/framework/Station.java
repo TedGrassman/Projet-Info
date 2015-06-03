@@ -17,7 +17,7 @@ public class Station extends Objet {
 
 
 	static String[] NomImage = {"base.png"};
-	boolean tirFait;
+
 	static String prefixeExplosion = "Explosion_Sequence_A ";
 	Joueur joueur;
 	int numero;
@@ -25,17 +25,34 @@ public class Station extends Objet {
 	
 	public Station(int ax, int ay, Rectangle aframe, String nom) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
-		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
 	}
 	
-	public Station(int ax, int ay, Rectangle aframe, String nom, Joueur joueur) {
+	public Station(int ax, int ay, Rectangle aframe, String nom, int idJoueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
-		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
-		this.joueur=joueur;
-		joueur.Stations.add(this);
-		numero = joueur.Stations.size();
+		switch (idJoueur){
+		case 1:
+			Game.Joueur1.Stations.add(this);
+			numero = Game.Joueur1.Stations.size();
+			this.joueur=Game.Joueur1;
+			break;
+		case 2:
+			Game.Joueur2.Stations.add(this);
+			numero = Game.Joueur2.Stations.size();
+			this.joueur=Game.Joueur2;
+			break;
+		case 3:
+			Game.Joueur3.Stations.add(this);
+			numero = Game.Joueur3.Stations.size();
+			this.joueur=Game.Joueur3;
+			break;
+		case 4 :
+			Game.Joueur4.Stations.add(this);
+			numero = Game.Joueur4.Stations.size();
+			this.joueur=Game.Joueur4;
+			break;
+		}
 	}
 	
 	public void move(long t) {

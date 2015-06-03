@@ -17,9 +17,4 @@ public class Joueur {
 		color=couleur;
 	}
 	
-	public void rearme(){
-		for(int i=0; i<Stations.size(); i++){
-			Stations.get(i).tirFait=false;
-		}
-	}
 }

@@ -33,6 +33,7 @@ public class Game {
 	Station Station1, Station2,Station3,Station4; // L'objet que l'utilisateur va déplacer
 	AstreSatelite Satelite1, Satelite2, Satelite3, Satelite4;
 	AstreSpherique Planet1, Planet2, Planet3, Planet4, Planet5;
+	AstreTrouNoir TrouNoir1;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
@@ -40,6 +41,7 @@ public class Game {
 	Font font1, font2; // Objet de police d'écriture
 	String[] NomImage = {"planete.png"};
 	String[] imageSat = {"moon.png"};
+	String[] imageTrou = {"trouNoir.png"};
 	int compt;
 	boolean debutTour;
 	Station stationCourante;
@@ -467,11 +469,13 @@ public class Game {
     			Satelite2 = new AstreSatelite(imageSat, Ecran, "Satelite 2", 1, MASSE_PLANETE/10, 15, Planet2,0.01);
     			Satelite3= new AstreSatelite(imageSat, Ecran, "Satelite 3", 1, MASSE_PLANETE/10, 15, Planet3,0.01);
     			Satelite4 = new AstreSatelite(imageSat, Ecran, "Satelite 4", 1, MASSE_PLANETE/10, 15, Planet4,0.01);
+    			TrouNoir1 = new AstreTrouNoir((int)(CentreEcranX - 300), CentreEcranY, 0f, 0f, imageTrou, Ecran, "Planete1", 1, 8*MASSE_PLANETE, 50);
     			Objets.add(Planet1);
     			Objets.add(Planet2);
     			Objets.add(Planet3);
     			Objets.add(Planet4);
     			Objets.add(Planet5);
+    			Objets.add(TrouNoir1);
     			Objets.add(Satelite1);
     			Objets.add(Satelite2);
     			Objets.add(Satelite3);

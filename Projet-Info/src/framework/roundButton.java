@@ -32,6 +32,7 @@ public class roundButton extends JButton implements MouseListener {
 	
 	int h,l;
 	int state=0;
+	int taillePolice, type;
 	
 	Shape shape;
 	
@@ -43,13 +44,21 @@ public class roundButton extends JButton implements MouseListener {
 		
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
     	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
-		
+		type=code;
     	switch (code){
     	case 0:
     		NomImage[0]="small0.png";
 			NomImage[1]="small1.png";
 			NomImage[2]="small2.png";
 			NomImage[3]="small3.png";
+			taillePolice=80;
+    		break;
+    	case 1 :
+    		NomImage[0]="small0.png";
+			NomImage[1]="small1.png";
+			NomImage[2]="small2.png";
+			NomImage[3]="small3.png";
+			taillePolice=50;
     		break;
     	}
 
@@ -87,7 +96,7 @@ public class roundButton extends JButton implements MouseListener {
 	public void paintComponent(Graphics g) {
 		g.drawImage(images[state], 0, 0, null);
 		g.setColor(new Color(0.2f, 0.2f, 0.4f, 0.99f));
-		g.setFont(new Font("Harrington", 1, 80));
+		g.setFont(new Font("Harrington", 1, taillePolice));
 		drawCenteredString(libelle, g);
 	}
 	
@@ -113,7 +122,7 @@ public class roundButton extends JButton implements MouseListener {
 	
 	public void unselect(){
 		for(int i=0; i<liste.size(); i++){
-			if (liste.get(i)!= this){
+			if (liste.get(i)!= this && liste.get(i).type==this.type){
 				liste.get(i).state=0;
 			}
 		}

@@ -28,18 +28,19 @@ import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
-	public static int nbJoueurs;
+	public static int nbJoueurs, niveauChoisi;
 	mp3 musiqueMenu;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(), menuLance = new JPanel();
-	JPanel boutonsRonds = new JPanel();
+	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
 	customButton play, reprendre, settings, exit, menu, menu2, lance;
 	JSlider sliderPoussee;
-	customText textMenu, textOptions, poussée, joueurs;
-	roundButton n2, n3, n4;
+	customText textMenu, textOptions, poussée, joueurs, niveau;
+	roundButton j2, j3, j4, n1, n2, n3, n4, n5;
+	
 
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
 	
@@ -135,12 +136,19 @@ public class Framework extends Canvas {
         sliderPoussee.setPaintTicks(true);
         sliderPoussee.setPaintLabels(true);							//dessin des chiffres sous les crans
         sliderPoussee.setForeground(Color.WHITE);
-    	n2 = new roundButton("2", 0);
-    	n3 = new roundButton("3", 0);
-    	n4 = new roundButton("4", 0);
+    	j2 = new roundButton("2", 0);
+    	j3 = new roundButton("3", 0);
+    	j4 = new roundButton("4", 0);
+    	n1 = new roundButton("Niv1", 1);
+    	n2 = new roundButton("Niv2", 1);
+    	n3 = new roundButton("Niv3", 1);
+    	n4 = new roundButton("Niv4", 1);
+    	n5 = new roundButton("Niv5", 1);
     	joueurs = new customText("Nombre de joueurs:", 30);
     	joueurs.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+    	niveau = new customText("Choix du niveau:", 30);
+    	niveau.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	
     	play.addActionListener(this);								//crée les listeners
     	settings.addActionListener(this);
     	exit.addActionListener(this);
@@ -149,9 +157,14 @@ public class Framework extends Canvas {
     	menu2.addActionListener(this);
     	lance.addActionListener(this);
         sliderPoussee.addChangeListener(this);
+        j2.addActionListener(this);
+        j3.addActionListener(this);
+        j4.addActionListener(this);
+        n1.addActionListener(this);
         n2.addActionListener(this);
         n3.addActionListener(this);
         n4.addActionListener(this);
+        n5.addActionListener(this);
     	
     	menuPrincipal.add(textMenu);
     	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
@@ -175,10 +188,18 @@ public class Framework extends Canvas {
         menuOptions.add(menu2);
 
         menuLance.add(joueurs);
-        boutonsRonds.add(n2);
-        boutonsRonds.add(n3);
-        boutonsRonds.add(n4);
+        boutonsRonds.add(j2);
+        boutonsRonds.add(j3);
+        boutonsRonds.add(j4);
+        boutonsNiveau.add(n1);
+        boutonsNiveau.add(n2);
+        boutonsNiveau.add(n3);
+        boutonsNiveau.add(n4);
+        boutonsNiveau.add(n5);
         menuLance.add(boutonsRonds);
+        menuLance.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
+        menuLance.add(niveau);
+        menuLance.add(boutonsNiveau);
         menuLance.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
         menuLance.add(play);
         
@@ -190,6 +211,7 @@ public class Framework extends Canvas {
         menuOptions.setOpaque(false);
         menuLance.setOpaque(false);
         boutonsRonds.setOpaque(false);
+        boutonsNiveau.setOpaque(false);
         
     	
     	panel.add(menuPrincipal, "mDepart");								//ajoute les cartes au panel principal
@@ -493,7 +515,7 @@ public class Framework extends Canvas {
     		   gameState=GameState.LANCE;
     		   this.validate();
     	   }
-    	   else if (source == play && nbJoueurs>1) {
+    	   else if (source == play && nbJoueurs>1 && niveauChoisi>0) {
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
@@ -514,12 +536,27 @@ public class Framework extends Canvas {
     		   gameState = GameState.PLAYING;
      		   game.etat=old;
      		   this.validate();
-    	   } else if (source == n2){
+    	   } else if (source == j2){
     		   nbJoueurs=2;
-    	   } else if (source == n3){
+    	   } else if (source == j3){
     		   nbJoueurs=3;
-    	   } else if (source == n4){
+    	   } else if (source == j4){
     		   nbJoueurs=4;
+    	   }
+    	   else if (source == n1){
+    		   niveauChoisi=1;
+    	   }
+    	   else if (source == n2){
+    		   niveauChoisi=2;
+    	   }
+    	   else if (source == n3){
+    		   niveauChoisi=3;
+    	   }
+    	   else if (source == n4){
+    		   niveauChoisi=4;
+    	   }
+    	   else if (source == n5){
+    		   niveauChoisi=5;
     	   }
     }
 

@@ -42,7 +42,6 @@ public class Game {
 	String[] NomImage = {"planete.png"};
 	String[] imageSat = {"moon.png"};
 	String[] imageTrou = {"trouNoir.png"};
-	int compt;
 	boolean vecteurMissile = false;
 	String winner = "";
 	String load = "";
@@ -93,7 +92,7 @@ public class Game {
 		Joueurs = new ArrayList<Joueur>();  
 		
 		
-		DisposeAstres(0);
+		DisposeAstres(Framework.niveauChoisi);
 		stationCourante = Stations.get(0);
 		
 		try { // Récupération de la police d'écriture
@@ -104,7 +103,6 @@ public class Game {
 		}
 		
 		etat=ETAT.PREPARATION;
-		compt=0;
 		mouseClicked = mousePressed = mouseReleased;
     }
     
@@ -141,11 +139,10 @@ public class Game {
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
     	Joueurs = new ArrayList<Joueur>();
 		
-		DisposeAstres(0);
+		DisposeAstres(Framework.niveauChoisi);
 		stationCourante = Stations.get(0);
 		
 		etat=ETAT.PREPARATION;
-		compt=0;
 		mouseClicked = mousePressed = mouseReleased;
     }
     
@@ -364,6 +361,10 @@ public class Game {
 				g2d.setFont(font1.deriveFont(50.0f));
 				if(!Joueurs.isEmpty())	g2d.setColor(Joueurs.get(0).color);
 				printCenteredString(g2d, winner, (int) (CentreEcranY + (70*pH)));
+				break;
+			case PAUSE:
+				break;
+			default:
 				break;
 		}
     }

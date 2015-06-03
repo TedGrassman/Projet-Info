@@ -442,10 +442,10 @@ public class Game {
     				Stations.add(Station3);
     			}
     			else{
-    				Station3 = new Station((int)(CentreEcranX-(455*pW)),(int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 3", creJoueurs[0]);
+    				Station3 = new Station((int)(CentreEcranX-(455*pW)),(int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 3", creJoueurs[1]);
     				Objets.add(Station3);
     				Stations.add(Station3);
-    				Station4 = new Station((int)(CentreEcranX+(455*pW)), (int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 4", creJoueurs[1]);
+    				Station4 = new Station((int)(CentreEcranX+(455*pW)), (int) (CentreEcranY+(256*pH)), Ecran,"DeathStar 4", creJoueurs[0]);
     				Objets.add(Station4);
     				Stations.add(Station4);
     				

@@ -168,7 +168,7 @@ public class Missile extends Objet {
 		double taille = Math.sqrt(Math.pow((limitesframe.getWidth()/2-x)*720/1366, 2)+Math.pow((limitesframe.getHeight()/2-y)*1366/720, 2))/10;
 		double angle = Math.atan2(limitesframe.getWidth()/2-x, limitesframe.getHeight()/2-y);
 		
-		g.setColor(station.color);	
+		g.setColor(station.joueur.color);	
 		
 		if(horsLimites){
 			if(x<0 && y<0){

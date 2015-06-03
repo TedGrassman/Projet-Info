@@ -18,24 +18,21 @@ public class Station extends Objet {
 
 	static String[] NomImage = {"base.png"};
 	boolean tirFait;
-	Color color = Color.black;	//Couleur de la station, qui sert lors de la création d'un missile par cette station
 	static String prefixeExplosion = "Explosion_Sequence_A ";
 	Joueur joueur;
 	int numero;
 
 	
-	public Station(int ax, int ay, Rectangle aframe, String nom, Color color) {
+	public Station(int ax, int ay, Rectangle aframe, String nom) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
 		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
-		this.color = color; 
 	}
 	
-	public Station(int ax, int ay, Rectangle aframe, String nom, Color color, Joueur joueur) {
+	public Station(int ax, int ay, Rectangle aframe, String nom, Joueur joueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0, prefixeExplosion);
 		tirFait = false;
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
-		this.color = color;
 		this.joueur=joueur;
 		joueur.Stations.add(this);
 		numero = joueur.Stations.size();

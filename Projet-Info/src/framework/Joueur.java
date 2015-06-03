@@ -1,5 +1,6 @@
 package framework;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Joueur {
@@ -8,12 +9,14 @@ public class Joueur {
 	ArrayList <Station> Stations;
 	static ArrayList <Joueur> Joueurs = new ArrayList<Joueur>();
 	String nomJoueur;
+	Color color;
 	
-	public Joueur(String typeJoueur, String nomJoueur) {
+	public Joueur(String typeJoueur, String nomJoueur, Color couleur) {
 		this.typeJoueur = typeJoueur;
 		this.nomJoueur = nomJoueur;
 		Stations = new ArrayList<Station>();
 		Joueurs.add(this);
+		color=couleur;
 	}
 	
 	public void rearme(){

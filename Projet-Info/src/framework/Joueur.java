@@ -5,14 +5,12 @@ import java.util.ArrayList;
 
 public class Joueur {
 	
-	String typeJoueur; // "isHuman" : joueur humain ; "isComputer" : IA
 	ArrayList <Station> Stations;
 	static ArrayList <Joueur> Joueurs = new ArrayList<Joueur>();
 	String nomJoueur;
 	Color color;
 	
-	public Joueur(String typeJoueur, String nomJoueur, Color couleur) {
-		this.typeJoueur = typeJoueur;
+	public Joueur(String nomJoueur, Color couleur) {
 		this.nomJoueur = nomJoueur;
 		Stations = new ArrayList<Station>();
 		Joueurs.add(this);

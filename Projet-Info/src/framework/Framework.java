@@ -28,6 +28,7 @@ import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
+	public static int nbJoueurs;
 	mp3 musiqueMenu;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(), menuLance = new JPanel();
@@ -148,6 +149,9 @@ public class Framework extends Canvas {
     	menu2.addActionListener(this);
     	lance.addActionListener(this);
         sliderPoussee.addChangeListener(this);
+        n2.addActionListener(this);
+        n3.addActionListener(this);
+        n4.addActionListener(this);
     	
     	menuPrincipal.add(textMenu);
     	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
@@ -489,7 +493,7 @@ public class Framework extends Canvas {
     		   gameState=GameState.LANCE;
     		   this.validate();
     	   }
-    	   else if (source == play) {
+    	   else if (source == play && nbJoueurs>1) {
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
@@ -510,6 +514,12 @@ public class Framework extends Canvas {
     		   gameState = GameState.PLAYING;
      		   game.etat=old;
      		   this.validate();
+    	   } else if (source == n2){
+    		   nbJoueurs=2;
+    	   } else if (source == n3){
+    		   nbJoueurs=3;
+    	   } else if (source == n4){
+    		   nbJoueurs=4;
     	   }
     }
 

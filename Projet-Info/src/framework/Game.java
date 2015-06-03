@@ -27,7 +27,7 @@ public class Game {
 	
 	Son sonExplosion = new Son("res/sons/explosion-sourde.wav");
 	
-	final static Joueur Joueur1 = new Joueur("Joueur 1", Color.RED), Joueur2 = new Joueur("Joueur 2", Color.CYAN), Joueur3 = new Joueur("Joueur 3", Color.GREEN), Joueur4 = new Joueur("Joueur 2", Color.YELLOW);
+	final static Joueur Joueur1 = new Joueur("Joueur 1", Color.RED), Joueur2 = new Joueur("Joueur 2", Color.CYAN), Joueur3 = new Joueur("Joueur 3", Color.GREEN), Joueur4 = new Joueur("Joueur 4", Color.YELLOW);
 	Station stationCourante;
 	Station Station1, Station2,Station3,Station4; // L'objet que l'utilisateur va déplacer
 	AstreSatelite Satelite1, Satelite2, Satelite3, Satelite4, Satelite5, Satelite6, Satelite7, Satelite8;

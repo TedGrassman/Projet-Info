@@ -664,7 +664,7 @@ public class Game {
     			Planet7 = new AstreSpherique((int)(CentreEcranX+(300*pW)),  (int) (CentreEcranY+(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
     			Planet8 = new AstreSpherique((int)(CentreEcranX-(300*pW)),  (int) (CentreEcranY+(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
     			
-    			//Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
+    			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE/10, 15, Planet1,0.01);
     			Satelite5= new AstreSatelite(imageSat, Ecran, "Satelite 3", 1, MASSE_PLANETE/10, 15, Planet5,0.01);
     			Satelite6 = new AstreSatelite(imageSat, Ecran, "Satelite 6", 1, MASSE_PLANETE/10, 15, Planet6,0.01);
     			Satelite7 = new AstreSatelite(imageSat, Ecran, "Satelite 7", 1, MASSE_PLANETE/10, 15, Planet7,0.01);
@@ -679,7 +679,7 @@ public class Game {
     			Objets.add(Planet8);
     			Objets.add(Planet9);
     			
-    			//Objets.add(Satelite1);
+    			Objets.add(Satelite1);
     			Objets.add(Satelite5);
     			Objets.add(Satelite6);
     			Objets.add(Satelite7);

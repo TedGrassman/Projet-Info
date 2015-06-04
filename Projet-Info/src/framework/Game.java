@@ -570,8 +570,8 @@ public class Game {
     			
     			break;
     		case 3 :
-    			Station1 = new Station((int)(CentreEcranX-(100*pW)),(int) (CentreEcranY-(100*pH)), Ecran,"DeathStar 1",  1);
-    			Station2 = new Station((int)(CentreEcranX+(100*pW)), (int) (CentreEcranY-(100*pH)), Ecran,"DeathStar 2", 2);
+    			Station1 = new Station((int)(CentreEcranX-(150*pW)),(int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 1",  1);
+    			Station2 = new Station((int)(CentreEcranX+(150*pW)), (int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 2", 2);
     			Objets.add(Station1);
     			Objets.add(Station2);
     			Stations.add(Station1);
@@ -579,36 +579,36 @@ public class Game {
     			Joueurs.add(Joueur1);
     			Joueurs.add(Joueur2);
     			if(Framework.nbJoueurs>2){
-    				Station3 = new Station((int)(CentreEcranX-(100*pW)),(int) (CentreEcranY+(100*pH)), Ecran,"DeathStar 3", 3);
+    				Station3 = new Station((int)(CentreEcranX-(150*pW)),(int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 3", 3);
     				Objets.add(Station3);
     				Stations.add(Station3);
     				Joueurs.add(Joueur3);
     				if(Framework.nbJoueurs>3){
-    					Station4 = new Station((int)(CentreEcranX+(100*pW)), (int) (CentreEcranY+(100*pH)), Ecran,"DeathStar 4", 4);
+    					Station4 = new Station((int)(CentreEcranX+(150*pW)), (int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 4", 4);
         				Objets.add(Station4);
         				Stations.add(Station4);
         				Joueurs.add(Joueur4);
         			}
     			}
     			else{
-    				Station3 = new Station((int)(CentreEcranX-(100*pW)),(int) (CentreEcranY+(100*pH)), Ecran,"DeathStar 3", 1);
+    				Station3 = new Station((int)(CentreEcranX-(150*pW)),(int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 3", 1);
     				Objets.add(Station3);
     				Stations.add(Station3);
-    				Station4 = new Station((int)(CentreEcranX+(100*pW)), (int) (CentreEcranY+(100*pH)), Ecran,"DeathStar 4", 2);
+    				Station4 = new Station((int)(CentreEcranX+(150*pW)), (int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 4", 2);
     				Objets.add(Station4);
     				Stations.add(Station4);
     			}
     			
 			
     			
-    			Planet2 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY-(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-    			Planet3 = new AstreSpherique((int)(CentreEcranX+(250*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-    			Planet4 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY+(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-    			Planet9 = new AstreSpherique((int)(CentreEcranX-(250*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
-    			Planet5 = new AstreSpherique((int)(CentreEcranX+(300*pW)),  (int) (CentreEcranY-(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
-    			Planet6 = new AstreSpherique((int)(CentreEcranX-(300*pW)),  (int) (CentreEcranY-(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
-    			Planet7 = new AstreSpherique((int)(CentreEcranX+(300*pW)),  (int) (CentreEcranY+(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
-    			Planet8 = new AstreSpherique((int)(CentreEcranX-(300*pW)),  (int) (CentreEcranY+(200*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
+    			Planet2 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY-(250*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet3 = new AstreSpherique((int)(CentreEcranX+(300*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet4 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY+(250*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet9 = new AstreSpherique((int)(CentreEcranX-(300*pW)), CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE, 50);
+    			Planet5 = new AstreSpherique((int)(CentreEcranX+(400*pW)),  (int) (CentreEcranY-(300*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
+    			Planet6 = new AstreSpherique((int)(CentreEcranX-(400*pW)),  (int) (CentreEcranY-(300*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
+    			Planet7 = new AstreSpherique((int)(CentreEcranX+(400*pW)),  (int) (CentreEcranY+(300*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
+    			Planet8 = new AstreSpherique((int)(CentreEcranX-(400*pW)),  (int) (CentreEcranY+(300*pH)), 0f, 0f, NomImage, Ecran, "Planete1", 1, MASSE_PLANETE+200, 50);
     			TrouNoir1 = new AstreTrouNoir(CentreEcranX,  CentreEcranY, 0f, 0f, imageTrou, Ecran, "Planete1", 1, 8*MASSE_PLANETE, 50);
     			
     			Satelite5= new AstreSatelite(imageSat, Ecran, "Satelite 3", 1, MASSE_PLANETE/10, 15, Planet5,0.01);

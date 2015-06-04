@@ -36,7 +36,7 @@ public class customButton extends JButton implements MouseListener {
 		this.libelle=libelle;
 		
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
-    	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
+    	sonBoutonEntered = new Son ("res/sons/boutonEntered.wav");
 		
 			NomImage[0]="LP0.png";
 			NomImage[1]="LP1.png";

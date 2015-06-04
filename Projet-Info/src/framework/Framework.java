@@ -29,7 +29,7 @@ import javax.swing.event.ChangeEvent;
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
 	public static int nbJoueurs, niveauChoisi;
-	mp3 musiqueMenu;
+	mp3 musiqueMenu, musiqueNiveau, musiqueLance;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(), menuLance = new JPanel();
 	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
@@ -39,7 +39,7 @@ public class Framework extends Canvas {
 	customButton play, reprendre, settings, exit, menu, menu2, lance;
 	JSlider sliderPoussee;
 	customText textMenu, textOptions, poussée, joueurs, niveau;
-	roundButton j2, j3, j4, n1, n2, n3, n4, n5;
+	roundButton j2, j3, j4, n1, n2, n3, n4;
 	
 
 	public static boolean resized = false; //indique si la fenetre vient d'être redimensionnée
@@ -223,6 +223,7 @@ public class Framework extends Canvas {
         
 
     	musiqueMenu = new mp3 ("res/sons/menu.mp3");
+    	musiqueLance = new mp3("res/sons/lance.mp3");
     	
     	
     	gameState = GameState.VISUALIZING;
@@ -443,7 +444,8 @@ public class Framework extends Canvas {
         }
         catch (Exception e)
         {
-            return new Point(0, 0);
+            
+        	return new Point(0, 0);
         }
     }
     
@@ -512,10 +514,17 @@ public class Framework extends Canvas {
     		   musiqueMenu.stop();
     	       System.exit(0);
     	   } else if (source == lance){
+    		   musiqueMenu.stop();
+    		   musiqueLance.jouer();
+    		   musiqueLance.boucle();
     		   gameState=GameState.LANCE;
     		   this.validate();
     	   }
     	   else if (source == play && nbJoueurs>1 && niveauChoisi>0) {
+    		   musiqueLance.stop();
+    		   musiqueNiveau = new mp3 ("res/sons/niveau"+niveauChoisi+".mp3");
+    		   musiqueNiveau.jouer();
+    		   musiqueNiveau.boucle();
     	       gameState= GameState.STARTING;
     	       this.validate();
     	   } else if (source == settings){
@@ -524,6 +533,7 @@ public class Framework extends Canvas {
     	   } else if (source == menu || source == menu2){
     		   
     		   if(source == menu){
+    			   musiqueNiveau.stop();
     			   musiqueMenu.jouer();
     			   musiqueMenu.boucle();
     			   Game.etat = Game.ETAT.FIN;
@@ -532,7 +542,6 @@ public class Framework extends Canvas {
     		   this.validate();
     		   
     	   } else if (source == reprendre){
-    		   musiqueMenu.stop();
     		   gameState = GameState.PLAYING;
      		   game.etat=old;
      		   this.validate();

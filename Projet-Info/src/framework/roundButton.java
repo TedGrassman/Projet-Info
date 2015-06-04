@@ -43,7 +43,7 @@ public class roundButton extends JButton implements MouseListener {			//boutons 
 		this.libelle=libelle;
 		
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
-    	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
+    	sonBoutonEntered = new Son ("res/sons/boutonEntered.wav");
 		type=code;
     	switch (code){									// change le skin du bouton selon son type
     	case 0:

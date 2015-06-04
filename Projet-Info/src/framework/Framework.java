@@ -143,7 +143,7 @@ public class Framework extends Canvas {
     	n2 = new roundButton("Niv2", 1);
     	n3 = new roundButton("Niv3", 1);
     	n4 = new roundButton("Niv4", 1);
-    	n5 = new roundButton("Niv5", 1);
+    	//n5 = new roundButton("Niv5", 1);
     	joueurs = new customText("Nombre de joueurs:", 30);
     	joueurs.setAlignmentX(Component.CENTER_ALIGNMENT);
     	niveau = new customText("Choix du niveau:", 30);
@@ -164,7 +164,7 @@ public class Framework extends Canvas {
         n2.addActionListener(this);
         n3.addActionListener(this);
         n4.addActionListener(this);
-        n5.addActionListener(this);
+        //n5.addActionListener(this);
     	
     	menuPrincipal.add(textMenu);
     	//menuPrincipal.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
@@ -195,7 +195,7 @@ public class Framework extends Canvas {
         boutonsNiveau.add(n2);
         boutonsNiveau.add(n3);
         boutonsNiveau.add(n4);
-        boutonsNiveau.add(n5);
+        //boutonsNiveau.add(n5);
         menuLance.add(boutonsRonds);
         menuLance.add(new Box.Filler(new Dimension(0,5), new Dimension(0,15), new Dimension(0,20)));
         menuLance.add(niveau);
@@ -555,9 +555,9 @@ public class Framework extends Canvas {
     	   else if (source == n4){
     		   niveauChoisi=4;
     	   }
-    	   else if (source == n5){
-    		   niveauChoisi=5;
-    	   }
+    	  // else if (source == n5){
+    		//   niveauChoisi=5;
+    	  // }
     }
 
 

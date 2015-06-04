@@ -566,8 +566,8 @@ public class Game {
     			
     			break;
     		case 3 :
-    			Station1 = new Station((int)(CentreEcranX-(150*pW)),(int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 1",  1);
-    			Station2 = new Station((int)(CentreEcranX+(150*pW)), (int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 2", 2);
+    			Station1 = new Station((int)(CentreEcranX-(310*pW)),(int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 1",  1);
+    			Station2 = new Station((int)(CentreEcranX+(310*pW)), (int) (CentreEcranY-(150*pH)), Ecran,"DeathStar 2", 2);
     			Objets.add(Station1);
     			Objets.add(Station2);
     			Stations.add(Station1);
@@ -575,12 +575,12 @@ public class Game {
     			Joueurs.add(Joueur1);
     			Joueurs.add(Joueur2);
     			if(Framework.nbJoueurs>2){
-    				Station3 = new Station((int)(CentreEcranX-(150*pW)),(int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 3", 3);
+    				Station3 = new Station((int)(CentreEcranX-(310*pW)),(int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 3", 3);
     				Objets.add(Station3);
     				Stations.add(Station3);
     				Joueurs.add(Joueur3);
     				if(Framework.nbJoueurs>3){
-    					Station4 = new Station((int)(CentreEcranX+(150*pW)), (int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 4", 4);
+    					Station4 = new Station((int)(CentreEcranX+(310*pW)), (int) (CentreEcranY+(150*pH)), Ecran,"DeathStar 4", 4);
         				Objets.add(Station4);
         				Stations.add(Station4);
         				Joueurs.add(Joueur4);

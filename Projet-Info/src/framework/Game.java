@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -310,7 +311,7 @@ public class Game {
     {
     	int mx = mousePosition.x;
 		int my = mousePosition.y;
-    	
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// dessine TOUS les objets dans le buffer
 		for (int k = 0; k < Objets.size(); k++) {
 			Objet O = Objets.get(k);
@@ -324,15 +325,19 @@ public class Game {
 		
 		switch(etat){
 			case PREPARATION :
-				g2d.setColor(Color.white);
+				g2d.setColor(new Color(1f,1f,1f,0.7f));
 				g2d.setFont(font1.deriveFont((float) (25*pW)));
-				printCenteredString(g2d,"Phase de préparation", (int)(100*pH));
-				g2d.setFont(font1.deriveFont(20.0f));
+				//printCenteredString(g2d,"Phase de préparation", (int)(100*pH));
+				g2d.drawString("Phase de préparation", 10, 35);
+				g2d.setFont(font1.deriveFont(15.0f));
 				
 				g2d.setColor(stationCourante.joueur.color);
 				
-				printCenteredString(g2d, stationCourante.joueur.nomJoueur,(int) (130*pH));
-				printCenteredString(g2d, "Station n° "+ stationCourante.numero,(int) (150*pH));
+				//printCenteredString(g2d, stationCourante.joueur.nomJoueur,(int) (130*pH));
+				//printCenteredString(g2d, "Station n° "+ stationCourante.numero,(int) (150*pH));
+				g2d.drawString(stationCourante.joueur.nomJoueur, (int)stationCourante.x-45, (int)stationCourante.y+70);
+				g2d.drawString("Station n°"+stationCourante.numero, (int)stationCourante.x-60, (int)stationCourante.y+85);
+				
 				if(vecteurMissile){
 					g2d.setColor(Color.white);
 					g2d.drawLine((int)(stationCourante.centreG.x), (int)(stationCourante.centreG.y), (int)(mx), (int)(my));
@@ -340,7 +345,7 @@ public class Game {
 				break;
 			
 			case SIMULATION :
-				g2d.setColor(Color.white);
+				g2d.setColor(new Color(1f,1f,1f,0.7f));
 				g2d.setFont(font1.deriveFont((float) (25*pW)));
 				switch ( (int)(gameTime/Framework.secInNanosec) % 4){
 					case 0 : load = "."; break;
@@ -348,7 +353,8 @@ public class Game {
 					case 2 : load = ". . ."; break;
 					case 3 : load = " "; break;
 				}
-				printCenteredString(g2d, "Phase de jeu "+load,  (int)(100*pH));
+				//printCenteredString(g2d, "Phase de jeu "+load,  (int)(100*pH));
+				g2d.drawString("Phase de jeu"+load, 10, 35);
 				break;
 			case FIN :
 				// Message de fin de jeu
@@ -366,7 +372,7 @@ public class Game {
 		}
     }
     
-    private void printCenteredString(Graphics2D g2d, String s,  int YPos){
+    public void printCenteredString(Graphics2D g2d, String s,  int YPos){
         int stringLen = (int)
             g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
         int start = Framework.frameWidth/2 - stringLen/2;

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -77,6 +78,13 @@ public class Station extends Objet {
 	
 	public void draw(long t, Graphics g, Font f){
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
+		g.setColor(joueur.color);
+		g.setFont(new Font("Harrington", 1, 55));
+		Graphics2D g2d = (Graphics2D)g.create();					//anti aliasing sur le texte
+	    g2d.setRenderingHint(
+	            RenderingHints.KEY_TEXT_ANTIALIASING,
+	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.drawString(""+numero, (int)x+40, (int)y-5);
 		
 //		g.setColor(Color.white);
 //		g.setFont(f.deriveFont(15.0f));

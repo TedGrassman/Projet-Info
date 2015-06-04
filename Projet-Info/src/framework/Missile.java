@@ -20,6 +20,7 @@ public class Missile extends Objet {
 	static final int MASSE_MISSILE=10;				//masse des missiles (par défaut)
 	double angle; 									//orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
 	static double poussee=0.05;
+	Explosion explosion;
 	//static String[] NomImage = {"missile3_1.png","missile3_2.png","missile3_3.png","missile3_4.png","missile3_5.png","missile3_6.png","missile3_7.png","missile3_8.png","missile3_9.png","missile3_10.png"};	//nom des PNG du missile
 	static String[] NomImage = {"missile1_1.png","missile1_2.png","missile1_3.png","missile1_4.png","missile1_5.png","missile1_6.png",
 		"missile1_7.png", "missile1_8.png","missile1_7.png","missile1_6.png","missile1_5.png","missile1_4.png","missile1_3.png",
@@ -34,7 +35,7 @@ public class Missile extends Objet {
 	
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
-		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE, prefixeExplosion);
+		super(ax, ay, adx,ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE);
 		nbr++;
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
@@ -42,10 +43,11 @@ public class Missile extends Objet {
 		int[]ypoints = {25,-25,25};
 		limites = new Area (new Polygon(xpoints, ypoints, 3));		//Creation de la hitbox (triangle)
 		this.station = null;
+		explosion= new Explosion(0.0,0.0,27,prefixeExplosion);
 	}
 	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur, Station station) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE, prefixeExplosion);
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE);
 		nbr++;
 		centreG = new CentreGravite(ax, ay);
 		centreG = new CentreGravite(ax, ay);						//Creation du centre de gravité au centre du missile
@@ -56,11 +58,12 @@ public class Missile extends Objet {
 		couleur = acouleur;
 		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
 		this.station = station;
+		explosion= new Explosion(0.0,0.0,27,prefixeExplosion);
 	}
 
 	
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE, prefixeExplosion);
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE);
 		centreG = new CentreGravite(ax, ay);
 		angle = 0.0 ;
 		//limites = new Polygon(10.0, 0, 20.0, 50.0, 0.0, 50.0);
@@ -73,6 +76,7 @@ public class Missile extends Objet {
 		couleur = acouleur;
 		traj = new Trajectoire (this, 90, 5, couleur);				//Creation de la trajectoire
 		this.station = null;
+		explosion= new Explosion(0.0,0.0,27,prefixeExplosion);
 	}
 
 	public void move(long t) {										//déplacement du missile à chaque cycle
@@ -289,5 +293,10 @@ public class Missile extends Objet {
         */
 
 		
+	}
+	
+	public void détruire(double ax, double ay, long t){
+		super.détruire(ax, ay, t);
+		this.explosion.activer(ax, ay, t);
 	}
 }

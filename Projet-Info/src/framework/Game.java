@@ -211,12 +211,8 @@ public class Game {
 					Objet OC = Missiles.get(i).Collision();
 					if(OC != O){
 						//System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);
-						
-						
-						if(O.typeObjet == "Missile"){
-							O.explosion.activer(O.x, O.y, gameTime);
+							O.détruire(O.x, O.y, gameTime);
 							sonExplosion.jouer();
-						}
 						if(OC.typeObjet == "Station"){
 							OC.détruire(OC.centreG.x, OC.centreG.y, gameTime);
 						}

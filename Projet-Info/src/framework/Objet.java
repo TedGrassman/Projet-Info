@@ -38,16 +38,15 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 
 	CentreGravite centreG; //centre de gravité de l'objet
 	Area limites; //Hitbox de l'objet
-	Explosion explosion;
 	int nbImEx = 27;
-	static String prefixeExplosion = "Explosion_Sequence_A ";
+	
 
 	public static ArrayList<Objet> liste = new ArrayList<Objet> ();	//Liste de tous les Objets pour effectuer les opérations
 	AffineTransform transfo = new AffineTransform();
 	
 	int currentFrameNumber;
 	
-	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse, String av) {
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type, int nbIm, int masse) {
 
 		NbImages = nbIm;
 		try {
@@ -76,8 +75,6 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 		limitesframe = aframe;
 		actif = true;
 		this.masse = masse;
-		prefixeExplosion = av;
-		explosion = new Explosion(x, y, nbImEx, prefixeExplosion);
 		liste.add(this);
 		currentFrameNumber = 0;
 	}
@@ -119,7 +116,6 @@ public abstract class Objet { 		//Classe abstraite, Objet dessinable dans le JPa
 	}
 	
 	public void détruire(double ax, double ay, long t){
-		this.explosion.activer(ax, ay, t);
 		this.actif=false;
 	}
 

@@ -124,6 +124,7 @@ public class Game {
 
     	Objet.liste = new ArrayList<Objet> ();
     	Astre.liste= new ArrayList<Astre>();
+    	Explosion.liste= new ArrayList<Explosion>();
     	Missile.nbr=0;
     	Joueur1.reinitStations();
     	Joueur2.reinitStations();

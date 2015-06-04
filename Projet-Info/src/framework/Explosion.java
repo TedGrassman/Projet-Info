@@ -16,7 +16,6 @@ public class Explosion {
 	double x,y;
 	int drawX, drawY;
 	int h, l;
-	//long t0;
 	String av;
 	static String ap = ".png";
 	static String[] NomImage;		//nom des PNG de l'explosion
@@ -30,7 +29,6 @@ public class Explosion {
 	
 	
 	public Explosion(double ax, double ay, int nbImEx, String av) {
-		//t0 = 0;
 		x = ax;
 		y = ay;
 		this.NbImages = nbImEx;
@@ -67,14 +65,10 @@ public class Explosion {
 	}
 
 	public void actualisation(long t) {
-//		drawX = (int)(x-l/2);
-//		drawY = (int)(y-h/2);		
-//		if(t >= t0 + NbImages)
-//			this.actif = false;
 		if(currentFrameNumber > NbImages){
 			this.actif = false;
+			liste.remove(this);
 		}
-		//System.out.println("Actualisation explosion");
 		
 	}
 	
@@ -91,7 +85,6 @@ public class Explosion {
 		x = ax;
 		y = ay;
 		actif = true;
-		//t0 = t;
 		drawX = (int)(x-l/2);
 		drawY = (int)(y-h/2);
 	}

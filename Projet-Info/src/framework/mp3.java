@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 public class mp3 extends Application{
 	MediaPlayer player;
 	
-	public mp3(String cheminFichier){
+	public mp3(String nomFichier){										//son mp3. fichier à placer dans le dossier res
 		JFXPanel fxPanel = new JFXPanel();									//nécessaire pour utiliser javaFX
 		Media son;
 		try {																//code tiré du site d'Oracle, gestion d'erreurs d'import fichier
-	        son = new Media(new File(cheminFichier).toURI().toString());
+	        son = new Media(new File(nomFichier).toURI().toString());
 	        if (son.getError() == null) {
 	            son.setOnError(new Runnable() {
 	                public void run() {

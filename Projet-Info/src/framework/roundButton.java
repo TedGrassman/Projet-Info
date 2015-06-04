@@ -19,20 +19,20 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
 
-public class roundButton extends JButton implements MouseListener {
+public class roundButton extends JButton implements MouseListener {			//boutons ronds "sélectionnables"
 	
 	static ArrayList<roundButton> liste = new ArrayList <roundButton>();
 	
-	BufferedImage[] images = new BufferedImage[4];
+	BufferedImage[] images = new BufferedImage[4];	//images à afficher
 	
-	Son sonBoutonClic, sonBoutonEntered;
+	Son sonBoutonClic, sonBoutonEntered;			//sons à jouer lors des clics et lorsque la souris est sur le bouton
 	
-	String[] NomImage = new String[4];
-	String libelle;
+	String[] NomImage = new String[4];				//nom des images à charger et afficher
+	String libelle;									//texte à afficher sur le bouton
 	
-	int h,l;
-	int state=0;
-	int taillePolice, type;
+	int h,l;										//hauteur et largeux max de l'image
+	int state=0;									// etat du bouton 0=neutre 1=éclairé 2=clic maintenu 3=sélectionné
+	int taillePolice, type;							// type permet de créer des boutons de lots différents et d'apparence différente
 	
 	Shape shape;
 	
@@ -45,7 +45,7 @@ public class roundButton extends JButton implements MouseListener {
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
     	sonBoutonEntered = new Son ("res/sons/bouton-fx-188.wav");
 		type=code;
-    	switch (code){
+    	switch (code){									// change le skin du bouton selon son type
     	case 0:
     		NomImage[0]="small0.png";
 			NomImage[1]="small1.png";
@@ -100,7 +100,7 @@ public class roundButton extends JButton implements MouseListener {
 		drawCenteredString(libelle, g);
 	}
 	
-	public boolean contains(int x, int y) {
+	public boolean contains(int x, int y) { // définition de la méthode contains pour détecter les clics
 		    if (shape == null) {
 		      shape = new Ellipse2D.Float(0, 0, 
 		        getWidth(), getHeight());
@@ -120,7 +120,7 @@ public class roundButton extends JButton implements MouseListener {
 	    g2d.drawString(s, x, y);
 	  }
 	
-	public void unselect(){
+	public void unselect(){												// déselectionne tous les autres boutons du lot
 		for(int i=0; i<liste.size(); i++){
 			if (liste.get(i)!= this && liste.get(i).type==this.type){
 				liste.get(i).state=0;

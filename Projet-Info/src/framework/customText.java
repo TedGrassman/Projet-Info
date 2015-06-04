@@ -15,7 +15,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
-public class customText extends JLabel{
+public class customText extends JLabel{				//texte avec fond auto-redimensionné et centré
 	Image fond;										//image derrière le texte
 	String texte;									//texte à écrire
 	int l, h;										//dimensions finales de l'image

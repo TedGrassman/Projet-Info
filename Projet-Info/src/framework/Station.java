@@ -20,16 +20,10 @@ public class Station extends Objet {
 	static String[] NomImage = {"base.png"};
 	static String prefixeExplosion = "Explosion_Sequence_A ";
 	Joueur joueur;
-	int numero;
+	int numero, lastVectorX, lastVectorY;
 	Explosion explosion;
 
-	
-	public Station(int ax, int ay, Rectangle aframe, String nom) {
-		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
-		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
-		explosion = new Explosion(0.0,0.0,27, prefixeExplosion);
-	}
-	
+
 	public Station(int ax, int ay, Rectangle aframe, String nom, int idJoueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
 		limites = new Area (new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Hitbox elliptique
@@ -56,6 +50,8 @@ public class Station extends Objet {
 			break;
 		}
 		explosion = new Explosion(0.0,0.0,27, prefixeExplosion);
+		lastVectorX = (int)centreG.x;
+		lastVectorY = (int)centreG.y;
 	}
 	
 	public void move(long t) {
@@ -107,5 +103,9 @@ public class Station extends Objet {
 		super.détruire(ax, ay, t);
 		this.explosion.activer(ax, ay, t);
 		joueur.Stations.remove(this);
+	}
+	public void setLastVector(int x, int y){
+		lastVectorX = x;
+		lastVectorY = y;
 	}
 }

@@ -169,12 +169,13 @@ public class Game {
 				}
     			if(mouseReleased){ 
 					if(vecteurMissile){		// deuxième condition au cas où le clic était maintenu depuis l'etat SIMULATION
+						stationCourante.setLastVector(mx, my);
 						int x, y;
 						double angle=Math.atan2(my-stationCourante.y, mx-stationCourante.x);
 						x = (int) (stationCourante.x+(stationCourante.l/2 + 27)*Math.cos(angle));
 						y = (int) (stationCourante.y+(stationCourante.h/2 + 27)*Math.sin(angle));
 						vecteurMissile = false;
-						String nom = "Missile Station n°"+(Stations.indexOf(stationCourante)+1);
+						String nom = "Missile Station "+(Stations.indexOf(stationCourante)+1);
 						Missile missile = new Missile(x, y, (float)((mx-stationCourante.centreG.x)/100), (float)((my-stationCourante.centreG.y)/100), Ecran, nom, stationCourante.joueur.color, stationCourante);
 						Objets.add(missile);
 						Missiles.add(missile);
@@ -336,11 +337,12 @@ public class Game {
 				//printCenteredString(g2d, stationCourante.joueur.nomJoueur,(int) (130*pH));
 				//printCenteredString(g2d, "Station n° "+ stationCourante.numero,(int) (150*pH));
 				g2d.drawString(stationCourante.joueur.nomJoueur, (int)stationCourante.x-45, (int)stationCourante.y+70);
-				g2d.drawString("Station n°"+stationCourante.numero, (int)stationCourante.x-60, (int)stationCourante.y+85);
-				
+				g2d.drawString("Station "+stationCourante.numero, (int)stationCourante.x-52, (int)stationCourante.y+85);
+				g2d.setColor(new Color (1f,1f,1f, 0.5f));
+				g2d.drawLine((int)(stationCourante.centreG.x), (int)(stationCourante.centreG.y), stationCourante.lastVectorX, stationCourante.lastVectorY);
 				if(vecteurMissile){
 					g2d.setColor(Color.white);
-					g2d.drawLine((int)(stationCourante.centreG.x), (int)(stationCourante.centreG.y), (int)(mx), (int)(my));
+					g2d.drawLine((int)(stationCourante.centreG.x), (int)(stationCourante.centreG.y), mx, my);
 				}
 				break;
 			

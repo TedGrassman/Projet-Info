@@ -4,17 +4,18 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Joueur {
-	
-	ArrayList <Station> Stations;
-	static ArrayList <Joueur> Joueurs = new ArrayList<Joueur>();
+
+	ArrayList<Station> Stations;
 	String nomJoueur;
 	Color color;
-	
+
 	public Joueur(String nomJoueur, Color couleur) {
 		this.nomJoueur = nomJoueur;
 		Stations = new ArrayList<Station>();
-		Joueurs.add(this);
-		color=couleur;
+		color = couleur;
 	}
-	
+
+	public void reinitStations() {
+		Stations = new ArrayList<Station>();
+	}
 }

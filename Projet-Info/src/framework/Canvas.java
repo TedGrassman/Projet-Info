@@ -22,8 +22,7 @@ import javax.swing.event.ChangeListener;
  * @author www.gametutorial.net
  */
 
-public abstract class Canvas extends JPanel implements KeyListener,
-		MouseListener, ActionListener, ChangeListener {
+public abstract class Canvas extends JPanel implements KeyListener, MouseListener, ActionListener, ChangeListener {
 
 	// Keyboard states - Here are stored states for keyboard keys - is it down
 	// or not.
@@ -44,10 +43,9 @@ public abstract class Canvas extends JPanel implements KeyListener,
 		// cursor disapear,
 		// insert "true" into if condition and mouse cursor will be removed.
 		if (false) {
-			final BufferedImage blankCursorImg = new BufferedImage(16, 16,
-					BufferedImage.TYPE_INT_ARGB);
-			final Cursor blankCursor = Toolkit.getDefaultToolkit()
-					.createCustomCursor(blankCursorImg, new Point(0, 0), null);
+			final BufferedImage blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImg, new Point(0, 0),
+					null);
 			setCursor(blankCursor);
 		}
 

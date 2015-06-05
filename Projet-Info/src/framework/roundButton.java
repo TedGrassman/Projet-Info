@@ -119,8 +119,7 @@ public class roundButton extends JButton implements MouseListener { // boutons
 		final int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
 		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
 														// texte
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.drawString(s, x, y);
 	}
 

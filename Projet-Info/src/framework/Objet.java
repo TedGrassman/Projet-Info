@@ -50,8 +50,8 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 
 	int currentFrameNumber;
 
-	public Objet(int ax, int ay, float adx, float ady, String[] NomImage,
-			Rectangle aframe, String nom, String type, int nbIm, int masse) {
+	public Objet(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type,
+			int nbIm, int masse) {
 
 		NbImages = nbIm;
 		try {

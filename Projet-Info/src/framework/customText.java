@@ -39,17 +39,15 @@ public class customText extends JLabel { // texte avec fond auto-redimensionné
 			System.exit(0);
 		}
 
-		l = (int) (police.getStringBounds(texte,
-				new FontRenderContext(null, false, false)).getWidth() + 200); // dimensionne
-																				// l'image
-																				// pour
-																				// que
-																				// le
-																				// texte
-																				// rentre
-																				// dedans
-		h = (int) (police.getStringBounds(texte,
-				new FontRenderContext(null, false, false)).getHeight() + 50);
+		l = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getWidth() + 200); // dimensionne
+																												// l'image
+																												// pour
+																												// que
+																												// le
+																												// texte
+																												// rentre
+																												// dedans
+		h = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getHeight() + 50);
 		fond = fond.getScaledInstance(l, h, Image.SCALE_SMOOTH);
 	}
 
@@ -66,10 +64,8 @@ public class customText extends JLabel { // texte avec fond auto-redimensionné
 			System.exit(0);
 		}
 
-		l = (int) (police.getStringBounds(texte, new FontRenderContext(null,
-				false, false)).getWidth()) + 200;
-		h = (int) (police.getStringBounds(texte, new FontRenderContext(null,
-				false, false)).getHeight()) + 50;
+		l = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getWidth()) + 200;
+		h = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getHeight()) + 50;
 		fond = fond.getScaledInstance(l, h, Image.SCALE_SMOOTH);
 	}
 
@@ -85,8 +81,7 @@ public class customText extends JLabel { // texte avec fond auto-redimensionné
 		final int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
 		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
 														// texte
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setColor(new Color(59 / 255, 60 / 255, 60 / 255, 0.85f));
 		g2d.drawString(s, x, y);
 	}

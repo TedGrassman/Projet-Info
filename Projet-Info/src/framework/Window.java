@@ -39,11 +39,8 @@ public class Window extends JFrame {
 		{
 			// Size of the frame.
 
-			this.setSize((int) GraphicsEnvironment
-					.getLocalGraphicsEnvironment().getMaximumWindowBounds()
-					.getWidth(), (int) GraphicsEnvironment
-					.getLocalGraphicsEnvironment().getMaximumWindowBounds()
-					.getHeight());
+			this.setSize((int) GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth(),
+					(int) GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight());
 			// Puts frame to center of the screen.
 			setLocationRelativeTo(null);
 			// So that frame cannot be resizable by the user.

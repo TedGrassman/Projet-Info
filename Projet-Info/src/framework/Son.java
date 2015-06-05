@@ -18,13 +18,11 @@ public class Son {
 		try {
 			final File file = new File(nomFichier);
 			if (file.exists()) {
-				final AudioInputStream sound = AudioSystem
-						.getAudioInputStream(file);
+				final AudioInputStream sound = AudioSystem.getAudioInputStream(file);
 				clip = AudioSystem.getClip(); // charge le son en mémoire
 				clip.open(sound);
 			} else {
-				throw new RuntimeException("Fichier son non trouvé :"
-						+ nomFichier);
+				throw new RuntimeException("Fichier son non trouvé :" + nomFichier);
 			}
 		} catch (final MalformedURLException e) {
 			e.printStackTrace();

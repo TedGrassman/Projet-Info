@@ -21,8 +21,8 @@ public abstract class Astre extends Objet { // Classe abstraite dont héritent
 														// travaillant avec tout
 														// type d'astre
 
-	public Astre(int ax, int ay, float adx, float ady, String[] NomImage,
-			Rectangle aframe, String nom, String type, int nbIm, int masse) {
+	public Astre(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom, String type,
+			int nbIm, int masse) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, type, nbIm, masse);
 		liste.add(this); // Ajoute l'astre nouvellement créé à la liste d'astres
 	}

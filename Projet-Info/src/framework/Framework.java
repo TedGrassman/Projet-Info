@@ -33,8 +33,8 @@ public class Framework extends Canvas {
 	public static int nbJoueurs, niveauChoisi;
 	mp3 musiqueMenu, musiqueNiveau, musiqueLance;
 	JPanel panel = new JPanel();
-	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(),
-			menuOptions = new JPanel(), menuLance = new JPanel();
+	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(),
+			menuLance = new JPanel();
 	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker
@@ -110,8 +110,7 @@ public class Framework extends Canvas {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		menuPrincipal
-				.setLayout((new BoxLayout(menuPrincipal, BoxLayout.Y_AXIS)));
+		menuPrincipal.setLayout((new BoxLayout(menuPrincipal, BoxLayout.Y_AXIS)));
 		menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
 		menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
 		menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
@@ -188,29 +187,22 @@ public class Framework extends Canvas {
 		// menuPrincipal.add(new Box.Filler(new Dimension(0,5), new
 		// Dimension(0,15), new Dimension(0,20)));
 		menuPrincipal.add(lance); // ajoute les boutons dans les cartes
-		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0,
-				15), new Dimension(0, 20)));
+		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPrincipal.add(settings); // une carte = un menu
-		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0,
-				15), new Dimension(0, 20)));
+		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPrincipal.add(exit);
-		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0,
-				15), new Dimension(0, 20)));
+		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 
-		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15),
-				new Dimension(0, 20)));
+		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPause.add(reprendre);
-		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15),
-				new Dimension(0, 20)));
+		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPause.add(menu);
-		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15),
-				new Dimension(0, 20)));
+		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 
 		menuOptions.add(textOptions);
 		menuOptions.add(poussée);
 		menuOptions.add(sliderPoussee);
-		menuOptions.add(new Box.Filler(new Dimension(0, 5),
-				new Dimension(0, 15), new Dimension(0, 20)));
+		menuOptions.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuOptions.add(menu2);
 
 		menuLance.add(joueurs);
@@ -223,12 +215,10 @@ public class Framework extends Canvas {
 		boutonsNiveau.add(n4);
 		// boutonsNiveau.add(n5);
 		menuLance.add(boutonsRonds);
-		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15),
-				new Dimension(0, 20)));
+		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(niveau);
 		menuLance.add(boutonsNiveau);
-		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15),
-				new Dimension(0, 20)));
+		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(play);
 
 		panel.setLayout(layout); // définit le layout du panel principal en type
@@ -348,8 +338,7 @@ public class Framework extends Canvas {
 					haut = this.getInsets().top;
 					droite = this.getInsets().right;
 					bas = this.getInsets().bottom;
-					bg = bg.getScaledInstance(frameWidth, frameHeight,
-							Image.SCALE_SMOOTH);
+					bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
 
 					// When we get size of frame we change status.
 					if (resized && game != null) {

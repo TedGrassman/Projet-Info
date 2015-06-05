@@ -47,13 +47,19 @@ public class Trajectoire {
 			g.setColor(couleur); // change la couleur à la couleur souhaitée
 									// pour la courbe
 			for (int i = 0; i < listePoints.size() - delai; i++) {
-				g.fillOval((int) listePoints.get(i).x,
-						(int) listePoints.get(i).y, 2, 2); // dessine des
-															// cercles de
-															// diametre 1 à
-															// l'emplacement des
-															// points de la
-															// liste
+				g.fillOval((int) listePoints.get(i).x, (int) listePoints.get(i).y, 2, 2); // dessine
+																							// des
+																							// cercles
+																							// de
+																							// diametre
+																							// 1
+																							// à
+																							// l'emplacement
+																							// des
+																							// points
+																							// de
+																							// la
+																							// liste
 			}
 			g.setColor(preced); // restaure la couleur du Graphics
 		}

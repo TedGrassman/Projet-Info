@@ -12,15 +12,19 @@ public class AstreSpherique extends Astre { // Astre de forme sphérique défini
 	// Circle limites;
 	double rayon; // Rayon de l'astre
 
-	public AstreSpherique(int ax, int ay, float adx, float ady,
-			String[] NomImage, Rectangle aframe, String nom, int nbIm,
-			int masse, double rayon) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "AstreSpherique", nbIm,
-				masse);
+	public AstreSpherique(int ax, int ay, float adx, float ady, String[] NomImage, Rectangle aframe, String nom,
+			int nbIm, int masse, double rayon) {
+		super(ax, ay, adx, ady, NomImage, aframe, nom, "AstreSpherique", nbIm, masse);
 		this.rayon = rayon;
-		limites = new Area(new Ellipse2D.Double(drawX, drawY, (2 * rayon),
-				(2 * rayon))); // Création de la hitbox : disque de centre
-								// (ax,ay)
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, (2 * rayon), (2 * rayon))); // Création
+																							// de
+																							// la
+																							// hitbox
+																							// :
+																							// disque
+																							// de
+																							// centre
+																							// (ax,ay)
 	}
 
 	@Override

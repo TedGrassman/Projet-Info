@@ -19,9 +19,8 @@ public class Station extends Objet {
 
 	public Station(int ax, int ay, Rectangle aframe, String nom, int idJoueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);
-		limites = new Area(new Ellipse2D.Double(drawX, drawY,
-				images[0].getWidth(null), images[0].getHeight(null))); // Hitbox
-																		// elliptique
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); // Hitbox
+																														// elliptique
 		switch (idJoueur) {
 		case 1:
 			Game.JOUEUR1.Stations.add(this);
@@ -64,10 +63,10 @@ public class Station extends Objet {
 
 		drawX = (int) (x - l / 2);
 		drawY = (int) (y - h / 2);
-		limites = new Area(new Ellipse2D.Double(drawX, drawY,
-				images[0].getWidth(null), images[0].getHeight(null))); // Actualisation
-																		// de la
-																		// hitbox
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); // Actualisation
+																														// de
+																														// la
+																														// hitbox
 	}
 
 	public void draw(long t, Graphics g, Font f) {
@@ -76,8 +75,7 @@ public class Station extends Objet {
 		g.setFont(new Font("Harrington", 1, 55));
 		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
 														// texte
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.drawString("" + numero, (int) x + 40, (int) y - 5);
 
 		// g.setColor(Color.white);

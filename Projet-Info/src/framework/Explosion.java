@@ -79,8 +79,7 @@ public class Explosion {
 	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans
 											// l'interface graphique g
 		if (actif == true) {
-			g.drawImage(images[(int) ((currentFrameNumber - 1) % NbImages)],
-					drawX, drawY, null);
+			g.drawImage(images[(int) ((currentFrameNumber - 1) % NbImages)], drawX, drawY, null);
 			System.out.println("EXPLOSION");
 			currentFrameNumber++;
 			actualisation(t);

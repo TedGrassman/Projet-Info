@@ -16,22 +16,13 @@ public class AstreSpherique extends Astre { // Astre de forme sphérique défini
 			int nbIm, int masse, double rayon) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "AstreSpherique", nbIm, masse);
 		this.rayon = rayon;
-		limites = new Area(new Ellipse2D.Double(drawX, drawY, (2 * rayon), (2 * rayon))); // Création
-																							// de
-																							// la
-																							// hitbox
-																							// :
-																							// disque
-																							// de
-																							// centre
-																							// (ax,ay)
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, (2 * rayon), (2 * rayon)));
+		// Création de la hitbox : disque de centre (ax,ay)
 	}
 
 	@Override
-	public void move(long t) { // Implémentation de la méthode move obligatoire,
-								// mais on ne la
-								// définit pas pour un astre sphérique pour
-								// l'instant
+	public void move(long t) { // Implémentation de la méthode move obligatoire, mais on ne la
+								// définit pas pour un astre sphérique pour l'instant
 
 	}
 
@@ -41,9 +32,10 @@ public class AstreSpherique extends Astre { // Astre de forme sphérique défini
 		currentFrameNumber++;
 
 		/*
-		 * AffineTransform at = new AffineTransform(); GeneralPath path1 = new
-		 * GeneralPath(); ---------- path1.append(limites.getPathIterator(at),
-		 * true); DEBBUGING : dessin de la hitbox g2d.fill(path1); ----------
+		 * AffineTransform at = new AffineTransform();
+		 * GeneralPath path1 = new GeneralPath(); 
+		 * path1.append(limites.getPathIterator(at), true); 				DEBBUGING : dessin de la hitbox 
+		 * g2d.fill(path1);
 		 */
 	}
 

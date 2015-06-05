@@ -21,15 +21,10 @@ public class customText extends JLabel { // texte avec fond auto-redimensionné
 	int l, h; // dimensions finales de l'image
 	Font police; // police d'écriture
 
-	public customText(String s, int taille) { // constructeur n°1 : à partir du
-												// texte à afficher et de la
-												// taille souhaitée
+	public customText(String s, int taille) { // constructeur n°1 : à partir du texte à afficher et de la taille souhaitée
 		super();
 		setOpaque(false); // fond transparent
-		police = new Font("Hobo Std", Font.PLAIN, taille); // police de tous les
-															// customText
-															// construits par le
-															// constructeur 1
+		police = new Font("Hobo Std", Font.PLAIN, taille); // police de tous les customText construits par le constructeur 1
 		texte = s;
 		try { // tente de récupérer le png
 			for (int k = 0; k < 3; k++)
@@ -38,15 +33,8 @@ public class customText extends JLabel { // texte avec fond auto-redimensionné
 			System.out.println("Fond texte introuvable !");
 			System.exit(0);
 		}
-
-		l = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getWidth() + 200); // dimensionne
-																												// l'image
-																												// pour
-																												// que
-																												// le
-																												// texte
-																												// rentre
-																												// dedans
+		// dimensionne l'image pour que le texte rentre dedans
+		l = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getWidth() + 200); 
 		h = (int) (police.getStringBounds(texte, new FontRenderContext(null, false, false)).getHeight() + 50);
 		fond = fond.getScaledInstance(l, h, Image.SCALE_SMOOTH);
 	}

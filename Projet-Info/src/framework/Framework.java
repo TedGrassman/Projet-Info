@@ -37,9 +37,7 @@ public class Framework extends Canvas {
 			menuLance = new JPanel();
 	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
 	CardLayout layout = new CardLayout();
-	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker
-											// l'etat du jeu lors d'une mise en
-											// pause
+	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
 	customButton play, reprendre, settings, exit, menu, menu2, lance;
 	JSlider sliderPoussee;
@@ -114,11 +112,8 @@ public class Framework extends Canvas {
 		menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
 		menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
 		menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
-		play = new customButton("Commencer le jeu", 0); // initialise les
-														// boutons
-		play.setAlignmentX(Component.CENTER_ALIGNMENT); // centre
-														// horizontalement les
-														// boutons
+		play = new customButton("Commencer le jeu", 0); // initialise les boutons
+		play.setAlignmentX(Component.CENTER_ALIGNMENT); // centre horizontalement les boutons
 		lance = new customButton("Lancer une partie", 0);
 		lance.setAlignmentX(Component.CENTER_ALIGNMENT);
 		reprendre = new customButton("Reprendre la partie", 0);
@@ -137,21 +132,12 @@ public class Framework extends Canvas {
 		textOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
 		poussée = new customText("Force de poussée des missiles", 30);
 		poussée.setAlignmentX(Component.CENTER_ALIGNMENT);
-		sliderPoussee = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 5); // slider
-																			// horizontal,
-																			// min
-																			// 0,
-																			// max
-																			// 10,
-																			// défaut
-																			// à
-																			// 5
+		sliderPoussee = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 5); // slider horizontal, min 0, max 10, défaut à 5
 		sliderPoussee.setOpaque(false); // fond transparent
 		sliderPoussee.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sliderPoussee.setMajorTickSpacing(1); // espacement et dessin des crans
 		sliderPoussee.setPaintTicks(true);
-		sliderPoussee.setPaintLabels(true); // dessin des chiffres sous les
-											// crans
+		sliderPoussee.setPaintLabels(true); // dessin des chiffres sous les crans
 		sliderPoussee.setForeground(Color.WHITE);
 		j2 = new roundButton("2", 0);
 		j3 = new roundButton("3", 0);
@@ -160,7 +146,7 @@ public class Framework extends Canvas {
 		n2 = new roundButton("Niv2", 1);
 		n3 = new roundButton("Niv3", 1);
 		n4 = new roundButton("Niv4", 1);
-		// n5 = new roundButton("Niv5", 1);
+
 		joueurs = new customText("Nombre de joueurs:", 30);
 		joueurs.setAlignmentX(Component.CENTER_ALIGNMENT);
 		niveau = new customText("Choix du niveau:", 30);
@@ -181,11 +167,8 @@ public class Framework extends Canvas {
 		n2.addActionListener(this);
 		n3.addActionListener(this);
 		n4.addActionListener(this);
-		// n5.addActionListener(this);
 
 		menuPrincipal.add(textMenu);
-		// menuPrincipal.add(new Box.Filler(new Dimension(0,5), new
-		// Dimension(0,15), new Dimension(0,20)));
 		menuPrincipal.add(lance); // ajoute les boutons dans les cartes
 		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPrincipal.add(settings); // une carte = un menu
@@ -213,7 +196,6 @@ public class Framework extends Canvas {
 		boutonsNiveau.add(n2);
 		boutonsNiveau.add(n3);
 		boutonsNiveau.add(n4);
-		// boutonsNiveau.add(n5);
 		menuLance.add(boutonsRonds);
 		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(niveau);
@@ -221,8 +203,7 @@ public class Framework extends Canvas {
 		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(play);
 
-		panel.setLayout(layout); // définit le layout du panel principal en type
-									// "card"
+		panel.setLayout(layout); // définit le layout du panel principal en type "card"
 		panel.setOpaque(false); // arrière plan transparent
 
 		menuPrincipal.setOpaque(false);
@@ -232,8 +213,7 @@ public class Framework extends Canvas {
 		boutonsRonds.setOpaque(false);
 		boutonsNiveau.setOpaque(false);
 
-		panel.add(menuPrincipal, "mDepart"); // ajoute les cartes au panel
-												// principal
+		panel.add(menuPrincipal, "mDepart"); // ajoute les cartes au panel principal
 		panel.add(menuPause, "mPause");
 		panel.add(menuOptions, "mOptions");
 		panel.add(menuLance, "mLance");
@@ -475,7 +455,7 @@ public class Framework extends Canvas {
 	public void keyReleasedFramework(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) { // si la touche échap est
 													// pressée...
-			// System.out.println(gameState); DEBBUGING
+			// System.out.println(gameState); 									DEBBUGING
 			if (game != null) { // on vérifie que le jeu existe
 				if (gameState == GameState.PAUSE) { // si le jeu est en pause...
 					Game.etat = old; // on restaure son état d'avant la pause
@@ -580,9 +560,6 @@ public class Framework extends Canvas {
 		} else if (source == n4) {
 			niveauChoisi = 4;
 		}
-		// else if (source == n5){
-		// niveauChoisi=5;
-		// }
 	}
 
 	@Override

@@ -11,10 +11,9 @@ import javafx.stage.Stage;
 public class mp3 extends Application {
 	MediaPlayer player;
 
-	public mp3(String nomFichier) { // son mp3. fichier à placer dans le dossier
-									// res
-		final JFXPanel fxPanel = new JFXPanel(); // nécessaire pour utiliser
-													// javaFX
+	public mp3(String nomFichier) { // son mp3. fichier à placer dans le dossier res
+		@SuppressWarnings("unused")
+		final JFXPanel fxPanel = new JFXPanel(); // nécessaire pour utiliser javaFX
 		Media son;
 		try { // code tiré du site d'Oracle, gestion d'erreurs d'import fichier
 			son = new Media(new File(nomFichier).toURI().toString());
@@ -29,8 +28,7 @@ public class mp3 extends Application {
 					if (player.getError() == null) {
 						player.setOnError(new Runnable() {
 							public void run() {
-								// Handle asynchronous error in MediaPlayer
-								// object.
+								// Handle asynchronous error in MediaPlayer object.
 							}
 						});
 

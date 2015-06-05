@@ -58,8 +58,7 @@ public class customButton extends JButton implements MouseListener {
 			System.exit(0);
 		}
 
-		h = images[0].getHeight(null); // récupère une fois pour toutes la
-										// hauteur et largeur de l'image
+		h = images[0].getHeight(null); // récupère une fois pour toutes la hauteur et largeur de l'image
 		l = images[0].getWidth(null);
 	}
 
@@ -87,8 +86,7 @@ public class customButton extends JButton implements MouseListener {
 		final FontMetrics fm = g.getFontMetrics();
 		final int x = (l - fm.stringWidth(s)) / 2;
 		final int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
-		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
-														// texte
+		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le texte
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.drawString(s, x, y);
 	}

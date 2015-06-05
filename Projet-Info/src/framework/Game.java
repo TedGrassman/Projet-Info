@@ -17,10 +17,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-	public static boolean mouseClicked, mousePressed, mouseReleased; // Booléens
-																		// pour
-																		// évènement
-																		// souris
+	public static boolean mouseClicked, mousePressed, mouseReleased; // Booléens pour évènement souris
 
 	public static enum ETAT {
 		PREPARATION, SIMULATION, PAUSE, FIN
@@ -37,8 +34,7 @@ public class Game {
 	final static Joueur JOUEUR1 = new Joueur("Joueur 1", Color.RED), JOUEUR2 = new Joueur("Joueur 2", Color.CYAN),
 			JOUEUR3 = new Joueur("Joueur 3", Color.GREEN), JOUEUR4 = new Joueur("Joueur 4", Color.YELLOW);
 	Station stationCourante;
-	Station Station1, Station2, Station3, Station4; // L'objet que l'utilisateur
-													// va déplacer
+	Station Station1, Station2, Station3, Station4; // Stations
 	AstreSatelite Satelite1, Satelite2, Satelite3, Satelite4, Satelite5, Satelite6, Satelite7, Satelite8;
 	AstreSpherique Planet1, Planet2, Planet3, Planet4, Planet5, Planet6, Planet7, Planet8, Planet9;
 	AstreTrouNoir TrouNoir1, TrouNoir2;
@@ -122,7 +118,6 @@ public class Game {
 	 */
 	public void RestartGame() {
 		// Reinitialisation des variables static
-
 		Objet.liste = new ArrayList<Objet>();
 		Astre.liste = new ArrayList<Astre>();
 		Explosion.liste = new ArrayList<Explosion>();
@@ -135,11 +130,9 @@ public class Game {
 		Ecran = new Rectangle(Framework.gauche, Framework.haut, Framework.frameWidth - Framework.droite
 				- Framework.gauche, Framework.frameHeight - Framework.bas - Framework.haut);
 
-		Objets = new ArrayList<Objet>(); // Créer la liste chainée en mémoire
-		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en
-												// mémoire
-		Stations = new ArrayList<Station>(); // Créer la liste chainée en
-												// mémoire
+		Objets = new ArrayList<Objet>(); // Créer les listes chainées en mémoire
+		Missiles = new ArrayList<Missile>();
+		Stations = new ArrayList<Station>();
 		Joueurs = new ArrayList<Joueur>();
 
 		DisposeAstres(Framework.niveauChoisi);
@@ -169,9 +162,7 @@ public class Game {
 				mousePressed = false;
 			}
 			if (mouseReleased) {
-				if (vecteurMissile) { // deuxième condition au cas où le clic
-										// était maintenu depuis l'etat
-										// SIMULATION
+				if (vecteurMissile) { // deuxième condition au cas où le clic était maintenu depuis l'etat SIMULATION
 					stationCourante.setLastVector(mx, my);
 					int x, y;
 					final double angle = Math.atan2(my - stationCourante.y, mx - stationCourante.x);
@@ -215,8 +206,7 @@ public class Game {
 				final Missile O = Missiles.get(i);
 				final Objet OC = Missiles.get(i).Collision();
 				if (OC != O) {
-					// System.out.println("Collision de " +O.nom_objet+ " avec "
-					// +OC.nom_objet);
+					// System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);	DEBUGGING
 					O.détruire(O.x, O.y, gameTime);
 					sonExplosion.jouer();
 					if (OC.typeObjet == "Station") {
@@ -226,48 +216,34 @@ public class Game {
 				}
 			}
 
-			/*
-			 * //ACTUALISATION des EXPLOSIONS for(int i=0;
-			 * i<Explosion.liste.size(); i++){
-			 * Explosion.liste.get(i).actualisation(gameTime); }
-			 */
-			// ACTUALISATION des TRAJECTOIRES
-			/*
-			 * for(int i=0; i<Trajectoires.size(); i++){
-			 * Trajectoires.get(i).actualisation(); }
-			 */
 			// GARBAGE COLLECTOR
 
 			for (int k = 0; k < Objets.size(); k++) {
 				final Objet O = Objets.get(k);
 				if (O.actif == false) {
 					Objets.remove(k);
-					k--; // parceque la liste s'est déplacée pour boucher le
-							// trou
+					k--; // parceque la liste s'est déplacée pour boucher le trou
 				}
 			}
 			for (int k = 0; k < Missiles.size(); k++) {
 				final Missile O = Missiles.get(k);
 				if (O.actif == false) {
 					Missiles.remove(k);
-					k--; // parceque la liste s'est déplacée pour boucher le
-							// trou
+					k--; // parceque la liste s'est déplacée pour boucher le trou
 				}
 			}
 			for (int k = 0; k < Objet.liste.size(); k++) {
 				final Objet O = Objet.liste.get(k);
 				if (O.actif == false) {
 					Objet.liste.remove(k);
-					k--; // parceque la liste s'est déplacée pour boucher le
-							// trou
+					k--; // parceque la liste s'est déplacée pour boucher le trou
 				}
 			}
 			for (int k = 0; k < Stations.size(); k++) {
 				final Station O = Stations.get(k);
 				if (O.actif == false) {
 					Stations.remove(k);
-					k--; // parceque la liste s'est déplacée pour boucher le
-							// trou
+					k--; // parceque la liste s'est déplacée pour boucher le trou
 				}
 			}
 
@@ -337,16 +313,12 @@ public class Game {
 		case PREPARATION:
 			g2d.setColor(new Color(1f, 1f, 1f, 0.7f));
 			g2d.setFont(font1.deriveFont((float) (25 * pW)));
-			// printCenteredString(g2d,"Phase de préparation", (int)(100*pH));
+
 			g2d.drawString("Phase de préparation", 10, 35);
 			g2d.setFont(font1.deriveFont(15.0f));
 
 			g2d.setColor(stationCourante.joueur.color);
 
-			// printCenteredString(g2d, stationCourante.joueur.nomJoueur,(int)
-			// (130*pH));
-			// printCenteredString(g2d, "Station n° "+
-			// stationCourante.numero,(int) (150*pH));
 			g2d.drawString(stationCourante.joueur.nomJoueur, (int) stationCourante.x - 45, (int) stationCourante.y + 70);
 			g2d.drawString("Station " + stationCourante.numero, (int) stationCourante.x - 52,
 					(int) stationCourante.y + 85);
@@ -376,7 +348,6 @@ public class Game {
 				load = " ";
 				break;
 			}
-			// printCenteredString(g2d, "Phase de jeu "+load, (int)(100*pH));
 			g2d.drawString("Phase de jeu" + load, 10, 35);
 			break;
 		case FIN:

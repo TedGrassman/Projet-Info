@@ -48,9 +48,7 @@ public class Window extends JFrame {
 		}
 
 		// Exit the application when user close frame.
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la
-														// fermeture de la
-														// fenêtre
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
 
 		// Creates the instance of the Framework.java that extends the
 		// Canvas.java and puts it on the frame.

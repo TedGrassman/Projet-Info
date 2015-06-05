@@ -39,13 +39,8 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 	Area limites; // Hitbox de l'objet
 	int nbImEx = 27;
 
-	public static ArrayList<Objet> liste = new ArrayList<Objet>(); // Liste de
-																	// tous les
-																	// Objets
-																	// pour
-																	// effectuer
-																	// les
-																	// opérations
+	public static ArrayList<Objet> liste = new ArrayList<Objet>(); // Liste de tous les Objets
+																	// pour effectuer les opérations
 	AffineTransform transfo = new AffineTransform();
 
 	int currentFrameNumber;
@@ -63,8 +58,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 			System.exit(0);
 		}
 
-		h = images[0].getHeight(null); // récupère une fois pour toutes la
-										// hauteur et largeur de l'image
+		h = images[0].getHeight(null); // récupère une fois pour toutes la hauteur et largeur de l'image
 		l = images[0].getWidth(null);
 
 		x = ax; // initialise tous les autres attributs
@@ -86,11 +80,8 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 		currentFrameNumber = 0;
 	}
 
-	public Objet Collision() { // Renvoie l'Astre en collision avec l'Astre
-								// appelant la méthode
-		for (int i = 0; i < liste.size(); i++) { // Si aucune collision, renvoie
-													// l'Astre appelant la
-													// méthode
+	public Objet Collision() { // Renvoie l'Astre en collision avec l'Astre appelant la méthode
+		for (int i = 0; i < liste.size(); i++) { // Si aucune collision, renvoie l'Astre appelant la méthode
 
 			if (this.Collision(liste.get(i))) {
 				return liste.get(i);
@@ -99,8 +90,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 		return this;
 	}
 
-	public boolean Collision(Objet A1) { // Teste si l'astre est en collision
-											// avec un autre astre fourni en
+	public boolean Collision(Objet A1) { // Teste si l'astre est en collision avec un autre astre fourni en
 											// parametre
 
 		if ((int) centreG.distance(A1.centreG) < 150 && A1 != this) {
@@ -122,8 +112,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 		return false;
 	}
 
-	public void draw(long t, Graphics g, Font f) { // Dessine l'objet au temps t
-													// dans l'interface
+	public void draw(long t, Graphics g, Font f) { // Dessine l'objet au temps t dans l'interface
 													// graphique g
 		g.drawImage(images[currentFrameNumber % NbImages], drawX, drawY, null);
 		currentFrameNumber++;
@@ -133,8 +122,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 		actif = false;
 	}
 
-	public abstract void move(long t); // Méthode abstraite : Déplace l'objet
-										// suivant le vecteur, la vitesse et la
+	public abstract void move(long t); // Méthode abstraite : Déplace l'objet suivant le vecteur, la vitesse et la
 										// liberté de mouvement
 
 }

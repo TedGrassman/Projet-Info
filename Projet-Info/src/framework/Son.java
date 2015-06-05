@@ -13,8 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Son {
 	Clip clip;
 
-	public Son(String nomFichier) { // fonctionne uniquement avec les fichiers
-									// .wav !
+	public Son(String nomFichier) { // fonctionne uniquement avec les fichiers .wav !
 		try {
 			final File file = new File(nomFichier);
 			if (file.exists()) {

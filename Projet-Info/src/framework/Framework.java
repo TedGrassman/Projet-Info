@@ -109,19 +109,19 @@ public class Framework extends Canvas {
         menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
         menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
         menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
-        play = new customButton("Commencer le jeu");				//initialise les boutons
+        play = new customButton("Commencer le jeu", 0);				//initialise les boutons
         play.setAlignmentX(Component.CENTER_ALIGNMENT);				//centre horizontalement les boutons
-        lance = new customButton("Lancer une partie");
+        lance = new customButton("Lancer une partie", 0);
         lance.setAlignmentX(Component.CENTER_ALIGNMENT);	
-        reprendre = new customButton ("Reprendre la partie");
+        reprendre = new customButton ("Reprendre la partie", 0);
         reprendre.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	settings = new customButton ("Options du jeu");
+    	settings = new customButton ("Options du jeu", 0);
     	settings.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	exit = new customButton ("Quitter le jeu");
+    	exit = new customButton ("Quitter le jeu", 1);
     	exit.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	menu = new customButton ("Retour au menu");
+    	menu = new customButton ("Retour au menu", 1);
     	menu.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	menu2 = new customButton ("Retour au menu");
+    	menu2 = new customButton ("Retour au menu", 1);
     	menu2.setAlignmentX(Component.CENTER_ALIGNMENT);
     	textMenu = new customText("MENU PRINCIPAL", 60);
     	textMenu.setAlignmentX(Component.CENTER_ALIGNMENT);

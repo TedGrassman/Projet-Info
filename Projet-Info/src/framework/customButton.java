@@ -28,7 +28,7 @@ public class customButton extends JButton implements MouseListener {
 	int h,l;
 	int state=0;
 	
-	public customButton(String libelle){
+	public customButton(String libelle, int code){
 		super();
 		enableInputMethods(true);
 		addMouseListener(this);
@@ -37,10 +37,19 @@ public class customButton extends JButton implements MouseListener {
 		
 		sonBoutonClic = new Son ("res/sons/bouton-fx-185.wav");
     	sonBoutonEntered = new Son ("res/sons/boutonEntered.wav");
-		
+		switch (code){
+		case 0:
 			NomImage[0]="LP0.png";
 			NomImage[1]="LP1.png";
 			NomImage[2]="LP2.png";
+			break;
+		case 1:
+			NomImage[0]="exit0.png";
+			NomImage[1]="exit1.png";
+			NomImage[2]="exit2.png";
+			break;
+		}
+			
 			
 		try {
 			for (int k = 0; k < 3; k++)

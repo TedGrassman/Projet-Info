@@ -35,14 +35,14 @@ public class Framework extends Canvas {
 	mp3 musiqueMenu, musiqueNiveau, musiqueLance;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(),
-			menuLance = new JPanel(), menuLoading = new JPanel();
+			menuLance = new JPanel();
 	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
 	customButton play, reprendre, settings, exit, menu, menu2, menu3, lance;
 	JSlider sliderPoussee, sliderTrajectoire;
-	customText textMenu, textOptions, textLoading, poussee, trajectoire, joueurs, niveau;
+	customText textMenu, textOptions, poussee, trajectoire, joueurs, niveau;
 	roundButton j2, j3, j4, n1, n2, n3, n4;
 
 	public static boolean resized = false; // indique si la fenetre vient d'être
@@ -113,7 +113,6 @@ public class Framework extends Canvas {
 		menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
 		menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
 		menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
-		menuLoading.setLayout((new BoxLayout(menuLoading, BoxLayout.Y_AXIS)));
 
 		play = new customButton("Commencer le jeu", 0); // initialise les boutons
 		play.setAlignmentX(Component.CENTER_ALIGNMENT); // centre horizontalement les boutons
@@ -138,9 +137,6 @@ public class Framework extends Canvas {
 		textOptions = new customText("OPTIONS", 60);
 		textOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		textLoading = new customText("CHARGEMENT", 60);
-		textLoading.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//textLoading.setAlignmentY(Component.CENTER_ALIGNMENT);
 		poussee = new customText("Force de poussée des missiles", 30);
 		poussee.setAlignmentX(Component.CENTER_ALIGNMENT);
 		trajectoire = new customText("Longueur de la trajectoire des missiles", 30);
@@ -238,9 +234,6 @@ public class Framework extends Canvas {
 		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(menu3);
 		
-		//menuLoading.setAlignmentX(frameHeight/2);
-		//menuLoading.add(new Box.Filler(new Dimension(500, frameHeight/2), new Dimension(500, frameHeight/2), new Dimension(500, frameHeight)));
-		menuLoading.add(textLoading);
 			
 
 		panel.setLayout(layout); // définit le layout du panel principal en type "card"
@@ -250,7 +243,6 @@ public class Framework extends Canvas {
 		menuPause.setOpaque(false);
 		menuOptions.setOpaque(false);
 		menuLance.setOpaque(false);
-		menuLoading.setOpaque(false);
 		boutonsRonds.setOpaque(false);
 		boutonsNiveau.setOpaque(false);
 
@@ -258,7 +250,6 @@ public class Framework extends Canvas {
 		panel.add(menuPause, "mPause");
 		panel.add(menuOptions, "mOptions");
 		panel.add(menuLance, "mLance");
-		panel.add(menuLoading, "mLoading");
 		layout.show(panel, "mDepart"); // affiche la première carte
 		add(panel); // ajoute le panel au framework
 
@@ -430,9 +421,7 @@ public class Framework extends Canvas {
 			layout.show(panel, "mOptions");
 			break;
 		case GAME_CONTENT_LOADING:
-			layout.show(panel, "mLoading");
-			panel.setVisible(true);
-			//g2d.drawString("CHARGEMENT", frameWidth - 200, frameHeight - 50);
+			g2d.drawString("CHARGEMENT", frameWidth - 200, frameHeight - 50);
 			break;
 		}
 	}

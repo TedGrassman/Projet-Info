@@ -23,7 +23,7 @@ public class Game {
 		PREPARATION, SIMULATION, PAUSE, FIN
 	}
 
-	public static ETAT etat;
+	public static ETAT etat = ETAT.PREPARATION;
 
 	Rectangle Ecran; // Les limites de la fenêtre
 
@@ -125,6 +125,8 @@ public class Game {
 	 */
 	public void RestartGame() {
 		// Reinitialisation des variables static
+		Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
+		
 		Objet.liste = new ArrayList<Objet>();
 		Astre.liste = new ArrayList<Astre>();
 		Explosion.liste = new ArrayList<Explosion>();
@@ -145,6 +147,7 @@ public class Game {
 		DisposeAstres(Framework.niveauChoisi);
 		stationCourante = Stations.get(0);
 
+		Framework.gameState = Framework.GameState.PLAYING;
 		etat = ETAT.PREPARATION;
 		mouseClicked = mousePressed = mouseReleased;
 	}
@@ -279,11 +282,19 @@ public class Game {
 
 			break;
 
-		case PAUSE: // ne fait rien (jeu freezé)
+		case PAUSE:
+			// ne fait rien (jeu freezé)
 			break;
 
 		case FIN:
-
+			// rien de particulier
+//				try {
+//					Thread.sleep(2000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			Framework.gameState = Framework.GameState.GAME_OVER;
 			break;
 
 		default:
@@ -319,7 +330,7 @@ public class Game {
 
 		switch (etat) {
 		case PREPARATION:
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON );
+
 			g2d.setColor(new Color(1f, 1f, 1f, 0.7f));
 			g2d.setFont(font1.deriveFont((float) (25 * pW)));
 
@@ -361,6 +372,10 @@ public class Game {
 			break;
 		case FIN:
 			// Message de fin de jeu
+			g2d.setColor(new Color(1f, 1f, 1f, 0.7f));
+			g2d.setFont(font1.deriveFont((float) (25 * pW)));
+			g2d.drawString("Jeu terminé", 10, 35);
+			
 			g2d.setColor(Color.white);
 			g2d.setFont(font1.deriveFont((float) (100 * pW)));
 			printCenteredString(g2d, "GAME OVER", (int) (CentreEcranY - (100 * pH)));
@@ -370,6 +385,9 @@ public class Game {
 			printCenteredString(g2d, winner, (int) (CentreEcranY + (70 * pH)));
 			break;
 		case PAUSE:
+			g2d.setColor(new Color(1f, 1f, 1f, 0.7f));
+			g2d.setFont(font1.deriveFont((float) (25 * pW)));
+			g2d.drawString("Jeu en pause", 10, 35);
 			break;
 		default:
 			break;

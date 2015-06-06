@@ -6,9 +6,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -18,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -39,12 +36,13 @@ public class Framework extends Canvas {
 	mp3 musiqueMenu, musiqueNiveau, musiqueLance;
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(),
-			menuLance = new JPanel();
-	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel(), bottom1 = new JPanel(), bottom2 = new JPanel(), bottom3 = new JPanel(), bottom4 = new JPanel();
+			menuLance = new JPanel(), menuEnd = new JPanel();
+	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
+	JPanel bottom1 = new JPanel(), bottom2 = new JPanel(), bottom3 = new JPanel(), bottom4 = new JPanel(), bottom5 = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
-	customButton play, reprendre, settings, exit, menu, menu2, menu3, lance;
+	customButton play, play2, reprendre, reprendre2, settings, exit, menu, menu2, menu3, menu4, lance, lance2;
 	JSlider sliderPoussee, sliderTrajectoire;
 	customText textMenu, textOptions, poussee, trajectoire, joueurs, niveau;
 	roundButton j2, j3, j4, n1, n2, n3, n4;
@@ -85,7 +83,7 @@ public class Framework extends Canvas {
 	 * Possible states of the game
 	 */
 	public static enum GameState {
-		STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, LANCE, DESTROYED, PAUSE
+		STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, LANCE, GAME_OVER, PAUSE
 	}
 
 	/**
@@ -116,10 +114,12 @@ public class Framework extends Canvas {
 		menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
 		menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
 		menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
+		menuEnd.setLayout((new BoxLayout(menuEnd, BoxLayout.Y_AXIS)));
 		bottom1.setLayout(new BoxLayout(bottom1, BoxLayout.X_AXIS));
 		bottom2.setLayout(new BoxLayout(bottom2, BoxLayout.X_AXIS));
 		bottom3.setLayout(new BoxLayout(bottom3, BoxLayout.X_AXIS));
 		bottom4.setLayout(new BoxLayout(bottom4, BoxLayout.X_AXIS));
+		bottom5.setLayout(new BoxLayout(bottom5, BoxLayout.X_AXIS));
 		boutonsNiveau.setLayout(new BoxLayout(boutonsNiveau, BoxLayout.X_AXIS));
 		boutonsRonds.setLayout(new BoxLayout(boutonsRonds, BoxLayout.X_AXIS));
 
@@ -127,6 +127,8 @@ public class Framework extends Canvas {
 		play.setAlignmentX(Component.CENTER_ALIGNMENT); // centre horizontalement les boutons
 		lance = new customButton("Lancer une partie", 0);
 		lance.setAlignmentX(Component.CENTER_ALIGNMENT);
+		play2 = new customButton("Relancer la partie", 0);
+		play2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		reprendre = new customButton("Reprendre la partie", 0);
 		reprendre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		settings = new customButton("Options du jeu", 0);
@@ -139,13 +141,14 @@ public class Framework extends Canvas {
 		menu2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		menu3 = new customButton("Retour au menu", 1);
 		menu3.setAlignmentX(Component.CENTER_ALIGNMENT);
+		menu4 = new customButton("Retour au menu", 1);
+		menu4.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		//Initialise zones de texte
 		textMenu = new customText("MENU PRINCIPAL", 60);
 		textMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
 		textOptions = new customText("OPTIONS", 60);
 		textOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 		poussee = new customText("Force de poussée des missiles", 30);
 		poussee.setAlignmentX(Component.CENTER_ALIGNMENT);
 		trajectoire = new customText("Longueur de la trajectoire des missiles", 30);
@@ -184,16 +187,18 @@ public class Framework extends Canvas {
 		n2 = new roundButton("Niv2", 1);
 		n3 = new roundButton("Niv3", 1);
 		n4 = new roundButton("Niv4", 1);
-
-
-		play.addActionListener(this); // crée les listeners
+		
+		// crée les listeners
+		play.addActionListener(this);
 		settings.addActionListener(this);
 		exit.addActionListener(this);
 		reprendre.addActionListener(this);
 		menu.addActionListener(this);
 		menu2.addActionListener(this);
 		menu3.addActionListener(this);
+		menu4.addActionListener(this);
 		lance.addActionListener(this);
+		play2.addActionListener(this);
 		sliderPoussee.addChangeListener(this);
 		sliderTrajectoire.addChangeListener(this);
 		j2.addActionListener(this);
@@ -224,6 +229,14 @@ public class Framework extends Canvas {
 		menuPause.add(bottom4);
 		menuPause.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
 		
+		menuEnd.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
+		menuEnd.add(play2);
+		menuEnd.add(Box.createVerticalGlue());
+		bottom5.add(Box.createHorizontalGlue());
+		bottom5.add(menu4);
+		bottom5.add(new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(5, 5)));
+		menuEnd.add(bottom5);
+		menuEnd.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
 		
 		menuOptions.add(textOptions);
 		menuOptions.add(poussee);
@@ -266,18 +279,21 @@ public class Framework extends Canvas {
 		menuPause.setOpaque(false);
 		menuOptions.setOpaque(false);
 		menuLance.setOpaque(false);
+		menuEnd.setOpaque(false);
 		boutonsRonds.setOpaque(false);
 		boutonsNiveau.setOpaque(false);
 		bottom1.setOpaque(false);
 		bottom2.setOpaque(false);
 		bottom3.setOpaque(false);
 		bottom4.setOpaque(false);
+		bottom5.setOpaque(false);
 		
 
 		panel.add(menuPrincipal, "mDepart"); // ajoute les cartes au panel principal
 		panel.add(menuPause, "mPause");
 		panel.add(menuOptions, "mOptions");
 		panel.add(menuLance, "mLance");
+		panel.add(menuEnd, "mEnd");
 		layout.show(panel, "mDepart"); // affiche la première carte
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER); // ajoute le panel au framework
@@ -346,6 +362,7 @@ public class Framework extends Canvas {
 				// ...
 				break;
 			case PAUSE:
+				// ...
 				break;
 			case OPTIONS:
 				// ...
@@ -358,11 +375,16 @@ public class Framework extends Canvas {
 				Initialize();
 				// Load files - images, sounds, ...
 				LoadContent();
-				musiqueMenu.fadeOut();
 				// When all things that are called above finished, we change
 				// game status to main menu.
-				gameState = GameState.PLAYING;
-				newGame();
+				
+				if (game == null) {
+					newGame();
+				} else {
+					restartGame();
+				}
+				
+				
 				break;
 			case VISUALIZING:
 				// On Ubuntu OS (when I tested on my old computer)
@@ -400,6 +422,12 @@ public class Framework extends Canvas {
 					visualizingTime += System.nanoTime() - lastVisualizingTime;
 					lastVisualizingTime = System.nanoTime();
 				}
+				break;
+			case GAME_OVER:
+				// ...
+				break;
+			default:
+				// ...
 				break;
 			}
 
@@ -439,20 +467,35 @@ public class Framework extends Canvas {
 			break;
 		case LANCE:
 			layout.show(panel, "mLance");
+			panel.setVisible(true);
 			break;
 		case MAIN_MENU:
 			layout.show(panel, "mDepart");
 			panel.setVisible(true);
 			break;
 		case PAUSE:
+			game.Draw(gameTime, g2d, mousePosition());
 			layout.show(panel, "mPause");
 			panel.setVisible(true);
 			break;
 		case OPTIONS:
 			layout.show(panel, "mOptions");
+			panel.setVisible(true);
 			break;
 		case GAME_CONTENT_LOADING:
 			g2d.drawString("CHARGEMENT", frameWidth - 200, frameHeight - 50);
+			panel.setVisible(true);
+			break;
+		case GAME_OVER:
+			game.Draw(gameTime, g2d, mousePosition());
+			layout.show(panel, "mEnd");
+			panel.setVisible(true);
+			break;
+		case STARTING:
+			break;
+		case VISUALIZING:
+			break;
+		default:
 			break;
 		}
 	}
@@ -465,11 +508,12 @@ public class Framework extends Canvas {
 		// calculations.
 		gameTime = 0;
 		lastTime = System.nanoTime();
-		if (game == null) {
-			game = new Game();
-		} else {
-			game.RestartGame();
-		}
+		
+		//if (game == null) {					// ----------------------
+		game = new Game();						// C'est ICI qu'on lance
+		//} else {								// le jeu (classe Game)
+		//	game.RestartGame();					// pour la première fois
+		//}										// ----------------------
 	}
 
 	/**
@@ -486,7 +530,7 @@ public class Framework extends Canvas {
 
 		// We change game status so that the game can start.
 		gameState = GameState.PLAYING;
-		game.UpdateGame(gameTime, mousePosition());
+		//game.UpdateGame(gameTime, mousePosition());
 	}
 
 	/**
@@ -587,12 +631,19 @@ public class Framework extends Canvas {
 			musiqueNiveau.boucle();
 			gameState = GameState.STARTING;
 			validate();
+		} else if (source == play2) {
+			musiqueNiveau.fadeOut();
+			musiqueNiveau = new mp3("res/sons/niveau" + niveauChoisi + ".mp3");
+			musiqueNiveau.fadeIn();
+			musiqueNiveau.boucle();
+			gameState = GameState.STARTING;
+			validate();
 		} else if (source == settings) {
 			gameState = GameState.OPTIONS;
 			validate();
-		} else if (source == menu || source == menu2 || source == menu3) {
+		} else if (source == menu || source == menu2 || source == menu3 || source == menu4) {
 
-			if (source == menu) {
+			if (source == menu || source == menu4) {
 				musiqueNiveau.fadeOut();
 				musiqueMenu.fadeIn();
 				musiqueMenu.boucle();

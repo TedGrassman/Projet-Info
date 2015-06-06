@@ -36,6 +36,7 @@ public class Window extends JFrame {
 			setUndecorated(true);
 			// Puts the frame to full screen.
 			setExtendedState(MAXIMIZED_BOTH);
+			setResizable(false);
 		} else // Window mode
 		{
 			// Size of the frame.
@@ -45,7 +46,7 @@ public class Window extends JFrame {
 			// Puts frame to center of the screen.
 			setLocationRelativeTo(null);
 			// So that frame cannot be resizable by the user.
-			setResizable(true);
+			setResizable(false);
 		}
 
 		// Exit the application when user close frame.

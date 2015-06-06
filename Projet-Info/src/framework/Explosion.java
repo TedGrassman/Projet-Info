@@ -21,13 +21,7 @@ public class Explosion {
 	String nom_objet; // Nom de l'objet
 	String typeObjet; // Type de l'objet
 	long currentFrameNumber;
-	static ArrayList<Explosion> liste = new ArrayList<Explosion>(); // Liste de
-																	// tous les
-																	// Objets
-																	// pour
-																	// effectuer
-																	// les
-																	// opérations
+	static ArrayList<Explosion> liste = new ArrayList<Explosion>(); //Liste de tous les objets pour effectuer les operations
 
 	public Explosion(double ax, double ay, int nbImEx, String av) {
 		x = ax;
@@ -44,8 +38,7 @@ public class Explosion {
 			NomImage[k] = "" + av + uni + (k + 1) + ap;
 		}
 
-		int error = 0; // Si une image n'et pas trouvée, permet de savoir
-						// laquelle
+		int error = 0; // Si une image n'et pas trouvée, permet de savoir laquelle
 		try {
 			images = new BufferedImage[NbImages];
 			for (int k = 0; k < NbImages; k++) {
@@ -56,8 +49,7 @@ public class Explosion {
 			System.err.println(NomImage[error + 1] + " introuvable !");
 			System.exit(0);
 		}
-		h = images[0].getHeight(null); // récupère une fois pour toutes la
-										// hauteur et largeur de l'image
+		h = images[0].getHeight(null); // récupère une fois pour toutes la hauteur et largeur de l'image
 		l = images[0].getWidth(null);
 		drawX = (int) (x - l / 2); // Initialise les positions drawX et drawY,
 		drawY = (int) (y - h / 2); // correspondant au coin supérieur gauche
@@ -76,8 +68,7 @@ public class Explosion {
 
 	}
 
-	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans
-											// l'interface graphique g
+	public void draw(long t, Graphics g) { // Dessine l'objet au temps t dans l'interface graphique g
 		if (actif == true) {
 			g.drawImage(images[(int) ((currentFrameNumber - 1) % NbImages)], drawX, drawY, null);
 			System.out.println("EXPLOSION");

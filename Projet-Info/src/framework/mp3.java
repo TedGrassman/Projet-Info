@@ -11,10 +11,9 @@ import javafx.stage.Stage;
 public class mp3 extends Application {
 	MediaPlayer player;
 
-	public mp3(String nomFichier) { // son mp3. fichier à placer dans le dossier
-									// res
-		final JFXPanel fxPanel = new JFXPanel(); // nécessaire pour utiliser
-													// javaFX
+	public mp3(String nomFichier) { // son mp3. fichier à placer dans le dossier res
+		@SuppressWarnings("unused")
+		final JFXPanel fxPanel = new JFXPanel(); // nécessaire pour utiliser javaFX
 		Media son;
 		try { // code tiré du site d'Oracle, gestion d'erreurs d'import fichier
 			son = new Media(new File(nomFichier).toURI().toString());
@@ -29,8 +28,7 @@ public class mp3 extends Application {
 					if (player.getError() == null) {
 						player.setOnError(new Runnable() {
 							public void run() {
-								// Handle asynchronous error in MediaPlayer
-								// object.
+								// Handle asynchronous error in MediaPlayer object.
 							}
 						});
 
@@ -48,18 +46,82 @@ public class mp3 extends Application {
 			throw new RuntimeException(mediaException);
 			// Handle exception in Media constructor.
 		}
+		
+		
 	}
 
 	public void jouer() {
+		player.setVolume(1.0);
 		player.play();
 	}
 
 	public void stop() {
+		player.setVolume(0.0);
 		player.stop();
 	}
 
 	public void boucle() {
 		player.setCycleCount(MediaPlayer.INDEFINITE);
+	}
+	
+	public void fadeOut(){
+		
+		Thread fadeOutThread = new Thread("FadeOut Sound") {
+			public void run() {
+				threadedFadeOut();
+			}
+		};
+		fadeOutThread.start();
+	}
+	public void fadeIn(){
+		
+		Thread fadeInThread = new Thread("FadeIn Sound") {
+			public void run() {
+				threadedFadeIn();
+			}
+		};
+		fadeInThread.start();
+	}
+	
+	public void threadedFadeOut() {
+		
+		//		while(player.getVolume()>0.0){
+		//		player.setVolume(player.getVolume() - 0.000005);
+		//	}
+		player.setVolume(1.0);
+		System.out.println("Starting Fading Out");
+		while(player.getVolume()>0.0){
+			player.setVolume(player.getVolume() - 0.01);
+			
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Faded Out");
+		player.stop();
+	}
+	
+	public void threadedFadeIn() {
+		
+		//		while(player.getVolume()>0.0){
+		//		player.setVolume(player.getVolume() - 0.000005);
+		//	}
+		player.setVolume(0.0);
+		player.play();
+		System.out.println("Starting Fading In");
+		while(player.getVolume()<1.0){
+			player.setVolume(player.getVolume() + 0.01);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Faded In");
 	}
 
 	@Override
@@ -67,5 +129,7 @@ public class mp3 extends Application {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 
 }

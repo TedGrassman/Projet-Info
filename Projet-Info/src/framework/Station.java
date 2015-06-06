@@ -63,39 +63,30 @@ public class Station extends Objet {
 
 		drawX = (int) (x - l / 2);
 		drawY = (int) (y - h / 2);
-		limites = new Area(new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); // Actualisation
-																														// de
-																														// la
-																														// hitbox
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, images[0].getWidth(null), images[0].getHeight(null))); //Actualisation de la hitbox
 	}
 
 	public void draw(long t, Graphics g, Font f) {
 		g.drawImage(images[(int) t % NbImages], drawX, drawY, null);
 		g.setColor(joueur.color);
 		g.setFont(new Font("Harrington", 1, 55));
-		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
-														// texte
+		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le texte
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.drawString("" + numero, (int) x + 40, (int) y - 5);
 
-		// g.setColor(Color.white);
-		// g.setFont(f.deriveFont(15.0f));
-		// g.drawString(nom_objet, (int)x + l/2, (int)(y+15));
-		// g.drawString("x=" +(int)x, (int)x + l/2, (int)(y-30));
-		// g.drawString("y=" +(int)y, (int)x + l/2, (int)(y-15));
 
 		/*
-		 * Graphics2D g2d =(Graphics2D)g; ------------ AffineTransform at2 = new
-		 * AffineTransform(); DEBBUGING : dessin de la hitbox GeneralPath path1
-		 * = new GeneralPath(); ------------
+		 * Graphics2D g2d =(Graphics2D)g;
+		 * AffineTransform at2 = new AffineTransform(); 				DEBBUGING : dessin de la hitbox 
+		 * GeneralPath path1 = new GeneralPath();
 		 * path1.append(limites.getPathIterator(at2), true);
 		 * g2d.setColor(Color.WHITE); g2d.fill(path1);
 		 * g2d.draw(path1.getBounds());
 		 */
 	}
 
-	public void détruire(double ax, double ay, long t) {
-		super.détruire(ax, ay, t);
+	public void detruire(double ax, double ay, long t) {
+		super.detruire(ax, ay, t);
 		explosion.activer(ax, ay, t);
 		joueur.Stations.remove(this);
 	}

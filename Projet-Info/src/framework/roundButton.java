@@ -18,17 +18,13 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
-public class roundButton extends JButton implements MouseListener { // boutons
-																	// ronds
-																	// "sélectionnables"
+public class roundButton extends JButton implements MouseListener { // boutons ronds "sélectionnables"
 
 	static ArrayList<roundButton> liste = new ArrayList<roundButton>();
 
 	BufferedImage[] images = new BufferedImage[4]; // images à afficher
 
-	Son sonBoutonClic, sonBoutonEntered; // sons à jouer lors des clics et
-											// lorsque la souris est sur le
-											// bouton
+	Son sonBoutonClic, sonBoutonEntered; // sons à jouer lors des clics et lorsque la souris est sur le bouton
 
 	String[] NomImage = new String[4]; // nom des images à charger et afficher
 	String libelle; // texte à afficher sur le bouton
@@ -36,8 +32,7 @@ public class roundButton extends JButton implements MouseListener { // boutons
 	int h, l; // hauteur et largeux max de l'image
 	int state = 0; // etat du bouton 0=neutre 1=éclairé 2=clic maintenu
 					// 3=sélectionné
-	int taillePolice, type; // type permet de créer des boutons de lots
-							// différents et d'apparence différente
+	int taillePolice, type; // type permet de créer des boutons de lots différents et d'apparence différente
 
 	Shape shape;
 
@@ -75,12 +70,10 @@ public class roundButton extends JButton implements MouseListener { // boutons
 			System.exit(0);
 		}
 
-		h = images[0].getHeight(null); // récupère une fois pour toutes la
-										// hauteur et largeur de l'image
+		h = images[0].getHeight(null); // récupère une fois pour toutes la hauteur et largeur de l'image
 		l = images[0].getWidth(null);
 
-		setContentAreaFilled(false); // ne dessine ni le fond ni les bords du
-										// bouton
+		setContentAreaFilled(false); // ne dessine ni le fond ni les bords du bouton
 		setBorderPainted(false);
 
 		liste.add(this);
@@ -117,8 +110,7 @@ public class roundButton extends JButton implements MouseListener { // boutons
 		final FontMetrics fm = g.getFontMetrics();
 		final int x = (l - fm.stringWidth(s)) / 2;
 		final int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
-		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le
-														// texte
+		final Graphics2D g2d = (Graphics2D) g.create(); // anti aliasing sur le texte
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.drawString(s, x, y);
 	}

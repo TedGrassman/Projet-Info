@@ -1,5 +1,6 @@
 package framework;
 
+import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -52,7 +53,8 @@ public class Window extends JFrame {
 
 		// Creates the instance of the Framework.java that extends the
 		// Canvas.java and puts it on the frame.
-		setContentPane(new Framework());
+		this.setLayout(new BorderLayout());
+		add(new Framework(), BorderLayout.CENTER);
 		setVisible(true);
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {

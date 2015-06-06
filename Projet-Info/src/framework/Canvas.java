@@ -33,7 +33,6 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
 
 	@SuppressWarnings("unused")
 	public Canvas() {
-
 		// We use double buffer to draw on the screen.
 		setDoubleBuffered(true);
 		setFocusable(true);

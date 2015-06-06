@@ -1,11 +1,14 @@
 
 package framework;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -15,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -36,7 +40,7 @@ public class Framework extends Canvas {
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(),
 			menuLance = new JPanel();
-	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel();
+	JPanel boutonsRonds = new JPanel(), boutonsNiveau = new JPanel(), bottom1 = new JPanel(), bottom2 = new JPanel(), bottom3 = new JPanel(), bottom4 = new JPanel();
 	CardLayout layout = new CardLayout();
 	Game.ETAT old = Game.ETAT.PREPARATION; // variable permettant de stocker l'etat du jeu lors d'une mise en pause
 	Image bg;
@@ -45,11 +49,9 @@ public class Framework extends Canvas {
 	customText textMenu, textOptions, poussee, trajectoire, joueurs, niveau;
 	roundButton j2, j3, j4, n1, n2, n3, n4;
 
-	public static boolean resized = false; // indique si la fenetre vient d'être
-											// redimensionnée
+	public static boolean resized = false; // indique si la fenetre vient d'être redimensionnée
 
-	public static int gauche, haut, droite, bas; // taille des bords de la
-													// fenetre
+	public static int gauche, haut, droite, bas; // taille des bords de la fenetre
 	/**
 	 * Width of the frame.
 	 */
@@ -109,10 +111,17 @@ public class Framework extends Canvas {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		menuPrincipal.setLayout((new BoxLayout(menuPrincipal, BoxLayout.Y_AXIS)));
 		menuPause.setLayout((new BoxLayout(menuPause, BoxLayout.Y_AXIS)));
 		menuOptions.setLayout((new BoxLayout(menuOptions, BoxLayout.Y_AXIS)));
 		menuLance.setLayout((new BoxLayout(menuLance, BoxLayout.Y_AXIS)));
+		bottom1.setLayout(new BoxLayout(bottom1, BoxLayout.X_AXIS));
+		bottom2.setLayout(new BoxLayout(bottom2, BoxLayout.X_AXIS));
+		bottom3.setLayout(new BoxLayout(bottom3, BoxLayout.X_AXIS));
+		bottom4.setLayout(new BoxLayout(bottom4, BoxLayout.X_AXIS));
+		boutonsNiveau.setLayout(new BoxLayout(boutonsNiveau, BoxLayout.X_AXIS));
+		boutonsRonds.setLayout(new BoxLayout(boutonsRonds, BoxLayout.X_AXIS));
 
 		play = new customButton("Commencer le jeu", 0); // initialise les boutons
 		play.setAlignmentX(Component.CENTER_ALIGNMENT); // centre horizontalement les boutons
@@ -154,6 +163,7 @@ public class Framework extends Canvas {
 		sliderPoussee.setPaintTicks(true);
 		sliderPoussee.setPaintLabels(true); // dessin des chiffres sous les crans
 		sliderPoussee.setForeground(Color.WHITE);
+		sliderPoussee.setMaximumSize(new Dimension(1000, 70));
 		
 		// slider horizontal, min 0, max 10, défaut à 5
 		sliderTrajectoire = new JSlider(SwingConstants.HORIZONTAL, 50, 500, 100); 
@@ -164,6 +174,7 @@ public class Framework extends Canvas {
 		sliderTrajectoire.setPaintTicks(true);
 		sliderTrajectoire.setPaintLabels(true); // dessin des chiffres sous les crans
 		sliderTrajectoire.setForeground(Color.WHITE);
+		sliderTrajectoire.setMaximumSize(new Dimension(1000, 70));
 		
 		// roundButtons
 		j2 = new roundButton("2", 0);
@@ -173,8 +184,6 @@ public class Framework extends Canvas {
 		n2 = new roundButton("Niv2", 1);
 		n3 = new roundButton("Niv3", 1);
 		n4 = new roundButton("Niv4", 1);
-		// n5 = new roundButton("Niv5", 1);
-
 
 
 		play.addActionListener(this); // crée les listeners
@@ -194,20 +203,28 @@ public class Framework extends Canvas {
 		n2.addActionListener(this);
 		n3.addActionListener(this);
 		n4.addActionListener(this);
-
+		
 		menuPrincipal.add(textMenu);
-
 		menuPrincipal.add(lance); // ajoute les boutons dans les cartes
 		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPrincipal.add(settings); // une carte = un menu
-		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
-		menuPrincipal.add(exit);
-		menuPrincipal.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
+		menuPrincipal.add(Box.createVerticalGlue());
+		bottom1.add(Box.createHorizontalGlue());
+		bottom1.add(exit);
+		bottom1.add(new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(5, 5)));
+		menuPrincipal.add(bottom1);
+		menuPrincipal.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
+		
 		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuPause.add(reprendre);
-		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
-		menuPause.add(menu);
-		menuPause.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
+		menuPause.add(Box.createVerticalGlue());
+		bottom4.add(Box.createHorizontalGlue());
+		bottom4.add(menu);
+		bottom4.add(new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(5, 5)));
+		menuPause.add(bottom4);
+		menuPause.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
+		
+		
 		menuOptions.add(textOptions);
 		menuOptions.add(poussee);
 		menuOptions.add(sliderPoussee);
@@ -215,7 +232,12 @@ public class Framework extends Canvas {
 		menuOptions.add(trajectoire);
 		menuOptions.add(sliderTrajectoire);
 		menuOptions.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
-		menuOptions.add(menu2);
+		menuOptions.add(Box.createVerticalGlue());
+		bottom2.add(Box.createHorizontalGlue());
+		bottom2.add(menu2);
+		bottom2.add(new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(5, 5)));
+		menuOptions.add(bottom2);
+		menuOptions.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
 		
 		menuLance.add(joueurs);
 		boutonsRonds.add(j2);
@@ -231,31 +253,39 @@ public class Framework extends Canvas {
 		menuLance.add(boutonsNiveau);
 		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
 		menuLance.add(play);
-		menuLance.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 15), new Dimension(0, 20)));
-		menuLance.add(menu3);
+		menuLance.add(Box.createVerticalGlue());
+		bottom3.add(Box.createHorizontalGlue());
+		bottom3.add(menu3);
+		bottom3.add(new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(5, 5)));
+		menuLance.add(bottom3);
+		menuLance.add(new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(5, 10)));
 		
-			
-
 		panel.setLayout(layout); // définit le layout du panel principal en type "card"
 		panel.setOpaque(false); // arrière plan transparent
-
 		menuPrincipal.setOpaque(false);
 		menuPause.setOpaque(false);
 		menuOptions.setOpaque(false);
 		menuLance.setOpaque(false);
 		boutonsRonds.setOpaque(false);
 		boutonsNiveau.setOpaque(false);
+		bottom1.setOpaque(false);
+		bottom2.setOpaque(false);
+		bottom3.setOpaque(false);
+		bottom4.setOpaque(false);
+		
 
 		panel.add(menuPrincipal, "mDepart"); // ajoute les cartes au panel principal
 		panel.add(menuPause, "mPause");
 		panel.add(menuOptions, "mOptions");
 		panel.add(menuLance, "mLance");
 		layout.show(panel, "mDepart"); // affiche la première carte
-		add(panel); // ajoute le panel au framework
+		setLayout(new BorderLayout());
+		add(panel, BorderLayout.CENTER); // ajoute le panel au framework
 
 		musiqueMenu = new mp3("res/sons/menu.mp3");
 		musiqueLance = new mp3("res/sons/lance.mp3");
-
+		
+		
 		gameState = GameState.VISUALIZING;
 
 		// We start game in new thread.
@@ -344,7 +374,7 @@ public class Framework extends Canvas {
 				// also insert 'this.getWidth() > 1' condition in case when the
 				// window/frame size wasn't set in time,
 				// so that we although get approximately size.
-				if (getWidth() > 1 && visualizingTime > secInNanosec / 2) {
+				if (getWidth() > 1 && visualizingTime > secInNanosec/2) {
 					frameWidth = getWidth();
 					frameHeight = getHeight();
 					gauche = this.getInsets().left;
@@ -352,6 +382,7 @@ public class Framework extends Canvas {
 					droite = this.getInsets().right;
 					bas = this.getInsets().bottom;
 					bg = bg.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
+					
 
 					// When we get size of frame we change status.
 					if (resized && game != null) {
@@ -486,7 +517,7 @@ public class Framework extends Canvas {
 	@Override
 	public void keyReleasedFramework(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) { // si la touche échap est pressée...
-			// System.out.println(gameState); 									DEBBUGING
+			// System.out.println(gameState); 															DEBBUGING
 			if (game != null) { // on vérifie que le jeu existe
 				if (gameState == GameState.PAUSE) { // si le jeu est en pause...
 					Game.etat = old; // on restaure son état d'avant la pause
@@ -542,22 +573,17 @@ public class Framework extends Canvas {
 
 		if (source == exit) {
 			musiqueMenu.fadeOut();
-			//musiqueMenu.stop();
 			System.exit(0);
 		} else if (source == lance) {
 			musiqueMenu.fadeOut();
-			//musiqueMenu.stop();
 			musiqueLance.fadeIn();
-			//musiqueLance.jouer();
 			musiqueLance.boucle();
 			gameState = GameState.LANCE;
 			validate();
 		} else if (source == play && nbJoueurs > 1 && niveauChoisi > 0) {
 			musiqueLance.fadeOut();
-			//musiqueLance.stop();
 			musiqueNiveau = new mp3("res/sons/niveau" + niveauChoisi + ".mp3");
 			musiqueNiveau.fadeIn();
-			//musiqueNiveau.jouer();
 			musiqueNiveau.boucle();
 			gameState = GameState.STARTING;
 			validate();
@@ -568,16 +594,12 @@ public class Framework extends Canvas {
 
 			if (source == menu) {
 				musiqueNiveau.fadeOut();
-				//musiqueNiveau.stop();
 				musiqueMenu.fadeIn();
-				//musiqueMenu.jouer();
 				musiqueMenu.boucle();
 				Game.etat = Game.ETAT.FIN;
 			} else if (source == menu3){
 				musiqueLance.fadeOut();
-				//musiqueLance.stop();
 				musiqueMenu.fadeIn();
-				//musiqueMenu.jouer();
 				musiqueMenu.boucle();
 			}
 			gameState = GameState.MAIN_MENU;

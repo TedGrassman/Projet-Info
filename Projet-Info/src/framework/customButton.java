@@ -32,7 +32,7 @@ public class customButton extends JButton implements MouseListener {
 		super();
 		enableInputMethods(true);
 		addMouseListener(this);
-		setBorder(BorderFactory.createEmptyBorder(50, 0, 5, 0));
+		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		this.libelle = libelle;
 
 		sonBoutonClic = new Son("res/sons/bouton-fx-185.wav");
@@ -58,8 +58,9 @@ public class customButton extends JButton implements MouseListener {
 			System.exit(0);
 		}
 
-		h = images[0].getHeight(null); // récupère une fois pour toutes la hauteur et largeur de l'image
-		l = images[0].getWidth(null);
+		h = images[0].getHeight(); // récupère une fois pour toutes la hauteur et largeur de l'image
+		l = images[0].getWidth();
+		setSize(getPreferredSize());
 	}
 
 	public Dimension getPreferredSize() {

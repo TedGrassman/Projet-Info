@@ -26,10 +26,11 @@ public class customButton extends JButton implements MouseListener {
 	String libelle;
 
 	int h, l;
-	int state = 0;
+	int state = 0, code;
 
 	public customButton(String libelle, int code) {
 		super();
+		this.code = code;
 		enableInputMethods(true);
 		addMouseListener(this);
 		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -78,7 +79,15 @@ public class customButton extends JButton implements MouseListener {
 	public void paintComponent(Graphics g) {
 		paintBorder(g);
 		g.drawImage(images[state], 0, 0, null);
-		g.setColor(Color.WHITE);
+		switch (code){
+		case 0 :
+			g.setColor(new Color(0.2f, 0.2f, 0.3f, 0.9f));
+			break;
+		case 1 :
+			g.setColor(new Color(1f, 1f, 0.6f, 0.9f));
+			break;
+		}
+		
 		g.setFont(new Font("Harrington", 1, 20));
 		drawCenteredString(libelle, g);
 	}

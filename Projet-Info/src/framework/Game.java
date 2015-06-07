@@ -461,16 +461,14 @@ public class Game {
 
 			}
 
-			Planet1 = new AstreSpherique((int) (CentreEcranX - (600 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
+			Planet1 = new AstreSpherique((int) (CentreEcranX - (250 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);
-			Planet2 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY - (171 * pH)), 0f, 0f, NomImage, Ecran,
+			Planet2 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY - (130 * pH)), 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);
-			Planet3 = new AstreSpherique((int) (CentreEcranX + (600 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
+			Planet3 = new AstreSpherique((int) (CentreEcranX + (250 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);
-			Planet4 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY + (171 * pH)), 0f, 0f, NomImage, Ecran,
+			Planet4 = new AstreSpherique(CentreEcranX, (int) (CentreEcranY + (130 * pH)), 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);
-			Planet5 = new AstreSpherique(CentreEcranX, CentreEcranY, 0f, 0f, NomImage, Ecran, "Planete1", 1,
-					MASSE_PLANETE + 200, 50);
 			Satelite1 = new AstreSatelite(imageSat, Ecran, "Satelite 1", 1, MASSE_PLANETE / 10, 15, Planet1, 0.01);
 			Satelite2 = new AstreSatelite(imageSat, Ecran, "Satelite 2", 1, MASSE_PLANETE / 10, 15, Planet2, 0.01);
 			Satelite3 = new AstreSatelite(imageSat, Ecran, "Satelite 3", 1, MASSE_PLANETE / 10, 15, Planet3, 0.01);
@@ -479,7 +477,6 @@ public class Game {
 			Objets.add(Planet2);
 			Objets.add(Planet3);
 			Objets.add(Planet4);
-			Objets.add(Planet5);
 			Objets.add(Satelite1);
 			Objets.add(Satelite2);
 			Objets.add(Satelite3);

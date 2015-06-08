@@ -11,7 +11,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.image.AffineTransformOp;
 
-@SuppressWarnings("unused")
 public class Missile extends Objet {
 
 	static final int MASSE_MISSILE = 10; // masse des missiles (par défaut)

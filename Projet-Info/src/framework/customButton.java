@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public class customButton extends JButton implements MouseListener {
 
 	BufferedImage[] images = new BufferedImage[3];

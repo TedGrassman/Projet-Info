@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public class roundButton extends JButton implements MouseListener { // boutons ronds "sélectionnables"
 
 	static ArrayList<roundButton> liste = new ArrayList<roundButton>();

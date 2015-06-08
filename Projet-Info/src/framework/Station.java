@@ -8,7 +8,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-@SuppressWarnings("unused")
 public class Station extends Objet {
 
 	static String[] NomImage = { "base.png" };

@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
  * @author www.gametutorial.net
  */
 
+@SuppressWarnings("serial")
 public abstract class Canvas extends JPanel implements KeyListener, MouseListener, ActionListener, ChangeListener {
 
 	// Keyboard states - Here are stored states for keyboard keys - is it down

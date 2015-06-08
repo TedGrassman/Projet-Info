@@ -1,8 +1,6 @@
 package gameEntities;
 
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 
 public abstract class Astre extends Objet { // Classe abstraite dont héritent toutes les formes particulières
 											// d'astres

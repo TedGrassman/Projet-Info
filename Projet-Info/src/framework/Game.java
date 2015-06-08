@@ -47,6 +47,7 @@ public class Game {
 	ArrayList<Missile> Missiles; // Liste de tous les missiles
 	ArrayList<Station> Stations; // Liste de toutes les stations
 	ArrayList<Joueur> Joueurs; // Liste des joueurs en lice
+	ArrayList<Trajectoire> lastTrajectoires; // Liste des dernières trajectoires des missiles de chaque station
 	Font font1, font2; // Objet de police d'écriture
 	String[] NomImage = { "planete.png" };
 	String[] imageSat = { "moon.png" };
@@ -100,6 +101,7 @@ public class Game {
 		Missiles = new ArrayList<Missile>(); // Créer la liste chainée en mémoire
 		Stations = new ArrayList<Station>(); // Créer la liste chainée en mémoire
 		Joueurs = new ArrayList<Joueur>();
+		lastTrajectoires = new ArrayList<Trajectoire>();
 
 		DisposeAstres(Framework.niveauChoisi);
 		stationCourante = Stations.get(0);
@@ -143,6 +145,7 @@ public class Game {
 		Missiles = new ArrayList<Missile>();
 		Stations = new ArrayList<Station>();
 		Joueurs = new ArrayList<Joueur>();
+		lastTrajectoires = new ArrayList<Trajectoire>();
 
 		DisposeAstres(Framework.niveauChoisi);
 		stationCourante = Stations.get(0);
@@ -183,6 +186,8 @@ public class Game {
 					final Missile missile = new Missile(x, y, (float) ((mx - stationCourante.centreG.x) / 100),
 							(float) ((my - stationCourante.centreG.y) / 100), Ecran, nom, stationCourante.joueur.color,
 							stationCourante);
+					final Trajectoire traj = stationCourante.lastTrajectoire = new Trajectoire(missile, 1000, 5, stationCourante.joueur.color);
+					lastTrajectoires.add(traj);
 					Objets.add(missile);
 					Missiles.add(missile);
 					stationCourante = Stations.get((Stations.indexOf(stationCourante) + 1) % Stations.size()); // On passe à la station suivante
@@ -209,6 +214,11 @@ public class Game {
 			for (int k = 0; k < Objets.size(); k++) {
 				final Objet O = Objets.get(k);
 				O.move(gameTime);
+			}
+			
+			// LAST TRAJECTOIRES
+			for(int i = 0; i < lastTrajectoires.size(); i++){
+				lastTrajectoires.get(i).actualisation();
 			}
 
 			// COLLISIONS
@@ -345,6 +355,9 @@ public class Game {
 			g2d.setColor(new Color(1f, 1f, 1f, 0.5f));
 			g2d.drawLine((int) (stationCourante.centreG.x), (int) (stationCourante.centreG.y),
 					stationCourante.lastVectorX, stationCourante.lastVectorY);
+			if(stationCourante.lastTrajectoire != null)
+				stationCourante.lastTrajectoire.draw(gameTime, g2d);
+						
 			if (vecteurMissile) {
 				g2d.setColor(Color.white);
 				g2d.drawLine((int) (stationCourante.centreG.x), (int) (stationCourante.centreG.y), mx, my);

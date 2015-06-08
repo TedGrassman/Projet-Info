@@ -16,6 +16,7 @@ public class Station extends Objet {
 	Joueur joueur;
 	int numero, lastVectorX, lastVectorY;
 	Explosion explosion;
+	Trajectoire lastTrajectoire;
 
 	public Station(int ax, int ay, Rectangle aframe, String nom, int idJoueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);

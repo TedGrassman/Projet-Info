@@ -483,7 +483,7 @@ public class Framework extends Canvas {
 			panel.setVisible(true);
 			break;
 		case GAME_CONTENT_LOADING:
-			g2d.drawString("CHARGEMENT", frameWidth - 200, frameHeight - 50);
+			g2d.drawString("CHARGEMENT", frameWidth - 200, frameHeight - 100);
 			panel.setVisible(true);
 			break;
 		case GAME_OVER:

@@ -66,7 +66,7 @@ public class Game {
     public Game()
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
-        System.out.println("jeu créé");
+        //System.out.println("jeu créé");
         Thread threadForInitGame = new Thread("gameinit") {
             @Override
             public void run(){
@@ -207,7 +207,7 @@ public class Game {
 
 		case SIMULATION:
 
-			System.out.println("Simulation");
+			//System.out.println("Simulation");
 
 			// MOUVEMENTS
 			// déplace tous les objets par Polymorphisme
@@ -743,14 +743,14 @@ public class Game {
 				Stations.add(Station4);
 
 			}
-			System.out.println(Station1.joueur.nomJoueur);
-			System.out.println(Station1.numero);
-			System.out.println(Station2.joueur.nomJoueur);
-			System.out.println(Station2.numero);
-			System.out.println(Station3.joueur.nomJoueur);
-			System.out.println(Station3.numero);
-			System.out.println(Station4.joueur.nomJoueur);
-			System.out.println(Station4.numero);
+//			System.out.println(Station1.joueur.nomJoueur);
+//			System.out.println(Station1.numero);
+//			System.out.println(Station2.joueur.nomJoueur);
+//			System.out.println(Station2.numero);
+//			System.out.println(Station3.joueur.nomJoueur);
+//			System.out.println(Station3.numero);
+//			System.out.println(Station4.joueur.nomJoueur);
+//			System.out.println(Station4.numero);
 
 			Planet1 = new AstreSpherique((int) (CentreEcranX - (600 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);

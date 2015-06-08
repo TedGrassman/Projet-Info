@@ -22,7 +22,7 @@ public class Window extends JFrame {
 	@SuppressWarnings("unused")
 	public Window() {
 		// Sets the title for this frame.
-		setTitle("Star Shooter");
+		setTitle("Space War");
 		try { // Récupération de l'icône du programme
 			setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
 		} catch (final Exception err) {

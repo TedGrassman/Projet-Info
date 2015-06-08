@@ -94,7 +94,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 											// parametre
 
 		if ((int) centreG.distance(A1.centreG) < 150 && A1 != this) {
-			System.out.println("approche");//
+			//System.out.println("approche");//
 			final AffineTransform at1 = transfo;
 			final GeneralPath path1 = new GeneralPath();
 			path1.append(limites.getPathIterator(at1), true);

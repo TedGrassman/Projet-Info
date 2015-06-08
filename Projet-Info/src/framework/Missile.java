@@ -18,6 +18,7 @@ public class Missile extends Objet {
 	double angle; // orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
 	static double poussee = 0.05;
 	static int nbPoints = 90;
+	static int actionGravite = 1000;
 	Explosion explosion;
 	//nom des PNG du missile
 	static String[] NomImage = { "missile1_1.png", "missile1_2.png", "missile1_3.png", "missile1_4.png",
@@ -87,7 +88,7 @@ public class Missile extends Objet {
 			double vitesse = 0;
 			for (int i = 0; i < liste.size(); i++) { // calcul du déplacement lié à la gravité
 				astr = liste.get(i);
-				if (centreG.distance(astr.centreG) < 500) {
+				if (centreG.distance(astr.centreG) < actionGravite) {
 
 					xAstre = astr.centreG.x;
 					yAstre = astr.centreG.y;

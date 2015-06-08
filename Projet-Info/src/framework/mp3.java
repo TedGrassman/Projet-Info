@@ -89,7 +89,7 @@ public class mp3 extends Application {
 		//		player.setVolume(player.getVolume() - 0.000005);
 		//	}
 		player.setVolume(1.0);
-		System.out.println("Starting Fading Out");
+		//System.out.println("Starting Fading Out");				//DEBUGING
 		while(player.getVolume()>0.0){
 			player.setVolume(player.getVolume() - 0.01);
 			
@@ -100,7 +100,7 @@ public class mp3 extends Application {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Faded Out");
+		//System.out.println("Faded Out");							//DEBUGING
 		player.stop();
 	}
 	
@@ -111,7 +111,7 @@ public class mp3 extends Application {
 		//	}
 		player.setVolume(0.0);
 		player.play();
-		System.out.println("Starting Fading In");
+		//System.out.println("Starting Fading In");					//DEBUGING
 		while(player.getVolume()<1.0){
 			player.setVolume(player.getVolume() + 0.01);
 			try {
@@ -121,7 +121,7 @@ public class mp3 extends Application {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Faded In");
+		//System.out.println("Faded In");							//DEBUGING
 	}
 
 	@Override

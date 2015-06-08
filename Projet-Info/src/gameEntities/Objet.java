@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -21,27 +21,30 @@ import javax.imageio.ImageIO;
 public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 								// JPanel
 
-	double x, y; // Position de l'objet à l'écran (centre de l'objet de
+	public double x; // Position de l'objet à l'écran (centre de l'objet de
+	public double y;
 					// préférence) [A SUPPRIMER ??]
 	int drawX, drawY; // Position de l'image à l'écran (coin en haut à gauche)
-	int h, l; // Hauteur et largeur de l'objet à l'écran (image)
+	public int h; // Hauteur et largeur de l'objet à l'écran (image)
+	public int l;
 	double dx, dy; // Vecteur unitaire de déplacement
 
 	BufferedImage[] images; // Image(s) de l'objet
 	Rectangle limitesframe; // Rectangle englobant la fenêtre de jeu
 	String nom_objet; // Nom de l'objet
-	String typeObjet; // Type de l'objet [INUTILE??]
-	Boolean actif; // Si l'objet est actif ou non
+	public String typeObjet; // Type de l'objet [INUTILE??]
+	public Boolean actif; // Si l'objet est actif ou non
 	int NbImages; // Nombre d'images ou sprites pour l'objet
 	int masse; // Masse de l'objet (pour l'action de la gravité)
 
-	CentreGravite centreG; // centre de gravité de l'objet
+	public CentreGravite centreG; // centre de gravité de l'objet
 	Area limites; // Hitbox de l'objet
 	int nbImEx = 27;
 
 	public static ArrayList<Objet> liste = new ArrayList<Objet>(); // Liste de tous les Objets
 																	// pour effectuer les opérations
-	AffineTransform transfo = new AffineTransform();
+	AffineTransform transfo = new AffineTransform(); // AffineTransform "vide" pour pouvoir créer une méthode Collision
+													// travaillant avec tout type d'astre
 
 	int currentFrameNumber;
 
@@ -54,7 +57,7 @@ public abstract class Objet { // Classe abstraite, Objet dessinable dans le
 			for (int k = 0; k < NbImages; k++)
 				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
 		} catch (final Exception err) {
-			System.out.println(NomImage + " introuvable !");
+			System.err.println(NomImage[0] + " introuvable !");
 			System.exit(0);
 		}
 

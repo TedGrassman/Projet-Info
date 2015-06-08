@@ -21,7 +21,7 @@ public class Window extends JFrame {
 
 	@SuppressWarnings("unused")
 	public Window() {
-		// Sets the title for this frame.
+		// Définit le titre de la fenêtre
 		setTitle("Space War");
 		try { // Récupération de l'icône du programme
 			setIconImage(ImageIO.read(new File("res/icon_32x32.png")));
@@ -29,34 +29,35 @@ public class Window extends JFrame {
 			System.err.println("Icône introuvable !");
 		}
 
-		// Sets size of the frame.
-		if (true) // Full screen mode
+		// Définit la taille de la fenêtre
+		if (true) // Mode plein écran
 		{
-			// Disables decorations for this frame.
+			// Enlève la "décoration" (barres sur les côtés)
 			setUndecorated(true);
-			// Puts the frame to full screen.
+			// Met la fenêtre en plein écran (taille maximale du moniteur)
 			setExtendedState(MAXIMIZED_BOTH);
 			setResizable(false);
-		} else // Window mode
+		} else // Mode fenêtré
 		{
-			// Size of the frame.
-
+			// Taille de la fenêtre
 			this.setSize((int) GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth(),
 					(int) GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight());
-			// Puts frame to center of the screen.
+			// Met la fenêtre au centre de l'écran
 			setLocationRelativeTo(null);
-			// So that frame cannot be resizable by the user.
-			setResizable(false);
+			// La fenêtre peut être redimensionnée (gestion dans Framework et dans Window)
+			setResizable(true);
 		}
 
-		// Exit the application when user close frame.
+		// Ferme l'application quand le joueur ferme la fenêtre
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Arrêt du thread à la fermeture de la fenêtre
 
-		// Creates the instance of the Framework.java that extends the
-		// Canvas.java and puts it on the frame.
+		// Crée l'instance du Framework.java qui étend
+		// Canvas.java et le met dans la fenêtre Window
 		this.setLayout(new BorderLayout());
 		add(new Framework(), BorderLayout.CENTER);
 		setVisible(true);
+		
+		// Gestion du redimensionnement de la fenêtre (pas utile en plein écran)
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
 				Framework.resized = true;
@@ -88,7 +89,7 @@ public class Window extends JFrame {
 
 	public static void main(String[] args) {
 
-		// Use the event dispatch thread to build the UI for thread-safety.
+		// Méthode Main. C'est elle qui est lance le jeu grâce à une interface Runnable
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

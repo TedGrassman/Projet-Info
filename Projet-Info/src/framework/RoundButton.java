@@ -19,9 +19,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
-public class roundButton extends JButton implements MouseListener { // boutons ronds "sélectionnables"
+public class RoundButton extends JButton implements MouseListener { // boutons ronds "sélectionnables"
 
-	static ArrayList<roundButton> liste = new ArrayList<roundButton>();
+	static ArrayList<RoundButton> liste = new ArrayList<RoundButton>();
 
 	BufferedImage[] images = new BufferedImage[4]; // images à afficher
 
@@ -37,13 +37,13 @@ public class roundButton extends JButton implements MouseListener { // boutons r
 
 	Shape shape;
 
-	public roundButton(String libelle, int code) {
+	public RoundButton(String libelle, int code) {
 		super();
 		enableInputMethods(true);
 		addMouseListener(this);
 		this.libelle = libelle;
 
-		sonBoutonClic = new Son("res/sons/bouton-fx-185.wav");
+		sonBoutonClic = new Son("res/sons/boutonClic.wav");
 		sonBoutonEntered = new Son("res/sons/boutonEntered.wav");
 		type = code;
 		switch (code) { // change le skin du bouton selon son type
@@ -65,9 +65,9 @@ public class roundButton extends JButton implements MouseListener { // boutons r
 
 		try {
 			for (int k = 0; k < images.length; k++)
-				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
+				images[k] = ImageIO.read(new File("res/boutons/" + NomImage[k]));
 		} catch (final Exception err) {
-			System.out.println(NomImage[0] + " introuvable !");
+			System.err.println(NomImage[0] + " introuvable !");
 			System.exit(0);
 		}
 

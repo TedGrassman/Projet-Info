@@ -1,13 +1,13 @@
-package framework;
+package gameEntities;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
 public class Joueur {
 
-	ArrayList<Station> Stations;
-	String nomJoueur;
-	Color color;
+	public ArrayList<Station> Stations;
+	public String nomJoueur;
+	public Color color;
 
 	public Joueur(String nomJoueur, Color couleur) {
 		this.nomJoueur = nomJoueur;

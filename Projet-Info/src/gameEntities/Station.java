@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,14 +8,18 @@ import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
+import framework.Game;
+
 public class Station extends Objet {
 
-	static String[] NomImage = { "base.png" };
+	static String[] NomImage = { "bases/base.png" };
 	static String prefixeExplosion = "Explosion_Sequence_A ";
-	Joueur joueur;
-	int numero, lastVectorX, lastVectorY;
+	public Joueur joueur;
+	public int numero;
+	public int lastVectorX;
+	public int lastVectorY;
 	Explosion explosion;
-	Trajectoire lastTrajectoire;
+	public Trajectoire lastTrajectoire;
 
 	public Station(int ax, int ay, Rectangle aframe, String nom, int idJoueur) {
 		super(ax, ay, 0, 0, NomImage, aframe, nom, "Station", 1, 0);

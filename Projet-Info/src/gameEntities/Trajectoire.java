@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Color;
 import java.awt.Graphics;

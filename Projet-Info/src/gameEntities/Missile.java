@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,35 +15,24 @@ public class Missile extends Objet {
 
 	static final int MASSE_MISSILE = 10; // masse des missiles (par défaut)
 	double angle; // orientation du missile par rapport à la verticale / force de poussée du moteur de fusée
-	static double poussee = 0.05;
-	static int nbPoints = 90;
-	static int actionGravite = 1000;
-	Explosion explosion;
+	public static double poussee = 0.05;
+	public static int nbPoints = 90;
+	static int actionGravite = 1000;	// Distance à partir de laquelle la gravité est prise en compte
+	Explosion explosion;				// ATTENTION : le fait que chaque missile ait sa propre animation d'explosion peut induire une Memory Leak, si on crée beaucoup de missiles !!
+	static String pre = "missiles/";
 	//nom des PNG du missile
-	static String[] NomImage = { "missile1_1.png", "missile1_2.png", "missile1_3.png", "missile1_4.png",
-			"missile1_5.png", "missile1_6.png", "missile1_7.png", "missile1_8.png", "missile1_7.png", "missile1_6.png",
-			"missile1_5.png", "missile1_4.png", "missile1_3.png", "missile1_2.png", "missile1_1.png" }; 
+	static String[] NomImage = { pre+"missile1_1.png", pre+"missile1_2.png", pre+"missile1_3.png", pre+"missile1_4.png",
+		pre+"missile1_5.png", pre+"missile1_6.png", pre+"missile1_7.png", pre+"missile1_8.png", pre+"missile1_7.png", pre+"missile1_6.png",
+		pre+"missile1_5.png", pre+"missile1_4.png", pre+"missile1_3.png", pre+"missile1_2.png", pre+"missile1_1.png" }; 
 	
 	Color couleur = Color.black; // couleur de la trajectoire
 	Trajectoire traj; // trajectoire du missile
 	Station station;
 	static String prefixeExplosion = "explosion_missile_";
 	boolean horsLimites = false;
-	static int nbr = 0; // Nombre de missiles créés, s'incrémentent dans constructeur
-	int lifetime = 1000;
-	int cadre = 1500;
-
-	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String[] tab) {
-		super(ax, ay, adx, ady, tab, aframe, "Missile", "Missile", 10, MASSE_MISSILE);
-		nbr++;
-		centreG = new CentreGravite(ax, ay);
-		angle = 0.0;
-		final int[] xpoints = { -10, 0, 10 }; // Creation des tableaux de coordonnées du triangle de hitbox
-		final int[] ypoints = { 25, -25, 25 };
-		limites = new Area(new Polygon(xpoints, ypoints, 3)); // Creation de la hitbox (triangle)
-		station = null;
-		explosion = new Explosion(0.0, 0.0, 27, prefixeExplosion);
-	}
+	public static int nbr = 0; // Nombre de missiles créés, s'incrémentent dans constructeur
+	int lifetime = 1500; //Durée de vie (en boucles) du missiles
+	int cadre = 1500;	// Cadre au-dela duquel le missile est détruit (en pixels)
 
 	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur, Station station) {
 		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE);
@@ -57,22 +46,6 @@ public class Missile extends Objet {
 		couleur = acouleur;
 		traj = new Trajectoire(this, 90, 5, couleur); // Creation de la trajectoire
 		this.station = station;
-		explosion = new Explosion(0.0, 0.0, 27, prefixeExplosion);
-	}
-
-	public Missile(int ax, int ay, float adx, float ady, Rectangle aframe, String nom, Color acouleur) {
-		super(ax, ay, adx, ady, NomImage, aframe, nom, "Missile", 10, MASSE_MISSILE);
-		centreG = new CentreGravite(ax, ay);
-		angle = 0.0;
-		centreG = new CentreGravite(ax, ay); // Creation du centre de gravité au centre du missile
-		final int[] xpoints = { -10, 0, 10 }; // Creation des tableaux de coordonnées du triangle de hitbox
-		final int[] ypoints = { 25, -25, 25 };
-		limites = new Area(new Polygon(xpoints, ypoints, 3)); // Creation de la hitbox (triangle)
-		angle = Math.atan2(dy, dx) - Math.PI * 3 / 2; // Orientation initiale du missile : verticale
-		couleur = acouleur;
-		traj = new Trajectoire(this, nbPoints, 5, couleur); // Creation de lantrajectoire
-
-		station = null;
 		explosion = new Explosion(0.0, 0.0, 27, prefixeExplosion);
 	}
 
@@ -173,7 +146,9 @@ public class Missile extends Objet {
 		final double angle = Math.atan2(limitesframe.getWidth() / 2 - x, limitesframe.getHeight() / 2 - y);
 
 		g.setColor(station.joueur.color);
-
+		
+		
+		// dessine le vecteur permettant d'indiquer la position d'un missile hors écran
 		if (horsLimites) {
 			if (x < 0 && y < 0) {
 				g.drawLine(0, 0, (int) (taille * Math.sin(angle)), (int) (taille * Math.cos(angle)));

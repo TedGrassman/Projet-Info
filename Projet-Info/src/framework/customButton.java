@@ -37,7 +37,7 @@ public class customButton extends JButton implements MouseListener {
 		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		this.libelle = libelle;
 
-		sonBoutonClic = new Son("res/sons/bouton-fx-185.wav");
+		sonBoutonClic = new Son("res/sons/boutonClic.wav");
 		sonBoutonEntered = new Son("res/sons/boutonEntered.wav");
 		switch (code) {
 		case 0:
@@ -54,9 +54,9 @@ public class customButton extends JButton implements MouseListener {
 
 		try {
 			for (int k = 0; k < 3; k++)
-				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
+				images[k] = ImageIO.read(new File("res/boutons/" + NomImage[k]));
 		} catch (final Exception err) {
-			System.out.println(NomImage[0] + " introuvable !");
+			System.err.println(NomImage[0] + " introuvable !");
 			System.exit(0);
 		}
 

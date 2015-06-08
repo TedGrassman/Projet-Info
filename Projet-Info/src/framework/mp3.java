@@ -10,11 +10,13 @@ import javafx.stage.Stage;
 
 public class mp3 extends Application {
 	MediaPlayer player;
+	boolean fadeFinished = true;
 
 	public mp3(String nomFichier) { // son mp3. fichier à placer dans le dossier res
 		@SuppressWarnings("unused")
 		final JFXPanel fxPanel = new JFXPanel(); // nécessaire pour utiliser javaFX
 		Media son;
+		
 		try { // code tiré du site d'Oracle, gestion d'erreurs d'import fichier
 			son = new Media(new File(nomFichier).toURI().toString());
 			if (son.getError() == null) {
@@ -88,6 +90,7 @@ public class mp3 extends Application {
 		//		while(player.getVolume()>0.0){
 		//		player.setVolume(player.getVolume() - 0.000005);
 		//	}
+		fadeFinished = false;
 		player.setVolume(1.0);
 		//System.out.println("Starting Fading Out");				//DEBUGING
 		while(player.getVolume()>0.0){
@@ -102,6 +105,7 @@ public class mp3 extends Application {
 		}
 		//System.out.println("Faded Out");							//DEBUGING
 		player.stop();
+		fadeFinished = true;
 	}
 	
 	public void threadedFadeIn() {
@@ -109,6 +113,7 @@ public class mp3 extends Application {
 		//		while(player.getVolume()>0.0){
 		//		player.setVolume(player.getVolume() - 0.000005);
 		//	}
+		fadeFinished = false;
 		player.setVolume(0.0);
 		player.play();
 		//System.out.println("Starting Fading In");					//DEBUGING
@@ -122,6 +127,7 @@ public class mp3 extends Application {
 			}
 		}
 		//System.out.println("Faded In");							//DEBUGING
+		fadeFinished = true;
 	}
 
 	@Override

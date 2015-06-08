@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 public class Point { // Point géométrique (2D)
 

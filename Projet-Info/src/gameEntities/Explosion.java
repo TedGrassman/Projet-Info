@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -21,7 +21,7 @@ public class Explosion {
 	String nom_objet; // Nom de l'objet
 	String typeObjet; // Type de l'objet
 	long currentFrameNumber;
-	static ArrayList<Explosion> liste = new ArrayList<Explosion>(); //Liste de tous les objets pour effectuer les operations
+	public static ArrayList<Explosion> liste = new ArrayList<Explosion>(); //Liste de tous les objets pour effectuer les operations
 
 	public Explosion(double ax, double ay, int nbImEx, String av) {
 		x = ax;
@@ -42,7 +42,7 @@ public class Explosion {
 		try {
 			images = new BufferedImage[NbImages];
 			for (int k = 0; k < NbImages; k++) {
-				images[k] = ImageIO.read(new File("res/" + NomImage[k]));
+				images[k] = ImageIO.read(new File("res/explosions/" + NomImage[k]));
 				error = k;
 			}
 		} catch (final Exception err) {

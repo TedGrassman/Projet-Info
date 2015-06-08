@@ -1,6 +1,8 @@
 
 package framework;
 
+import gameEntities.Missile;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -25,7 +27,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 
 /**
- * Framework that controls the game (Game.java) that created it, update it and
+ * Framework that controls the game (Game.java): create it, update it and
  * draw it on the screen.
  * 
  * @author www.gametutorial.net
@@ -47,7 +49,7 @@ public class Framework extends Canvas {
 	customButton play, play2, reprendre, reprendre2, settings, exit, menu, menu2, menu3, menu4, lance, lance2;
 	JSlider sliderPoussee, sliderTrajectoire;
 	customText textMenu, textOptions, poussee, trajectoire, joueurs, niveau;
-	roundButton j2, j3, j4, n1, n2, n3, n4;
+	RoundButton j2, j3, j4, n1, n2, n3, n4;
 	Random rand = new Random();
 
 	public static boolean resized = false; // indique si la fenetre vient d'être redimensionnée
@@ -183,13 +185,13 @@ public class Framework extends Canvas {
 		sliderTrajectoire.setMaximumSize(new Dimension(1000, 70));
 		
 		// roundButtons
-		j2 = new roundButton("2", 0);
-		j3 = new roundButton("3", 0);
-		j4 = new roundButton("4", 0);
-		n1 = new roundButton("Niv1", 1);
-		n2 = new roundButton("Niv2", 1);
-		n3 = new roundButton("Niv3", 1);
-		n4 = new roundButton("Niv4", 1);
+		j2 = new RoundButton("2", 0);
+		j3 = new RoundButton("3", 0);
+		j4 = new RoundButton("4", 0);
+		n1 = new RoundButton("Niv1", 1);
+		n2 = new RoundButton("Niv2", 1);
+		n3 = new RoundButton("Niv3", 1);
+		n4 = new RoundButton("Niv4", 1);
 		
 		// crée les listeners
 		play.addActionListener(this);
@@ -309,7 +311,7 @@ public class Framework extends Canvas {
 		
 		gameState = GameState.VISUALIZING;
 
-		// We start game in new thread.
+		// We start the game in a new thread.
 		final Thread gameThread = new Thread("boucle jeu") {
 			@Override
 			public void run() {
@@ -392,15 +394,7 @@ public class Framework extends Canvas {
 				
 				break;
 			case VISUALIZING:
-				// On Ubuntu OS (when I tested on my old computer)
-				// this.getWidth() method doesn't return the correct value
-				// immediately (eg. for frame that should be 800px width,
-				// returns 0 than 790 and at last 798px).
-				// So we wait one second for the window/frame to be set to its
-				// correct size. Just in case we
-				// also insert 'this.getWidth() > 1' condition in case when the
-				// window/frame size wasn't set in time,
-				// so that we although get approximately size.
+				// On attend 1/2 seconde et que la fenêtre ait une taille non nulle
 				if (getWidth() > 1 && visualizingTime > secInNanosec/2) {
 					frameWidth = getWidth();
 					frameHeight = getHeight();
@@ -417,7 +411,7 @@ public class Framework extends Canvas {
 						frameHeight = getHeight();
 						gameState = GameState.PLAYING;
 						resized = false;
-					} else {
+					} else {	// Si fenêtre non redimensionnée, on change l'état à MAIN_MENU
 						gameState = GameState.MAIN_MENU;
 						musiqueMenu.fadeIn();
 						musiqueMenu.boucle();
@@ -442,8 +436,7 @@ public class Framework extends Canvas {
 			// Here we calculate the time that defines for how long we should
 			// put threat to sleep to meet the GAME_FPS.
 			timeTaken = System.nanoTime() - beginTime;
-			timeLeft = (GAME_UPDATE_PERIOD - timeTaken) / milisecInNanosec; // In
-																			// milliseconds
+			timeLeft = (GAME_UPDATE_PERIOD - timeTaken) / milisecInNanosec; // In milliseconds
 			// If the time is less than 10 milliseconds, then we will put thread
 			// to sleep for 10 millisecond so that some other thread can do some
 			// work.
@@ -586,8 +579,7 @@ public class Framework extends Canvas {
 	/**
 	 * This method is called when mouse button is clicked.
 	 * 
-	 * @param e
-	 *            MouseEvent
+	 * @param e MouseEvent
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -597,7 +589,11 @@ public class Framework extends Canvas {
 			}
 		}
 	}
-
+	/**
+	 * This method is called when mouse button is pressed.
+	 * 
+	 * @param e MouseEvent
+	 */
 	public void mousePressed(MouseEvent e) {
 		if (game != null) {
 			if (Game.etat == Game.ETAT.PREPARATION) {
@@ -606,7 +602,11 @@ public class Framework extends Canvas {
 		}
 
 	}
-
+	/**
+	 * This method is called when mouse button is released.
+	 * 
+	 * @param e MouseEvent
+	 */
 	public void mouseReleased(MouseEvent e) {
 		if (game != null) {
 			if (Game.etat == Game.ETAT.PREPARATION) {
@@ -615,7 +615,13 @@ public class Framework extends Canvas {
 		}
 
 	}
-
+	
+	/**
+	 * Cette méthode est appelée quand une action est détectée par un actionListener des boutons
+	 * (clic sur un bouton)
+	 * 
+	 * @param e MouseEvent
+	 */
 	public void actionPerformed(ActionEvent event) { // clics sur les boutons
 
 		final Object source = event.getSource();
@@ -624,7 +630,9 @@ public class Framework extends Canvas {
 			musiqueMenu.fadeOut();
 			System.exit(0);
 		} else if (source == lance) {
-			musiqueMenu.fadeOut();
+			if(musiqueMenu.fadeFinished)
+				musiqueMenu.fadeOut();
+			else musiqueMenu.stop();
 			aLance = rand.nextInt(1 - 0 + 1) + 0;
 			musiqueLance = new mp3("res/sons/lance"+aLance+".mp3");
 			musiqueLance.fadeIn();
@@ -632,14 +640,18 @@ public class Framework extends Canvas {
 			gameState = GameState.LANCE;
 			validate();
 		} else if (source == play && nbJoueurs > 1 && niveauChoisi > 0) {
-			musiqueLance.fadeOut();
+			if(musiqueLance.fadeFinished)
+				musiqueLance.fadeOut();
+			else musiqueLance.stop();
 			musiqueNiveau = new mp3("res/sons/niveau" + niveauChoisi + ".mp3");
 			musiqueNiveau.fadeIn();
 			musiqueNiveau.boucle();
 			gameState = GameState.STARTING;
 			validate();
 		} else if (source == play2) {
-			musiqueNiveau.fadeOut();
+			if(musiqueNiveau.fadeFinished)
+				musiqueNiveau.fadeOut();
+			else musiqueNiveau.stop();
 			musiqueNiveau = new mp3("res/sons/niveau" + niveauChoisi + ".mp3");
 			musiqueNiveau.fadeIn();
 			musiqueNiveau.boucle();
@@ -651,14 +663,18 @@ public class Framework extends Canvas {
 		} else if (source == menu || source == menu2 || source == menu3 || source == menu4) {
 						
 			if (source == menu || source == menu4) {
-				musiqueNiveau.fadeOut();
+				if(musiqueNiveau.fadeFinished)
+					musiqueNiveau.fadeOut();
+				else musiqueNiveau.stop();
 				aMenu = rand.nextInt(2 - 0 + 1) + 0;
 				musiqueMenu = new mp3("res/sons/menu"+aMenu+".mp3");
 				musiqueMenu.fadeIn();
 				musiqueMenu.boucle();
 				Game.etat = Game.ETAT.FIN;
 			} else if (source == menu3){
-				musiqueLance.fadeOut();
+				if(musiqueLance.fadeFinished)
+					musiqueLance.fadeOut();
+				else musiqueLance.stop();
 				aMenu = rand.nextInt(2 - 0 + 1) + 0;
 				musiqueMenu = new mp3("res/sons/menu"+aMenu+".mp3");
 				musiqueMenu.fadeIn();
@@ -687,7 +703,13 @@ public class Framework extends Canvas {
 			niveauChoisi = 4;
 		}
 	}
-
+	
+	
+	/**
+	 * Cette méthode est appelée quand une action est détectée par un changeListener des sliders
+	 * 
+	 * @param e MouseEvent
+	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		final Object source = e.getSource();

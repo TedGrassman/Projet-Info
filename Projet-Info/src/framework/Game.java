@@ -1,5 +1,15 @@
 package framework;
 
+import gameEntities.AstreSatelite;
+import gameEntities.AstreSpherique;
+import gameEntities.AstreTrouNoir;
+import gameEntities.Explosion;
+import gameEntities.Joueur;
+import gameEntities.Missile;
+import gameEntities.Objet;
+import gameEntities.Station;
+import gameEntities.Trajectoire;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -31,10 +41,10 @@ public class Game {
 
 	Son sonExplosion = new Son("res/sons/explosion-sourde.wav");
 
-	final static Joueur JOUEUR1 = new Joueur("Joueur 1", Color.RED);
-	final static Joueur JOUEUR2 = new Joueur("Joueur 2", Color.CYAN);
-	final static Joueur	JOUEUR3 = new Joueur("Joueur 3", Color.GREEN);
-	final static Joueur JOUEUR4 = new Joueur("Joueur 4", Color.YELLOW);
+	public final static Joueur JOUEUR1 = new Joueur("Joueur 1", Color.RED);
+	public final static Joueur JOUEUR2 = new Joueur("Joueur 2", Color.CYAN);
+	public final static Joueur	JOUEUR3 = new Joueur("Joueur 3", Color.GREEN);
+	public final static Joueur JOUEUR4 = new Joueur("Joueur 4", Color.YELLOW);
 	
 	Station stationCourante;
 	Station Station1, Station2, Station3, Station4; // Stations
@@ -43,15 +53,15 @@ public class Game {
 	AstreTrouNoir TrouNoir1, TrouNoir2;
 	Missile Missile1, Missile2, Missile3, Missile4, Missile5;
 	
-	ArrayList<Objet> Objets; // Liste de tous les objets du jeu
-	ArrayList<Missile> Missiles; // Liste de tous les missiles
-	ArrayList<Station> Stations; // Liste de toutes les stations
-	ArrayList<Joueur> Joueurs; // Liste des joueurs en lice
-	ArrayList<Trajectoire> lastTrajectoires; // Liste des dernières trajectoires des missiles de chaque station
+	public ArrayList<Objet> Objets; // Liste de tous les objets du jeu
+	public ArrayList<Missile> Missiles; // Liste de tous les missiles
+	public ArrayList<Station> Stations; // Liste de toutes les stations
+	public ArrayList<Joueur> Joueurs; // Liste des joueurs en lice
+	public ArrayList<Trajectoire> lastTrajectoires; // Liste des dernières trajectoires des missiles de chaque station
 	Font font1, font2; // Objet de police d'écriture
-	String[] NomImage = { "planete.png" };
-	String[] imageSat = { "moon.png" };
-	String[] imageTrou = { "trouNoir.png" };
+	String[] NomImage = { "astres/planete.png" };
+	String[] imageSat = { "astres/moon.png" };
+	String[] imageTrou = { "astres/trouNoir.png" };
 	boolean vecteurMissile = false;
 	String winner = "";
 	String load = "";
@@ -62,7 +72,9 @@ public class Game {
 	double height;
 	double width;
 	
-	
+	/**
+	 * Constructeur du jeu
+	 */
     public Game()
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
@@ -84,7 +96,7 @@ public class Game {
     
     
    /**
-     * Set variables and objects for the game.
+     * Initialisation des variables et objets du jeu
      */
     private void Initialize()
     {
@@ -107,30 +119,30 @@ public class Game {
 		stationCourante = Stations.get(0);
 
 		etat = ETAT.PREPARATION;
-		mouseClicked = mousePressed = mouseReleased;
+		mouseClicked = mousePressed = mouseReleased = false;
 	}
 
 	/**
-	 * Load game files - images, sounds, ...
+	 * Charge des objets comme des images, musiques, polices...
 	 */
 	private void LoadContent() {
 		try { // Récupération de la police d'écriture
-			font1 = Font.createFont(Font.TRUETYPE_FONT, new File("res/Coalition.ttf"));
-			font2 = Font.createFont(Font.TRUETYPE_FONT, new File("res/13_Misa.ttf"));
+			font1 = Font.createFont(Font.TRUETYPE_FONT, new File("res/polices/Coalition.ttf"));
+			font2 = Font.createFont(Font.TRUETYPE_FONT, new File("res/polices/13_Misa.ttf"));
 		} catch (final Exception err) {
 			System.err.println("Police(s) d'écriture introuvable(s) !");
+			System.exit(0);
 		}
 	}
 
 	/**
-	 * Restart game - reset some variables.
+	 * Relance le jeu - ré-initialise certaines variables
 	 */
 	public void RestartGame() {
 		// Reinitialisation des variables static
 		Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
 		
 		Objet.liste = new ArrayList<Objet>();
-		Astre.liste = new ArrayList<Astre>();
 		Explosion.liste = new ArrayList<Explosion>();
 		Missile.nbr = 0;
 		JOUEUR1.reinitStations();
@@ -156,7 +168,7 @@ public class Game {
 	}
 
 	/**
-	 * Update game logic.
+	 * Met à jour le jeu (déplacements, collisions, garbage collector...)
 	 * 
 	 * @param gameTime
 	 *            gameTime of the game.
@@ -216,7 +228,7 @@ public class Game {
 				O.move(gameTime);
 			}
 			
-			// LAST TRAJECTOIRES
+			// DERNIERES TRAJECTOIRES
 			for(int i = 0; i < lastTrajectoires.size(); i++){
 				lastTrajectoires.get(i).actualisation();
 			}
@@ -228,7 +240,9 @@ public class Game {
 				if (OC != O) {
 					// System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);	DEBUGGING
 					O.detruire(O.x, O.y, gameTime);
-					sonExplosion = new Son("res/sons/explosion-sourde.wav");
+					//sonExplosion = new Son("res/sons/explosion-sourde.wav"); 	// Pemet d'avoir un nouveau son d'explosion pour chaque collision
+																				//-> plusieurs sons en même temps.
+																				// MAIS : memory leak, les sons s'ajoutente en mémoire
 					sonExplosion.jouer();
 					if (OC.typeObjet == "Station") {
 						OC.detruire(OC.centreG.x, OC.centreG.y, gameTime);
@@ -267,23 +281,28 @@ public class Game {
 					k--; // parceque la liste s'est déplacée pour boucher le trou
 				}
 			}
-
+			
+			// TEST DES CONDITIONS POUR FIN DE TOUR OU FIN DE JEU
 			if (Missiles.isEmpty()) {
+				
+				// On supprime un joueur s'il n'a plus de stations
 				for (int i = 0; i < Joueurs.size(); i++) {
 					if (Joueurs.get(i).Stations.isEmpty()) {
 						Joueurs.remove(i);
 						i--;
 					}
 				}
+				// S'il reste un seul joueur, il est le gagnant
 				if (Joueurs.size() == 1) {
 					winner = "Le Vainqueur est " + Joueurs.get(0).nomJoueur;
 					etat = ETAT.FIN;
 				}
-
+				// S'il n'y a plus aucun joueur, égalité
 				if (Joueurs.size() == 0) {
 					winner = "Egalité !";
 					etat = ETAT.FIN;
 				}
+				// S'il reste plus de 1 joueur, retour à la phase de préparation
 				if (Joueurs.size() > 1) {
 					stationCourante = Stations.get(0);
 					etat = ETAT.PREPARATION;
@@ -298,13 +317,7 @@ public class Game {
 			break;
 
 		case FIN:
-			// rien de particulier
-//				try {
-//					Thread.sleep(2000);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+			// On change l'état du Framework
 			Framework.gameState = Framework.GameState.GAME_OVER;
 			break;
 
@@ -316,7 +329,7 @@ public class Game {
 	}
 
 	/**
-	 * Draw the game to the screen.
+	 * Dessine le jeu à l'écran
 	 * 
 	 * @param g2d
 	 *            Graphics2D
@@ -407,13 +420,23 @@ public class Game {
 			break;
 		}
 	}
-
+	
+	/**
+	 * Permet d'afficher une chaîne de caractères centrée en largeur
+	 * @param g2d le buffer sur lequel dessiner
+	 * @param s la chaîne de caractères
+	 * @param YPos la hauteur à laquelle dessiner
+	 */
 	public void printCenteredString(Graphics2D g2d, String s, int YPos) {
 		final int stringLen = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
 		final int start = Framework.frameWidth / 2 - stringLen / 2;
 		g2d.drawString(s, start, YPos);
 	}
-
+	
+	/**
+	 * Permet d'initialiser stations et astres, en fonction de la carte choisie et du nombre de joueurs
+	 * @param map carte choisie
+	 */
 	private void DisposeAstres(int map) {
 		switch (map) {
 		case 0:
@@ -744,14 +767,6 @@ public class Game {
 				Stations.add(Station4);
 
 			}
-//			System.out.println(Station1.joueur.nomJoueur);
-//			System.out.println(Station1.numero);
-//			System.out.println(Station2.joueur.nomJoueur);
-//			System.out.println(Station2.numero);
-//			System.out.println(Station3.joueur.nomJoueur);
-//			System.out.println(Station3.numero);
-//			System.out.println(Station4.joueur.nomJoueur);
-//			System.out.println(Station4.numero);
 
 			Planet1 = new AstreSpherique((int) (CentreEcranX - (600 * pW)), CentreEcranY, 0f, 0f, NomImage, Ecran,
 					"Planete1", 1, MASSE_PLANETE, 50);

@@ -1,4 +1,4 @@
-package framework;
+package gameEntities;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,16 +16,9 @@ public class AstreSatelite extends Astre {
 			AstreSpherique astre, double omega) {
 		super((int) (astre.x + 100), (int) (astre.y), 0f, 0f, NomImage, aframe, nom, "AstreSpherique", nbIm, masse);
 		this.rayon = rayon;
-		limites = new Area(new Ellipse2D.Double(drawX, drawY, 2 * (rayon), 2 * (rayon))); // Création
-																							// de
-																							// la
-																							// hitbox
-																							// :
-																							// disque
-																							// de
-																							// centre
-																							// (ax,ay)
-		this.astre = astre;
+		// Création de la hitbox : disque de centre (ax,ay)
+		limites = new Area(new Ellipse2D.Double(drawX, drawY, 2 * (rayon), 2 * (rayon)));
+				this.astre = astre;
 		centreG = new CentreGravite((int) (astre.x + rayon), (int) (astre.y));
 		this.omega = 0.034;
 	}

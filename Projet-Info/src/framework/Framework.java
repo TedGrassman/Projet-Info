@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -33,7 +34,8 @@ import javax.swing.event.ChangeEvent;
 @SuppressWarnings("serial")
 public class Framework extends Canvas {
 	public static int nbJoueurs, niveauChoisi;
-	mp3 musiqueMenu, musiqueNiveau, musiqueLance;
+	mp3 musiqueMenu, musiqueLance, musiqueNiveau;
+	int aMenu, aLance; // Aléatoire pour le choix de la musique de menu et de lancement
 	JPanel panel = new JPanel();
 	JPanel menuPrincipal = new JPanel(), menuPause = new JPanel(), menuOptions = new JPanel(),
 			menuLance = new JPanel(), menuEnd = new JPanel();
@@ -46,6 +48,7 @@ public class Framework extends Canvas {
 	JSlider sliderPoussee, sliderTrajectoire;
 	customText textMenu, textOptions, poussee, trajectoire, joueurs, niveau;
 	roundButton j2, j3, j4, n1, n2, n3, n4;
+	Random rand = new Random();
 
 	public static boolean resized = false; // indique si la fenetre vient d'être redimensionnée
 
@@ -297,9 +300,11 @@ public class Framework extends Canvas {
 		layout.show(panel, "mDepart"); // affiche la première carte
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER); // ajoute le panel au framework
-
-		musiqueMenu = new mp3("res/sons/menu.mp3");
-		musiqueLance = new mp3("res/sons/lance.mp3");
+		
+		aMenu = rand.nextInt(2 - 0 + 1) + 0;
+		aLance = rand.nextInt(1 - 0 + 1) + 0;
+		musiqueMenu = new mp3("res/sons/menu"+aMenu+".mp3");
+		musiqueLance = new mp3("res/sons/lance"+aLance+".mp3");
 		
 		
 		gameState = GameState.VISUALIZING;
@@ -414,7 +419,7 @@ public class Framework extends Canvas {
 						resized = false;
 					} else {
 						gameState = GameState.MAIN_MENU;
-						musiqueMenu.jouer();
+						musiqueMenu.fadeIn();
 						musiqueMenu.boucle();
 					}
 
@@ -614,12 +619,14 @@ public class Framework extends Canvas {
 	public void actionPerformed(ActionEvent event) { // clics sur les boutons
 
 		final Object source = event.getSource();
-
+		
 		if (source == exit) {
 			musiqueMenu.fadeOut();
 			System.exit(0);
 		} else if (source == lance) {
 			musiqueMenu.fadeOut();
+			aLance = rand.nextInt(1 - 0 + 1) + 0;
+			musiqueLance = new mp3("res/sons/lance"+aLance+".mp3");
 			musiqueLance.fadeIn();
 			musiqueLance.boucle();
 			gameState = GameState.LANCE;
@@ -642,14 +649,18 @@ public class Framework extends Canvas {
 			gameState = GameState.OPTIONS;
 			validate();
 		} else if (source == menu || source == menu2 || source == menu3 || source == menu4) {
-
+						
 			if (source == menu || source == menu4) {
 				musiqueNiveau.fadeOut();
+				aMenu = rand.nextInt(2 - 0 + 1) + 0;
+				musiqueMenu = new mp3("res/sons/menu"+aMenu+".mp3");
 				musiqueMenu.fadeIn();
 				musiqueMenu.boucle();
 				Game.etat = Game.ETAT.FIN;
 			} else if (source == menu3){
 				musiqueLance.fadeOut();
+				aMenu = rand.nextInt(2 - 0 + 1) + 0;
+				musiqueMenu = new mp3("res/sons/menu"+aMenu+".mp3");
 				musiqueMenu.fadeIn();
 				musiqueMenu.boucle();
 			}

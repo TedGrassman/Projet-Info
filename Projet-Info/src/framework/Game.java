@@ -228,6 +228,7 @@ public class Game {
 				if (OC != O) {
 					// System.out.println("Collision de " +O.nom_objet+ " avec " +OC.nom_objet);	DEBUGGING
 					O.detruire(O.x, O.y, gameTime);
+					sonExplosion = new Son("res/sons/explosion-sourde.wav");
 					sonExplosion.jouer();
 					if (OC.typeObjet == "Station") {
 						OC.detruire(OC.centreG.x, OC.centreG.y, gameTime);

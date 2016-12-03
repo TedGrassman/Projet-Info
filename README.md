@@ -1,20 +1,18 @@
 # Projet-Info
-Projet d'informatique INSA 2014-2015
+Projet d'informatique INSA Lyon 2014-2015
+Membres du groupe :
+* Sami Bensallam
+* Marc Fallouh
+* Tanguy Nodet
+* Benjamin Steffner
 
-Bienvenue sur le repository de notre projet d'Info !
+Bienvenue sur le repository de notre projet d'Info.
+Ceci est un jeu vidéo codé en Java, où des joueurs s'affrontent dans l'espace en essayant de déjouer la gravité !
 
-Je crois que j'ai réussi à faire un truc à peu près propre.
+Petite explication du repository git :
+* .git : dossier permettant le bon fonctionnement du git. Ne pas toucher !
+* Projet-Info : dossier du Projet Java
+    * src : dossier avec les fichiers sources du code Java.
+    * bin : dossier avec le code compilé
+    * res : dossier avec les fichiers ressources (images, sons, etc...)
 
-Petite explication du git :
-
-  => .git : dossier permettant le bon fonctionnement du git. Ne pas toucher !
-  
-  Dans Projet-Info (dossier du Projet Java) :
-  
-  => src : dossier avec les fichiers sources du code Java.
-  
-  => bin : dossier avec le code compilé
-  
-  => res : dossier avec les fichiers ressources (images, sons, etc...)
-
-Voilà, j'espère que ce sera pas trop le bordel ^^
